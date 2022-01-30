@@ -16,6 +16,11 @@
 		83D3FD3727A5FEF800F3746B /* StockSimulatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD3627A5FEF800F3746B /* StockSimulatorTests.swift */; };
 		83D3FD4127A5FEF800F3746B /* StockSimulatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD4027A5FEF800F3746B /* StockSimulatorUITests.swift */; };
 		83D3FD4327A5FEF800F3746B /* StockSimulatorUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD4227A5FEF800F3746B /* StockSimulatorUITestsLaunchTests.swift */; };
+		83D3FD5027A60D4600F3746B /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD4F27A60D4600F3746B /* Stock.swift */; };
+		83D3FD5227A60D5F00F3746B /* StockDaily.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD5127A60D5F00F3746B /* StockDaily.swift */; };
+		83D3FD5427A60DC200F3746B /* StockVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD5327A60DC200F3746B /* StockVC.swift */; };
+		83D3FD5627A60E7D00F3746B /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD5527A60E7D00F3746B /* APICaller.swift */; };
+		83D3FD5927A6101300F3746B /* StockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD5827A6101300F3746B /* StockView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +53,11 @@
 		83D3FD3C27A5FEF800F3746B /* StockSimulatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StockSimulatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D3FD4027A5FEF800F3746B /* StockSimulatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSimulatorUITests.swift; sourceTree = "<group>"; };
 		83D3FD4227A5FEF800F3746B /* StockSimulatorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSimulatorUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		83D3FD4F27A60D4600F3746B /* Stock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
+		83D3FD5127A60D5F00F3746B /* StockDaily.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDaily.swift; sourceTree = "<group>"; };
+		83D3FD5327A60DC200F3746B /* StockVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockVC.swift; sourceTree = "<group>"; };
+		83D3FD5527A60E7D00F3746B /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
+		83D3FD5827A6101300F3746B /* StockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +108,12 @@
 		83D3FD1F27A5FEF800F3746B /* StockSimulator */ = {
 			isa = PBXGroup;
 			children = (
+				83D3FD5727A60FCB00F3746B /* Model */,
 				83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */,
 				83D3FD2227A5FEF800F3746B /* ContentView.swift */,
+				83D3FD5827A6101300F3746B /* StockView.swift */,
+				83D3FD5327A60DC200F3746B /* StockVC.swift */,
+				83D3FD5527A60E7D00F3746B /* APICaller.swift */,
 				83D3FD2427A5FEF800F3746B /* Assets.xcassets */,
 				83D3FD2927A5FEF800F3746B /* Persistence.swift */,
 				83D3FD2B27A5FEF800F3746B /* StockSimulator.xcdatamodeld */,
@@ -131,6 +145,15 @@
 				83D3FD4227A5FEF800F3746B /* StockSimulatorUITestsLaunchTests.swift */,
 			);
 			path = StockSimulatorUITests;
+			sourceTree = "<group>";
+		};
+		83D3FD5727A60FCB00F3746B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				83D3FD4F27A60D4600F3746B /* Stock.swift */,
+				83D3FD5127A60D5F00F3746B /* StockDaily.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,10 +286,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83D3FD5927A6101300F3746B /* StockView.swift in Sources */,
 				83D3FD2A27A5FEF800F3746B /* Persistence.swift in Sources */,
+				83D3FD5427A60DC200F3746B /* StockVC.swift in Sources */,
 				83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */,
 				83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */,
+				83D3FD5027A60D4600F3746B /* Stock.swift in Sources */,
+				83D3FD5227A60D5F00F3746B /* StockDaily.swift in Sources */,
 				83D3FD2D27A5FEF800F3746B /* StockSimulator.xcdatamodeld in Sources */,
+				83D3FD5627A60E7D00F3746B /* APICaller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +463,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,6 +493,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
