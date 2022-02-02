@@ -11,7 +11,7 @@ struct StockView: View {
     
     @State var searchSymbol: String = ""
 //    @State var foundStock: Bool = false
-    @State var stock: Investment?
+    @State var stock: Stock?
     
     var body: some View {
         VStack {
@@ -63,7 +63,7 @@ struct StockView: View {
                         do {
                             let json = try JSONSerialization.data(withJSONObject: investmentResults)
                             let decoder = JSONDecoder()
-                            let investmentArray = try decoder.decode([Investment].self, from: json)
+                            let investmentArray = try decoder.decode([Stock].self, from: json)
                             if investmentArray.count > 0
                             {
                                 stock = investmentArray[0]

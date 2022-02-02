@@ -7,6 +7,8 @@
 //
 import Foundation
 
+// This is used for alphavantage. No longer in use, now that I am using yahoo finance.
+
 class StockDaily: CustomStringConvertible
 {
     
