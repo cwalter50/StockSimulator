@@ -28,6 +28,11 @@ struct StockView: View {
                 Text(stock!.symbol)
                 
                 Text("$\(stock!.regularMarketPrice)")
+                Button(action: {
+                    
+                }) {
+                    Text("Add to WatchList")
+                }
             }
         }
     }
@@ -64,9 +69,11 @@ struct StockView: View {
                             let json = try JSONSerialization.data(withJSONObject: investmentResults)
                             let decoder = JSONDecoder()
                             let investmentArray = try decoder.decode([Stock].self, from: json)
+                            print(investmentArray)
                             if investmentArray.count > 0
                             {
                                 stock = investmentArray[0]
+                                
                             }
                             else
                             {
@@ -90,55 +97,6 @@ struct StockView: View {
 
     
     }
-    
-    
-//    func getStockInfo()
-//    {
-//        print(searchSymbol)
-//        let apiKey = "8MSMEIW64FB4D1WT"
-//        let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=\(searchSymbol)&apikey=\(apiKey)"
-//
-//         
-//        if let url = URL(string: urlString)
-//        {
-//             
-//            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-//                guard let data = data else { return }
-////                let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
-//                var responseJSON: [String: Any] = [String: Any]()
-//                do {
-//                  guard let results = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-//                    print("Cannot unwrap JSON response")
-//                    return
-//                  }
-//                  responseJSON = results
-//                }
-//                catch {
-//                  print("Cannot decode JSON response")
-//                    foundStock = false
-//                  return
-//                }
-////                print(responseJSON)
-//                
-//                self.stock = Stock(data: responseJSON)
-//                foundStock = true
-////                let theStock = Stock(data: responseJSON)
-//                
-//                print(stock.description)
-//
-//                
-//                 
-////                DispatchQueue.main.async {
-////                    self.resultLabel.text = theStock.description
-//////                    self.resultLabel.text = "\(dateString) Close Price = $\(close)"
-////                    self.view.endEditing(true)
-////                }
-//            }
-//             
-//            task.resume()
-//             
-//        }
-//    }
     
     
 }

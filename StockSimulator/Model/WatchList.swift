@@ -6,16 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
 
 
 struct WatchList: Codable
 {
     var stocks: [Stock]
-    var id: Int // needed for Codeable
+//    var id: Int // needed for Codeable
     
     init(stocks: [Stock])
     {
-        id = UUID().hashValue
+//        id = UUID().hashValue
         self.stocks = stocks
     }
 }

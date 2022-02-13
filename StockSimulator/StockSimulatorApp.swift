@@ -13,7 +13,8 @@ struct StockSimulatorApp: App {
 
     var body: some Scene {
         WindowGroup {
-            StockView()
+//            StockView()
+            WatchListView()
 //            ContentView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }

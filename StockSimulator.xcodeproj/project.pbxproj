@@ -24,6 +24,8 @@
 		83FA26DE27AA16CF008DA2BC /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26DD27AA16CF008DA2BC /* Account.swift */; };
 		83FA26E027AA1BF0008DA2BC /* Holding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26DF27AA1BF0008DA2BC /* Holding.swift */; };
 		83FA26E227AA1F02008DA2BC /* WatchList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26E127AA1F02008DA2BC /* WatchList.swift */; };
+		83FA26E427B82461008DA2BC /* StockRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26E327B82461008DA2BC /* StockRow.swift */; };
+		83FA26E727B85F38008DA2BC /* StockSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26E627B85F38008DA2BC /* StockSearchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		83FA26DD27AA16CF008DA2BC /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		83FA26DF27AA1BF0008DA2BC /* Holding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Holding.swift; sourceTree = "<group>"; };
 		83FA26E127AA1F02008DA2BC /* WatchList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchList.swift; sourceTree = "<group>"; };
+		83FA26E327B82461008DA2BC /* StockRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockRow.swift; sourceTree = "<group>"; };
+		83FA26E627B85F38008DA2BC /* StockSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,8 @@
 				83D3FD2227A5FEF800F3746B /* ContentView.swift */,
 				83D3FD5827A6101300F3746B /* StockView.swift */,
 				83FA26DB27AA12DA008DA2BC /* WatchListView.swift */,
+				83FA26E627B85F38008DA2BC /* StockSearchView.swift */,
+				83FA26E327B82461008DA2BC /* StockRow.swift */,
 				83D3FD5527A60E7D00F3746B /* APICaller.swift */,
 				83D3FD2427A5FEF800F3746B /* Assets.xcassets */,
 				83D3FD2927A5FEF800F3746B /* Persistence.swift */,
@@ -302,7 +308,9 @@
 				83FA26DE27AA16CF008DA2BC /* Account.swift in Sources */,
 				83FA26E227AA1F02008DA2BC /* WatchList.swift in Sources */,
 				83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */,
+				83FA26E427B82461008DA2BC /* StockRow.swift in Sources */,
 				83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */,
+				83FA26E727B85F38008DA2BC /* StockSearchView.swift in Sources */,
 				83D3FD5027A60D4600F3746B /* Stock.swift in Sources */,
 				83D3FD5227A60D5F00F3746B /* StockDaily.swift in Sources */,
 				83D3FD2D27A5FEF800F3746B /* StockSimulator.xcdatamodeld in Sources */,

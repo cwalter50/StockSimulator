@@ -8,6 +8,7 @@
 import Foundation
 
 
+// This is the asset that we are buying and currently hold
 struct Holding: Codable
 {
     var id: Int // need to satisfy Codable

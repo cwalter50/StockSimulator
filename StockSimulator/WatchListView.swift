@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WatchListView: View {
-    var watchList: WatchList
+    @State var watchList: WatchList
     
 
     init() {
@@ -18,25 +18,43 @@ struct WatchListView: View {
                 return
             }
         }
-
-        watchList = WatchList(stocks: [])
+        
+//        watchList = WatchList(stocks: [])
+        watchList = WatchList(stocks: [Stock(), Stock(), Stock()])
     }
     
     
 //    var investments: [Investment]
     var body: some View {
         NavigationView {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Simon Ng")
-                    Text("Founder of AppCoda")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                    
+            List {
+                StockView()
+                ForEach(watchList.stocks) { stock in
+                    StockRow(stock: stock)
+                }
+                .onDelete(perform: delete)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        
+                    }) {
+                        NavigationLink( destination: StockSearchView()) {
+                            Image(systemName: "plus")
+                        }
+                    }
+//                    EditButton()
+                }
+                ToolbarItem {
+                    EditButton()
+//                    Button(action: addItem) {
+//                        Label("Add Item", systemImage: "plus")
+//                    }
                 }
             }
-            
+            .navigationTitle("Watchlist")
         }
+        
         
     }
     
@@ -49,6 +67,10 @@ struct WatchListView: View {
         else {
             print("Error with encoding watchlist")
         }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        watchList.stocks.remove(atOffsets: offsets)
     }
     
     

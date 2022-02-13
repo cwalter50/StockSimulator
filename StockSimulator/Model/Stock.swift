@@ -10,7 +10,9 @@ import Foundation
 import SwiftUI
 
 
-struct Stock: Codable
+// This is the data that is actually loaded from the API
+
+struct Stock: Codable, Identifiable
 {
 //    enum quoteType: String, Decodable
 //    {
@@ -27,7 +29,52 @@ struct Stock: Codable
     var regularMarketDayHigh: Double // 170.35
     var regularMarketDayLow: Double // 162.8
     var regularMarketPrice: Double // 170.33
+    var id = UUID()
 //    var id: Int = UUID().hashValue
+    // these are added so that I can have the id property that is required for Identifiable. I need identifiable so that I can easily display in a stocks in a list.
+    private enum CodingKeys: String, CodingKey {
+        case quoteType, displayName, currency, symbol, language, ask, bid, market, regularMarketDayHigh, regularMarketDayLow, regularMarketPrice
+    }
+    
+
+    
+    init(from decoder:Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        quoteType = try values.decode(String.self, forKey: .quoteType)
+        displayName = try values.decode(String.self, forKey: .displayName)
+        currency = try values.decode(String.self, forKey: .currency)
+        symbol = try values.decode(String.self, forKey: .symbol)
+        language = try values.decode(String.self, forKey: .language)
+        ask = try values.decode(Double.self, forKey: .ask)
+        bid = try values.decode(Double.self, forKey: .bid)
+        market = try values.decode(String.self, forKey: .market)
+        regularMarketDayHigh = try values.decode(Double.self, forKey: .regularMarketDayHigh)
+        regularMarketDayLow = try values.decode(Double.self, forKey: .regularMarketDayLow)
+        regularMarketPrice = try values.decode(Double.self, forKey: .regularMarketPrice)
+        
+        id = UUID()
+        
+    }
+
+
+    // This is used to make up sample data to test...
+    init()
+    {
+//    quoteType: "EQUITY", displayName: "Apple", currency: "USD", symbol: "AAPL", language: "en-US", ask: 168.24, bid: 168.41, market: "us_market", regularMarketDayHigh: 173.08, regularMarketDayLow: 168.04, regularMarketPrice: 168.64)
+        // sample stock...
+        self.quoteType = "EQUITY"
+        self.displayName = "Apple"
+        self.currency = "USD"
+        self.symbol = "AAPL"
+        self.language = "en-US"
+        self.ask = 168.24
+        self.bid = 168.41
+        self.market = "us_market"
+        self.regularMarketDayHigh = 173.08
+        self.regularMarketDayLow = 168.04
+        self.regularMarketPrice = 168.64
+        
+    }
     
 }
 
