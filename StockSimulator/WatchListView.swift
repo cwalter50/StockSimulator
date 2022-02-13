@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WatchListView: View {
+    
     @ObservedObject var watchList: WatchList
     
     @State private var isSearchPresented = false
@@ -19,8 +20,11 @@ struct WatchListView: View {
 //        watchList = WatchList(stocks: [Stock(), Stock(), Stock()])
     }
     
-    
-//    var investments: [Investment]
+    init(test: Bool)
+    {
+        watchList = WatchList(stocks: [Stock(), Stock(), Stock()])
+    }
+
     var body: some View {
         NavigationView {
             List {
@@ -65,6 +69,6 @@ struct WatchListView: View {
 
 struct WatchListView_Previews: PreviewProvider {
     static var previews: some View {
-        WatchListView()
+        WatchListView(test: true)
     }
 }

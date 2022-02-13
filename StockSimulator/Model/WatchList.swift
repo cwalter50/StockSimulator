@@ -41,6 +41,8 @@ class WatchList: ObservableObject
         loadFromUserDefaults()
     }
     
+    
+    // This might not be needed, because I added this in the didSet method. It appears to be working everytime we append or remove from the list.
     func saveToUserDefaults()
     {
         let encoder = JSONEncoder()
