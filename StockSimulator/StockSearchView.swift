@@ -8,9 +8,21 @@
 import SwiftUI
 
 struct StockSearchView: View {
+    
+    @ObservedObject var watchList: WatchList
+    
+    
     @State var searchSymbol: String = ""
 //    @State var foundStock: Bool = false
     @State var stock: Stock?
+    
+    // will all ow us to dismiss
+    @Environment(\.presentationMode) var presentationMode
+    
+    init()
+    {
+        self.watchList = WatchList() // this will load the stocks from UserDefaults...
+    }
     
     var body: some View {
         VStack {
@@ -30,26 +42,28 @@ struct StockSearchView: View {
                 Text(String(format: "$%.2f", stock!.regularMarketPrice))
                 
                 Button(action: {
-                    
+                    if let foundStock = stock {
+                        watchList.stocks.append(foundStock)
+//                        watchList.saveToUserDefaults()
+                    }
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Add to WatchList")
                 }
             }
+            Spacer()
         }
     }
     
     func getStockData()
     {
-        
         let apiCaller = APICaller.shared
-        
         apiCaller.getAllStockData(searchSymbol: searchSymbol) {
             connectionResult in
             
             switch connectionResult {
                 case .success(let theStock):
                     stock = theStock
-
                 case .failure(let error):
                     print(error)
                     stock = nil

@@ -8,19 +8,15 @@
 import SwiftUI
 
 struct WatchListView: View {
-    @State var watchList: WatchList
+    @ObservedObject var watchList: WatchList
     
+    @State private var isSearchPresented = false
 
     init() {
-        if let data = UserDefaults.standard.data(forKey: "watchList") {
-            if let decoded = try? JSONDecoder().decode(WatchList.self, from: data) {
-                watchList = decoded
-                return
-            }
-        }
+        watchList = WatchList()
         
-//        watchList = WatchList(stocks: [])
-        watchList = WatchList(stocks: [Stock(), Stock(), Stock()])
+// this is for testing before watchlist and userdefaults worked
+//        watchList = WatchList(stocks: [Stock(), Stock(), Stock()])
     }
     
     
@@ -28,7 +24,7 @@ struct WatchListView: View {
     var body: some View {
         NavigationView {
             List {
-                StockView()
+//                StockView()
                 ForEach(watchList.stocks) { stock in
                     StockRow(stock: stock)
                 }
@@ -37,13 +33,14 @@ struct WatchListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        
+                        isSearchPresented.toggle()
                     }) {
-                        NavigationLink( destination: StockSearchView()) {
-                            Image(systemName: "plus")
-                        }
+                        Image(systemName: "plus")
                     }
-//                    EditButton()
+                    .sheet(isPresented: $isSearchPresented, onDismiss: watchList.loadFromUserDefaults){
+                        StockSearchView()
+                    }
+
                 }
                 ToolbarItem {
                     EditButton()
@@ -58,19 +55,9 @@ struct WatchListView: View {
         
     }
     
-    
-    func saveWatchListToUserDefaults()
-    {
-        if let encoded = try? JSONEncoder().encode(watchList) {
-            UserDefaults.standard.set(encoded, forKey: "watchList")
-        }
-        else {
-            print("Error with encoding watchlist")
-        }
-    }
-    
     func delete(at offsets: IndexSet) {
         watchList.stocks.remove(atOffsets: offsets)
+//        watchList.saveToUserDefaults()
     }
     
     
