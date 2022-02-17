@@ -38,8 +38,7 @@ struct StockSearchView: View {
             .padding()
             if stock != nil
             {
-                Text(stock!.symbol)
-                Text(String(format: "$%.2f", stock!.regularMarketPrice))
+                StockView(stock: stock!)
                 
                 Button(action: {
                     if let foundStock = stock {
@@ -50,9 +49,22 @@ struct StockSearchView: View {
                 }) {
                     Text("Add to WatchList")
                 }
+                HStack {
+                    Button(action: {
+                        // Remove From Account
+                    }) {
+                        Text("SELL")
+                    }
+                    Button(action: {
+                        // Add to Account
+                    }) {
+                        Text("BUY")
+                    }
+                }
             }
             Spacer()
         }
+        .padding()
     }
     
     func getStockData()

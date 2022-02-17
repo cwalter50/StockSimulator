@@ -13,8 +13,9 @@ struct StockSimulatorApp: App {
 
     var body: some Scene {
         WindowGroup {
+            MainView(accounts: [])
 //            StockView()
-            WatchListView()
+//            WatchListView()
 //            ContentView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }

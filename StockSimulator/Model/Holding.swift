@@ -9,9 +9,9 @@ import Foundation
 
 
 // This is the asset that we are buying and currently hold
-struct Holding: Codable
+struct Holding: Codable, Identifiable
 {
-    var id: Int // need to satisfy Codable
+    var id: UUID // satisfies Identifiable and Codable for encoding and decoding
     
     var stock: Stock
     var amount: Double

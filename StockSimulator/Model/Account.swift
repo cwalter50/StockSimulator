@@ -7,11 +7,19 @@
 
 import Foundation
 
-struct Account: Codable
+class Account: ObservableObject, Codable, Identifiable
 {
-    var id: Int
+    var id: UUID
     
     var name: String
     var cash: Double
     var holdings: [Holding]
+    
+    init ()
+    {
+        id = UUID()
+        name = "Test"
+        cash = 10000
+        holdings = []
+    }
 }
