@@ -20,7 +20,7 @@ struct MainView: View {
                     Text("Home")
                 }
          
-            AccountsView(accounts: [])
+            AccountsView()
                 .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
                     Image(systemName: "bookmark.circle.fill")

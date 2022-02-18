@@ -16,7 +16,7 @@ struct StockSearchView: View {
 //    @State var foundStock: Bool = false
     @State var stock: Stock?
     
-    // will all ow us to dismiss
+    // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
     
     init()

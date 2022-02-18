@@ -13,6 +13,25 @@ struct AccountsView: View {
     
     @State var isAddAccountPresented = false
     
+    init()
+    {
+        // load accounts from userDefaults
+        accounts = [Account]()
+        if let theAccounts = UserDefaults.standard.data(forKey: "accounts")
+        {
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode([Account].self, from: theAccounts) {
+                accounts = decoded
+                print("loaded Accounts from userdefaults")
+                return
+            }
+        }
+        else {
+            print("No record of accounts in user defaults")
+        }
+        
+    }
+    
     var body: some View {
         NavigationView {
             List {
@@ -29,7 +48,7 @@ struct AccountsView: View {
                         Image(systemName: "plus")
                     }
                     .sheet(isPresented: $isAddAccountPresented){
-                        AddAccountView()
+                        AddAccountView(name: "", startingAmount: "")
                     }
 
                 }
@@ -45,6 +64,6 @@ struct AccountsView_Previews: PreviewProvider {
     static var previews: some View {
         
         
-        AccountsView(accounts: [])
+        AccountsView()
     }
 }

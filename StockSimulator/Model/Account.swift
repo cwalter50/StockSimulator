@@ -22,4 +22,12 @@ class Account: ObservableObject, Codable, Identifiable
         cash = 10000
         holdings = []
     }
+    
+    init (name: String, cash: Double)
+    {
+        self.name = name
+        self.cash = cash
+        self.holdings = []
+        id = UUID()
+    }
 }
