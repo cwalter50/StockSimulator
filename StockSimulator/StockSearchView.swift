@@ -11,7 +11,6 @@ struct StockSearchView: View {
     
     @ObservedObject var watchList: WatchList
     
-    
     @State var searchSymbol: String = ""
 //    @State var foundStock: Bool = false
     @State var stock: Stock?
@@ -37,15 +36,15 @@ struct StockSearchView: View {
                 
             }
             .padding()
-            if stock != nil
+            
+            if let theStock = stock
             {
-                StockView(stock: stock!)
+                StockView(stock: theStock)
                 
                 Button(action: {
-                    if let foundStock = stock {
-                        watchList.stocks.append(foundStock)
-//                        watchList.saveToUserDefaults()
-                    }
+                    watchList.stocks.append(theStock)
+//                  watchList.saveToUserDefaults()
+                    
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Add to WatchList")
@@ -63,6 +62,9 @@ struct StockSearchView: View {
                     }
                 }
             }
+            else {
+                Spacer()
+            }
             Spacer()
         }
         .padding()
@@ -70,6 +72,7 @@ struct StockSearchView: View {
     
     func getStockData()
     {
+        stock = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
         let apiCaller = APICaller.shared
         apiCaller.getAllStockData(searchSymbol: searchSymbol) {
             connectionResult in
@@ -77,6 +80,7 @@ struct StockSearchView: View {
             switch connectionResult {
                 case .success(let theStock):
                     stock = theStock
+//                    print("Success and should update stock to \(stock!.displayName)")
                 case .failure(let error):
                     print(error)
                     stock = nil

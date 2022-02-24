@@ -17,7 +17,9 @@ final class APICaller{
     static let shared = APICaller()
 
     private struct Constants{
-        static let apiKey = "BEDD33LJaE8HYMSFDX1Sf1lMVbkR3CKU518oCr8x"
+//        static let apiKey = "BEDD33LJaE8HYMSFDX1Sf1lMVbkR3CKU518oCr8x" // stopped working 2/23/2022
+        static let apiKey = "g4Kz4cnymT3w6iiUfowfT8s0Nthdk35adU4tjEq5"
+        
 //        static let assetsEndpoint = "https://rest-sandbox.coinapi.io/v1asserts/"
 //        static let assetsEndpoint = "https://rest-sandbox.coinapi.io/v1/assets/"
 //        http://rest-sandbox.coinapi.io/v1/assets/?apikey=C120E6F5-11DD-48D4-8715-E9734B5D56ED
@@ -51,7 +53,7 @@ final class APICaller{
                     print("error in getting JSON")
                     return
                 }
-//                    print(results)
+                    print(results)
                 if let quoteResponse = results["quoteResponse"] as? [String:Any], let investmentResults = quoteResponse["result"] as? [[String:Any]] {
                     
                     do {
@@ -64,11 +66,7 @@ final class APICaller{
                             let stock = investmentArray[0]
                             completion(.success(stock))
                         }
-                        else
-                        {
-//                            stock = nil
-                            completion(.failure("No stock found" as! Error))
-                        }
+
                     } catch {
                         print(error)
                         completion(.failure(error))

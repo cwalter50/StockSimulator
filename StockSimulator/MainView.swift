@@ -21,14 +21,14 @@ struct MainView: View {
                 }
          
             AccountsView()
-                .font(.system(size: 30, weight: .bold, design: .rounded))
+//                .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
                     Image(systemName: "bookmark.circle.fill")
                     Text("Accounts")
                 }
          
             WatchListView()
-                .font(.system(size: 30, weight: .bold, design: .rounded))
+//                .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
                     Image(systemName: "video.circle.fill")
                     Text("WatchLists")
