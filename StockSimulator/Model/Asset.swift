@@ -1,15 +1,14 @@
 //
-//  Holding.swift
+//  Asset.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 2/1/22.
+//  Created by Christopher Walter on 2/26/22.
 //
 
 import Foundation
 
-
 // This is the asset that we are buying and currently hold
-struct Holding: Codable, Identifiable
+struct Asset: Codable, Identifiable
 {
     var id: UUID // satisfies Identifiable and Codable for encoding and decoding
     

@@ -12,6 +12,8 @@ struct WatchListView: View {
     @ObservedObject var watchList: WatchList
     
     @State private var isSearchPresented = false
+    
+    @Environment(\.editMode) private var editMode
 
     init() {
         watchList = WatchList()
@@ -33,6 +35,7 @@ struct WatchListView: View {
                     StockRow(stock: stock)
                 }
                 .onDelete(perform: delete)
+//                .deleteDisabled(editMode?.wrappedValue != .active)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -55,12 +58,14 @@ struct WatchListView: View {
             }
             .navigationTitle("Watchlist")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         
         
     }
     
     func delete(at offsets: IndexSet) {
         watchList.stocks.remove(atOffsets: offsets)
+        watchList.saveToUserDefaults()
 //        watchList.saveToUserDefaults()
     }
     

@@ -16,11 +16,11 @@ class WatchList: ObservableObject
 //    var id: Int // needed for Codeable
     @Published var stocks: [Stock] {
         didSet {
-            print("didSet is called on stocks")
+//            print("didSet is called on stocks")
             let encoder = JSONEncoder()
             if let encoded = try? encoder.encode(stocks) {
                 UserDefaults.standard.set(encoded, forKey: "watchlistStocks") // everytime we add a new stock, this will update the data in Userdefaults
-                print("saving items to UserDefaults")
+//                print("saving watchListStocks to UserDefaults")
             }
             else {
                 print("failed to save anything to user defaults")
@@ -36,7 +36,7 @@ class WatchList: ObservableObject
     }
     
     init() { // this will check if there are items in UserDefaults, and decode them into [Activity]. If none exist, then it will make items an empty array
-        print("init from watchlist")
+//        print("init from watchlist")
         self.stocks = []
         loadFromUserDefaults()
     }

@@ -52,12 +52,13 @@ struct AddAccountView: View {
             let decoder = JSONDecoder()
             if let decoded = try? decoder.decode([Account].self, from: theAccounts) {
                 accounts = decoded
-                print("loaded Accounts from userdefaults")
+                print("loaded Accounts from userdefaults in AddAccountView")
+                print("found \(accounts.count) accounts")
                 
             }
         }
         else {
-            print("No record of accounts in user defaults")
+            print("No record of accounts in user defaults on AddAccountView")
         }
         return accounts
     }
@@ -77,7 +78,7 @@ struct AddAccountView: View {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(accounts) {
             UserDefaults.standard.set(encoded, forKey: "accounts")
-            print("saving accounts to UserDefaults")
+            print("saving accounts to UserDefaults: \(accounts.count) accounts")
         }
         else {
             print("failed to save anything to user defaults")

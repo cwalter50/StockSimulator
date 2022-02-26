@@ -20,9 +20,11 @@
 		83D3FD5227A60D5F00F3746B /* StockDaily.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD5127A60D5F00F3746B /* StockDaily.swift */; };
 		83D3FD5627A60E7D00F3746B /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD5527A60E7D00F3746B /* APICaller.swift */; };
 		83D3FD5927A6101300F3746B /* StockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD5827A6101300F3746B /* StockView.swift */; };
+		83F9F71327CAAA4100C14D87 /* AccountRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F9F71227CAAA4100C14D87 /* AccountRow.swift */; };
+		83F9F71527CAAB2600C14D87 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F9F71427CAAB2600C14D87 /* Asset.swift */; };
+		83F9F71727CAB04D00C14D87 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F9F71627CAB04D00C14D87 /* AccountView.swift */; };
 		83FA26DC27AA12DA008DA2BC /* WatchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26DB27AA12DA008DA2BC /* WatchListView.swift */; };
 		83FA26DE27AA16CF008DA2BC /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26DD27AA16CF008DA2BC /* Account.swift */; };
-		83FA26E027AA1BF0008DA2BC /* Holding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26DF27AA1BF0008DA2BC /* Holding.swift */; };
 		83FA26E227AA1F02008DA2BC /* WatchList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26E127AA1F02008DA2BC /* WatchList.swift */; };
 		83FA26E427B82461008DA2BC /* StockRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26E327B82461008DA2BC /* StockRow.swift */; };
 		83FA26E727B85F38008DA2BC /* StockSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26E627B85F38008DA2BC /* StockSearchView.swift */; };
@@ -65,9 +67,11 @@
 		83D3FD5127A60D5F00F3746B /* StockDaily.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDaily.swift; sourceTree = "<group>"; };
 		83D3FD5527A60E7D00F3746B /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		83D3FD5827A6101300F3746B /* StockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockView.swift; sourceTree = "<group>"; };
+		83F9F71227CAAA4100C14D87 /* AccountRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRow.swift; sourceTree = "<group>"; };
+		83F9F71427CAAB2600C14D87 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
+		83F9F71627CAB04D00C14D87 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		83FA26DB27AA12DA008DA2BC /* WatchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListView.swift; sourceTree = "<group>"; };
 		83FA26DD27AA16CF008DA2BC /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
-		83FA26DF27AA1BF0008DA2BC /* Holding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Holding.swift; sourceTree = "<group>"; };
 		83FA26E127AA1F02008DA2BC /* WatchList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchList.swift; sourceTree = "<group>"; };
 		83FA26E327B82461008DA2BC /* StockRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockRow.swift; sourceTree = "<group>"; };
 		83FA26E627B85F38008DA2BC /* StockSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSearchView.swift; sourceTree = "<group>"; };
@@ -130,6 +134,8 @@
 				83FA270827BDF281008DA2BC /* MainView.swift */,
 				83FA270C27BDF46D008DA2BC /* AddAccountView.swift */,
 				83FA270A27BDF424008DA2BC /* AccountsView.swift */,
+				83F9F71227CAAA4100C14D87 /* AccountRow.swift */,
+				83F9F71627CAB04D00C14D87 /* AccountView.swift */,
 				83D3FD5827A6101300F3746B /* StockView.swift */,
 				83FA26DB27AA12DA008DA2BC /* WatchListView.swift */,
 				83FA26E627B85F38008DA2BC /* StockSearchView.swift */,
@@ -172,7 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				83D3FD4F27A60D4600F3746B /* Stock.swift */,
-				83FA26DF27AA1BF0008DA2BC /* Holding.swift */,
+				83F9F71427CAAB2600C14D87 /* Asset.swift */,
 				83FA26DD27AA16CF008DA2BC /* Account.swift */,
 				83D3FD5127A60D5F00F3746B /* StockDaily.swift */,
 				83FA26E127AA1F02008DA2BC /* WatchList.swift */,
@@ -312,15 +318,17 @@
 				83D3FD5927A6101300F3746B /* StockView.swift in Sources */,
 				83D3FD2A27A5FEF800F3746B /* Persistence.swift in Sources */,
 				83FA26DC27AA12DA008DA2BC /* WatchListView.swift in Sources */,
-				83FA26E027AA1BF0008DA2BC /* Holding.swift in Sources */,
 				83FA26DE27AA16CF008DA2BC /* Account.swift in Sources */,
 				83FA26E227AA1F02008DA2BC /* WatchList.swift in Sources */,
+				83F9F71327CAAA4100C14D87 /* AccountRow.swift in Sources */,
 				83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */,
 				83FA270D27BDF46D008DA2BC /* AddAccountView.swift in Sources */,
+				83F9F71527CAAB2600C14D87 /* Asset.swift in Sources */,
 				83FA26E427B82461008DA2BC /* StockRow.swift in Sources */,
 				83FA270B27BDF424008DA2BC /* AccountsView.swift in Sources */,
 				83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */,
 				83FA26E727B85F38008DA2BC /* StockSearchView.swift in Sources */,
+				83F9F71727CAB04D00C14D87 /* AccountView.swift in Sources */,
 				83D3FD5027A60D4600F3746B /* Stock.swift in Sources */,
 				83D3FD5227A60D5F00F3746B /* StockDaily.swift in Sources */,
 				83D3FD2D27A5FEF800F3746B /* StockSimulator.xcdatamodeld in Sources */,
@@ -413,7 +421,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -468,7 +476,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

@@ -13,21 +13,52 @@ class Account: ObservableObject, Codable, Identifiable
     
     var name: String
     var cash: Double
-    var holdings: [Holding]
+    var assets: [Asset]
+    var startingValue: Double
+    
     
     init ()
     {
         id = UUID()
         name = "Test"
         cash = 10000
-        holdings = []
+        assets = []
+        startingValue = 10000
     }
     
     init (name: String, cash: Double)
     {
         self.name = name
         self.cash = cash
-        self.holdings = []
+        self.assets = []
         id = UUID()
+        startingValue = cash
     }
+    
+    func calculateValue() -> Double
+    {
+        var total = cash
+        for asset in assets {
+            total += asset.amount + asset.stock.regularMarketPrice * asset.amount
+        }
+        
+        return total
+        
+    }
+    
+    func calculatePercentChange() -> String
+    {
+        let currentValue = calculateValue()
+        if currentValue >= startingValue
+        {
+            let growth = (currentValue / startingValue - 1) * 100
+            return String(format: "+%.1f", growth)
+        }
+        else
+        {
+            let growth = (1 - currentValue / startingValue) * 100
+            return String(format: "-%.1f", growth)
+        }
+    }
+    
 }

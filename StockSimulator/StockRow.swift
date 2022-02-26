@@ -20,16 +20,11 @@ struct StockRow: View {
                 Text(stock.displayName)
                     .font(.body)
                     .foregroundColor(.secondary)
-                    
             }
             Spacer()
             Text(String(format: "$%.2f", stock.regularMarketPrice))
                 .font(.title)
-            
-            
         }
-
-        
     }
 }
 

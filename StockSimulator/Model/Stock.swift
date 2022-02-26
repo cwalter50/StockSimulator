@@ -30,6 +30,7 @@ struct Stock: Codable, Identifiable
     var regularMarketDayLow: Double // 162.8
     var regularMarketPrice: Double // 170.33
     var id = UUID()
+
 //    var id: Int = UUID().hashValue
     // these are added so that I can have the id property that is required for Identifiable. I need identifiable so that I can easily display in a stocks in a list.
     private enum CodingKeys: String, CodingKey {
@@ -41,6 +42,16 @@ struct Stock: Codable, Identifiable
     init(from decoder:Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         quoteType = try values.decode(String.self, forKey: .quoteType)
+        
+        // Some stocks like DIS do not have a displayName, they have a longName and shortName instead...
+        do {
+            displayName = try values.decode(String.self, forKey: .displayName)
+        }
+        catch {
+            displayName = "No Name Found"
+        }
+        
+        
         displayName = try values.decode(String.self, forKey: .displayName)
         currency = try values.decode(String.self, forKey: .currency)
         symbol = try values.decode(String.self, forKey: .symbol)
@@ -51,7 +62,6 @@ struct Stock: Codable, Identifiable
         regularMarketDayHigh = try values.decode(Double.self, forKey: .regularMarketDayHigh)
         regularMarketDayLow = try values.decode(Double.self, forKey: .regularMarketDayLow)
         regularMarketPrice = try values.decode(Double.self, forKey: .regularMarketPrice)
-        
         id = UUID()
         
     }
