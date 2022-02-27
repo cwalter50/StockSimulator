@@ -23,6 +23,7 @@
 		83F9F71327CAAA4100C14D87 /* AccountRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F9F71227CAAA4100C14D87 /* AccountRow.swift */; };
 		83F9F71527CAAB2600C14D87 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F9F71427CAAB2600C14D87 /* Asset.swift */; };
 		83F9F71727CAB04D00C14D87 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F9F71627CAB04D00C14D87 /* AccountView.swift */; };
+		83F9F71927CAED9900C14D87 /* TradeFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F9F71827CAED9900C14D87 /* TradeFormView.swift */; };
 		83FA26DC27AA12DA008DA2BC /* WatchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26DB27AA12DA008DA2BC /* WatchListView.swift */; };
 		83FA26DE27AA16CF008DA2BC /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26DD27AA16CF008DA2BC /* Account.swift */; };
 		83FA26E227AA1F02008DA2BC /* WatchList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FA26E127AA1F02008DA2BC /* WatchList.swift */; };
@@ -70,6 +71,7 @@
 		83F9F71227CAAA4100C14D87 /* AccountRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRow.swift; sourceTree = "<group>"; };
 		83F9F71427CAAB2600C14D87 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		83F9F71627CAB04D00C14D87 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		83F9F71827CAED9900C14D87 /* TradeFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeFormView.swift; sourceTree = "<group>"; };
 		83FA26DB27AA12DA008DA2BC /* WatchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListView.swift; sourceTree = "<group>"; };
 		83FA26DD27AA16CF008DA2BC /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		83FA26E127AA1F02008DA2BC /* WatchList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchList.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				83FA270A27BDF424008DA2BC /* AccountsView.swift */,
 				83F9F71227CAAA4100C14D87 /* AccountRow.swift */,
 				83F9F71627CAB04D00C14D87 /* AccountView.swift */,
+				83F9F71827CAED9900C14D87 /* TradeFormView.swift */,
 				83D3FD5827A6101300F3746B /* StockView.swift */,
 				83FA26DB27AA12DA008DA2BC /* WatchListView.swift */,
 				83FA26E627B85F38008DA2BC /* StockSearchView.swift */,
@@ -316,6 +319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83D3FD5927A6101300F3746B /* StockView.swift in Sources */,
+				83F9F71927CAED9900C14D87 /* TradeFormView.swift in Sources */,
 				83D3FD2A27A5FEF800F3746B /* Persistence.swift in Sources */,
 				83FA26DC27AA12DA008DA2BC /* WatchListView.swift in Sources */,
 				83FA26DE27AA16CF008DA2BC /* Account.swift in Sources */,

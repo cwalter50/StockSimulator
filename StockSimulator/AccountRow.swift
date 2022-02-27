@@ -12,9 +12,9 @@ struct AccountRow: View {
     var account: Account
     
     var body: some View {
-        HStack (alignment: .firstTextBaseline){
+        HStack (alignment: .lastTextBaseline){
             Text(account.name)
-                .font(.headline)
+                .font(.title)
                 .fontWeight(.bold)
             Spacer()
             VStack(alignment: .trailing){

@@ -10,10 +10,13 @@ import SwiftUI
 struct StockSearchView: View {
     
     @ObservedObject var watchList: WatchList
+    var account: Account?
     
     @State var searchSymbol: String = ""
 //    @State var foundStock: Bool = false
     @State var stock: Stock?
+    
+    @State private var isTradePresented = false
     
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
@@ -21,6 +24,13 @@ struct StockSearchView: View {
     init()
     {
         self.watchList = WatchList() // this will load the stocks from UserDefaults...
+    }
+    
+    init(theAccount: Account)
+    {
+        account = theAccount
+        self.watchList = WatchList() // this will load the stocks from UserDefaults...
+        
     }
     
     var body: some View {
@@ -49,18 +59,30 @@ struct StockSearchView: View {
                 }) {
                     Text("Add to WatchList")
                 }
-                HStack {
-                    Button(action: {
-                        // Remove From Account
-                    }) {
-                        Text("SELL")
-                    }
-                    Button(action: {
-                        // Add to Account
-                    }) {
-                        Text("BUY")
-                    }
+                if let theAccount = account
+                {
+//                    HStack {
+                        Button(action: {
+                            isTradePresented.toggle()
+                        }) {
+                            Text("Trade")
+                        }
+                        .sheet(isPresented: $isTradePresented, onDismiss: watchList.loadFromUserDefaults){
+                            TradeFormView(account: theAccount, stock: theStock)
+                        }
+//                        Button(action: {
+//                            // Remove From Account
+//                        }) {
+//                            Text("SELL")
+//                        }
+//                        Button(action: {
+//                            // Add to Account
+//                        }) {
+//                            Text("BUY")
+//                        }
+//                    }
                 }
+
             }
             else {
                 Spacer()
