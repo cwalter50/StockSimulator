@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MainView: View {
     
+    @Environment(\.managedObjectContext) var moc
+    
     @State var accounts: [Account]
     
     var body: some View {
@@ -45,20 +47,20 @@ struct MainView: View {
     
     func loadAccountsFromUserDefaults()
     {
-        if let theAccounts = UserDefaults.standard.data(forKey: "accounts")
-        {
-            let decoder = JSONDecoder()
-            if let decoded = try? decoder.decode([Account].self, from: theAccounts) {
-                self.accounts = decoded
-                print("loaded from userdefaults")
-                return
-            }
-        }
-        else {
-            print("No record of items in user defaults")
-        }
-        // failed to load anything from user defaults
-        self.accounts = []
+//        if let theAccounts = UserDefaults.standard.data(forKey: "accounts")
+//        {
+//            let decoder = JSONDecoder()
+//            if let decoded = try? decoder.decode([Account].self, from: theAccounts) {
+//                self.accounts = decoded
+//                print("loaded from userdefaults")
+//                return
+//            }
+//        }
+//        else {
+//            print("No record of items in user defaults")
+//        }
+//        // failed to load anything from user defaults
+//        self.accounts = []
     }
 
 }

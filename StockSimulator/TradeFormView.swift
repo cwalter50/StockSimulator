@@ -25,18 +25,18 @@ struct TradeFormView: View {
     {
         Form {
             Section(header: Text("ACCOUNT INFO")) {
-                VStack(alignment: .leading) {
-                    Text(account.name)
-                        .font(.title)
-                        .fontWeight(.bold)
-                    HStack (alignment: .firstTextBaseline){
-                        Text("Available Cash: ")
-                        Spacer()
-                        Text(String(format: "$%.2f", account.cash))
-                    }
-                    .font(.headline)
-//                    .padding([.vertical])
-                }
+//                VStack(alignment: .leading) {
+//                    Text(account.name)
+//                        .font(.title)
+//                        .fontWeight(.bold)
+//                    HStack (alignment: .firstTextBaseline){
+//                        Text("Available Cash: ")
+//                        Spacer()
+//                        Text(String(format: "$%.2f", account.cash))
+//                    }
+//                    .font(.headline)
+////                    .padding([.vertical])
+//                }
             }
             Section(header: Text("STOCK INFO"))
             {
@@ -93,37 +93,37 @@ struct TradeFormView: View {
     
     func executeTrade()
     {
-        if tradeType == "BUY"
-        {
-            if let numSharesNum = Double(numShares)
-            {
-                let result = account.buyAsset(numShares: numSharesNum, stock: stock)
-                if result == true
-                {
-                    print("successfully bought \(numSharesNum) \(stock.symbol) for \(stock.regularMarketPrice)")
-                }
-                else
-                {
-                    print("unable to buy stock.")
-                }
-            }
-            
-        }
-        else if tradeType == "SELL"
-        {
-            if let numSharesNum = Double(numShares)
-            {
-                let result = account.sellAsset(numShares: numSharesNum, stock: stock)
-                if result == true
-                {
-                    print("successfully sold \(numSharesNum) \(stock.symbol) for \(stock.regularMarketPrice)")
-                }
-                else
-                {
-                    print("unable to sell stock.")
-                }
-            }
-        }
+//        if tradeType == "BUY"
+//        {
+//            if let numSharesNum = Double(numShares)
+//            {
+//                let result = account.buyAsset(numShares: numSharesNum, stock: stock)
+//                if result == true
+//                {
+//                    print("successfully bought \(numSharesNum) \(stock.symbol) for \(stock.regularMarketPrice)")
+//                }
+//                else
+//                {
+//                    print("unable to buy stock.")
+//                }
+//            }
+//            
+//        }
+//        else if tradeType == "SELL"
+//        {
+//            if let numSharesNum = Double(numShares)
+//            {
+//                let result = account.sellAsset(numShares: numSharesNum, stock: stock)
+//                if result == true
+//                {
+//                    print("successfully sold \(numSharesNum) \(stock.symbol) for \(stock.regularMarketPrice)")
+//                }
+//                else
+//                {
+//                    print("unable to sell stock.")
+//                }
+//            }
+//        }
     }
     
     func calculateTradePrice() -> String

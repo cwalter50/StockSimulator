@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8368B3D527D05B30008AF135 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3D427D05B30008AF135 /* DataController.swift */; };
+		8368B3E227D12215008AF135 /* Account+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3E027D12215008AF135 /* Account+CoreDataClass.swift */; };
+		8368B3E327D12215008AF135 /* Account+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3E127D12215008AF135 /* Account+CoreDataProperties.swift */; };
 		83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */; };
 		83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD2227A5FEF800F3746B /* ContentView.swift */; };
 		83D3FD2527A5FEF800F3746B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83D3FD2427A5FEF800F3746B /* Assets.xcassets */; };
@@ -52,6 +55,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8368B3D427D05B30008AF135 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		8368B3E027D12215008AF135 /* Account+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8368B3E127D12215008AF135 /* Account+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83D3FD1D27A5FEF800F3746B /* StockSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSimulatorApp.swift; sourceTree = "<group>"; };
 		83D3FD2227A5FEF800F3746B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -133,6 +139,7 @@
 				83D3FD5727A60FCB00F3746B /* Model */,
 				83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */,
 				83D3FD2227A5FEF800F3746B /* ContentView.swift */,
+				8368B3D427D05B30008AF135 /* DataController.swift */,
 				83FA270827BDF281008DA2BC /* MainView.swift */,
 				83FA270C27BDF46D008DA2BC /* AddAccountView.swift */,
 				83FA270A27BDF424008DA2BC /* AccountsView.swift */,
@@ -180,6 +187,8 @@
 		83D3FD5727A60FCB00F3746B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8368B3E027D12215008AF135 /* Account+CoreDataClass.swift */,
+				8368B3E127D12215008AF135 /* Account+CoreDataProperties.swift */,
 				83D3FD4F27A60D4600F3746B /* Stock.swift */,
 				83F9F71427CAAB2600C14D87 /* Asset.swift */,
 				83FA26DD27AA16CF008DA2BC /* Account.swift */,
@@ -319,12 +328,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				83D3FD5927A6101300F3746B /* StockView.swift in Sources */,
+				8368B3E227D12215008AF135 /* Account+CoreDataClass.swift in Sources */,
+				8368B3E327D12215008AF135 /* Account+CoreDataProperties.swift in Sources */,
 				83F9F71927CAED9900C14D87 /* TradeFormView.swift in Sources */,
 				83D3FD2A27A5FEF800F3746B /* Persistence.swift in Sources */,
 				83FA26DC27AA12DA008DA2BC /* WatchListView.swift in Sources */,
 				83FA26DE27AA16CF008DA2BC /* Account.swift in Sources */,
 				83FA26E227AA1F02008DA2BC /* WatchList.swift in Sources */,
 				83F9F71327CAAA4100C14D87 /* AccountRow.swift in Sources */,
+				8368B3D527D05B30008AF135 /* DataController.swift in Sources */,
 				83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */,
 				83FA270D27BDF46D008DA2BC /* AddAccountView.swift in Sources */,
 				83F9F71527CAAB2600C14D87 /* Asset.swift in Sources */,

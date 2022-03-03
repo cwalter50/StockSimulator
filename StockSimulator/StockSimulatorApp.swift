@@ -9,11 +9,14 @@ import SwiftUI
 
 @main
 struct StockSimulatorApp: App {
-    let persistenceController = PersistenceController.shared
+//    let persistenceController = PersistenceController.shared
+    
+    @StateObject private var dataController = DataController() // core Data from 100 days SwiftUI Project 11
 
     var body: some Scene {
         WindowGroup {
             MainView(accounts: [])
+                .environment(\.managedObjectContext, dataController.container.viewContext)
 //            StockView()
 //            WatchListView()
 //            ContentView()
