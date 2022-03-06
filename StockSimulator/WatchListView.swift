@@ -1,38 +1,44 @@
 //
-//  WatchListView.swift
+//  WatchlistView.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 2/1/22.
+//  Created by Christopher Walter on 3/4/22.
 //
+
+
 
 import SwiftUI
 
-struct WatchListView: View {
+struct WatchlistView: View {
     
-    @ObservedObject var watchList: WatchList
+    var watchlist: Watchlist
     
     @State private var isSearchPresented = false
     
     @Environment(\.editMode) private var editMode
-
-    init() {
-        watchList = WatchList()
-        
-// this is for testing before watchlist and userdefaults worked
-//        watchList = WatchList(stocks: [Stock(), Stock(), Stock()])
-    }
     
-    init(test: Bool)
+    @Environment(\.managedObjectContext) var moc // CoreData
+    
+    @FetchRequest var stocks: FetchedResults<Stock> // stocks need load in init, because FetchRequest requires a predicate with the variable watchlist
+    
+    
+    
+    init (watchlist: Watchlist)
     {
-        watchList = WatchList(stocks: [Stock(), Stock(), Stock()])
+        self.watchlist = watchlist
+        
+        self._stocks = FetchRequest(entity: Stock.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Stock.symbol, ascending: true)], predicate: NSPredicate(format: "(ANY watchlists == %@)", self.watchlist), animation: Animation.default)
+
     }
 
     var body: some View {
-        NavigationView {
+        VStack {
+            Text(watchlist.name ?? "NoName")
             List {
-//                StockView()
-                ForEach(watchList.stocks) { stock in
+
+                ForEach(stocks) { stock in
                     StockRow(stock: stock)
+                    
                 }
                 .onDelete(perform: delete)
 //                .deleteDisabled(editMode?.wrappedValue != .active)
@@ -42,38 +48,37 @@ struct WatchListView: View {
                     Button(action: {
                         isSearchPresented.toggle()
                     }) {
-                        Image(systemName: "plus")
+                        Image(systemName: "magnifyingglass")
                     }
-                    .sheet(isPresented: $isSearchPresented, onDismiss: watchList.loadFromUserDefaults){
-                        StockSearchView()
+                    .sheet(isPresented: $isSearchPresented){
+                        StockSearchView(watchlist: watchlist)
                     }
 
                 }
                 ToolbarItem {
                     EditButton()
-//                    Button(action: addItem) {
-//                        Label("Add Item", systemImage: "plus")
-//                    }
                 }
             }
-            .navigationTitle("Watchlist")
+            .navigationTitle("\(watchlist.name ?? "Watchlist")")
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+//        }
+//        .navigationViewStyle(StackNavigationViewStyle())
         
         
     }
     
     func delete(at offsets: IndexSet) {
-        watchList.stocks.remove(atOffsets: offsets)
-        watchList.saveToUserDefaults()
+//        watchList.stocks.remove(atOffsets: offsets)
+//        watchList.saveToUserDefaults()
 //        watchList.saveToUserDefaults()
     }
     
     
 }
 
-struct WatchListView_Previews: PreviewProvider {
+struct WatchlistView_Previews: PreviewProvider {
     static var previews: some View {
-        WatchListView(test: true)
+        WatchlistView(watchlist: Watchlist())
     }
 }
+
