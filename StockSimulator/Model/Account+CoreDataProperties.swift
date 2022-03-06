@@ -22,6 +22,10 @@ extension Account {
     @NSManaged public var startingValue: Double
     @NSManaged public var created: Date?
     
+    var wrappedName: String {
+        name ?? "No Name"
+    }
+    
     func calculateValue() -> Double
     {
         var total = cash

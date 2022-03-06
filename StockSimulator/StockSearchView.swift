@@ -9,27 +9,29 @@ import SwiftUI
 
 struct StockSearchView: View {
     
-    @ObservedObject var watchList: WatchList
+    @Environment(\.managedObjectContext) var moc // CoreData
+    
+    var watchlist: Watchlist
     var account: Account?
     
     @State var searchSymbol: String = ""
 //    @State var foundStock: Bool = false
-    @State var stock: Stock?
+    @State var stockSnapshot: StockSnapshot?
     
     @State private var isTradePresented = false
     
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
     
-    init()
+    init(watchlist: Watchlist)
     {
-        self.watchList = WatchList() // this will load the stocks from UserDefaults...
+        self.watchlist = watchlist
     }
     
     init(theAccount: Account)
     {
         account = theAccount
-        self.watchList = WatchList() // this will load the stocks from UserDefaults...
+        self.watchlist = Watchlist() // this will load the stocks from UserDefaults...// need to fix this
         
     }
     
@@ -47,15 +49,13 @@ struct StockSearchView: View {
             }
             .padding()
             
-            if let theStock = stock
+            if let theStockSnapshot = stockSnapshot
             {
-                StockView(stock: theStock)
+                StockView(stock: theStockSnapshot)
                 
                 Button(action: {
-                    watchList.stocks.append(theStock)
-//                  watchList.saveToUserDefaults()
+                    saveToCoreData(snapshot: theStockSnapshot)
                     
-                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Add to WatchList")
                 }
@@ -67,8 +67,8 @@ struct StockSearchView: View {
                         }) {
                             Text("Trade")
                         }
-                        .sheet(isPresented: $isTradePresented, onDismiss: watchList.loadFromUserDefaults){
-                            TradeFormView(account: theAccount, stock: theStock)
+                        .sheet(isPresented: $isTradePresented){
+//                            TradeFormView(account: theAccount, stock: theStock)
                         }
 //                        Button(action: {
 //                            // Remove From Account
@@ -92,28 +92,61 @@ struct StockSearchView: View {
         .padding()
     }
     
+    
+
+    
     func getStockData()
     {
-        stock = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
+        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
         let apiCaller = APICaller.shared
         apiCaller.getAllStockData(searchSymbol: searchSymbol) {
             connectionResult in
             
             switch connectionResult {
                 case .success(let theStock):
-                    stock = theStock
+                    stockSnapshot = theStock
 //                    print("Success and should update stock to \(stock!.displayName)")
                 case .failure(let error):
                     print(error)
-                    stock = nil
+                    stockSnapshot = nil
             }
         }
         
     }
+    
+    func saveToCoreData(snapshot: StockSnapshot)
+    {
+        // save stock to coredata...
+        let newStock = Stock(context: moc)
+        newStock.quoteType = snapshot.quoteType
+        newStock.displayName = snapshot.displayName
+        newStock.currency = snapshot.currency
+        newStock.symbol = snapshot.symbol
+        newStock.language = snapshot.language
+        newStock.ask = snapshot.ask
+        newStock.bid = snapshot.bid
+        newStock.market = snapshot.market
+        newStock.regularMarketDayLow = snapshot.regularMarketDayLow
+        newStock.regularMarketDayHigh = snapshot.regularMarketDayHigh
+        newStock.regularMarketPrice = snapshot.regularMarketPrice
+        newStock.id = snapshot.id
+        newStock.timeStamp = Date()
+        
+        // make relationship between stock and the watchlist
+        newStock.addToWatchlists(watchlist)
+        watchlist.addToStocks(newStock)
+        
+        try? moc.save() // save to CoreData
+        
+        print("watchlist has \(String(describing: watchlist.stocks?.count)) stocks")
+        
+        presentationMode.wrappedValue.dismiss()
+    }
+    
 }
 
 struct StockSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        StockSearchView()
+        StockSearchView(watchlist: Watchlist())
     }
 }

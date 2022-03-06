@@ -50,7 +50,9 @@ struct AddAccountView: View {
                 newAccount.cash = cash
                 newAccount.created = Date()
 
-                try? moc.save()
+                if moc.hasChanges {
+                    try? moc.save()
+                }
                 
                 presentationMode.wrappedValue.dismiss()
                 

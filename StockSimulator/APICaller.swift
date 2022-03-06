@@ -9,7 +9,7 @@ import Foundation
 
 
 enum ConnectionResult {
-   case success(Stock)
+   case success(StockSnapshot)
    case failure(Error)
 }
 
@@ -18,7 +18,8 @@ final class APICaller{
 
     private struct Constants{
 //        static let apiKey = "BEDD33LJaE8HYMSFDX1Sf1lMVbkR3CKU518oCr8x" // stopped working 2/23/2022
-        static let apiKey = "g4Kz4cnymT3w6iiUfowfT8s0Nthdk35adU4tjEq5"
+//        static let apiKey = "g4Kz4cnymT3w6iiUfowfT8s0Nthdk35adU4tjEq5" // stopped working on 3/5/22
+        static let apiKey = "JvcnVegPVxaamusnImc1S1pTgWQoSWnB1zwAIrnP" // started working on 3/5/22
         
 //        static let assetsEndpoint = "https://rest-sandbox.coinapi.io/v1asserts/"
 //        static let assetsEndpoint = "https://rest-sandbox.coinapi.io/v1/assets/"
@@ -59,7 +60,7 @@ final class APICaller{
                     do {
                         let json = try JSONSerialization.data(withJSONObject: investmentResults)
                         let decoder = JSONDecoder()
-                        let investmentArray = try decoder.decode([Stock].self, from: json)
+                        let investmentArray = try decoder.decode([StockSnapshot].self, from: json)
                         print(investmentArray)
                         if investmentArray.count > 0
                         {

@@ -18,9 +18,6 @@ struct AccountsView: View {
 
     @State var isAddAccountPresented = false
     
-    @State var showingDeleteAlert = false
-    
-    @State var selectedAccount = Account()
     
 //    init()
 //    {
@@ -60,10 +57,6 @@ struct AccountsView: View {
             .navigationTitle("Accounts")
 
         }
-        .onAppear(perform: {
-            print("onAppearCalled from AccountsView")
-            loadAccountsFromUserDefaults()
-        })
         .navigationViewStyle(StackNavigationViewStyle())
         
     }

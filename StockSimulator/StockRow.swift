@@ -14,10 +14,10 @@ struct StockRow: View {
     var body: some View {
         HStack (alignment: .firstTextBaseline){
             VStack(alignment: .leading){
-                Text(stock.symbol)
+                Text(stock.symbol ?? "Unknown")
                     .font(.title)
                     .fontWeight(.bold)
-                Text(stock.displayName)
+                Text(stock.displayName ?? "Unknown")
                     .font(.body)
                     .foregroundColor(.secondary)
             }

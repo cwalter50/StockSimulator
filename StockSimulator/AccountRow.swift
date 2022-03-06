@@ -13,7 +13,7 @@ struct AccountRow: View {
     
     var body: some View {
         HStack (alignment: .lastTextBaseline){
-            Text(account.name ?? "NoName")
+            Text(account.wrappedName)
                 .font(.title)
                 .fontWeight(.bold)
             Spacer()

@@ -29,7 +29,7 @@ struct MainView: View {
                     Text("Accounts")
                 }
          
-            WatchListView()
+            WatchlistsView()
 //                .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
                     Image(systemName: "video.circle.fill")

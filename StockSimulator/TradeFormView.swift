@@ -40,7 +40,7 @@ struct TradeFormView: View {
             }
             Section(header: Text("STOCK INFO"))
             {
-                StockView(stock: stock)
+//                StockView(stock: stock)
             }
             Section(header: Text("TRADE INFO"))
             {
