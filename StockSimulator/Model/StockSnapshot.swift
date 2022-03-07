@@ -52,7 +52,7 @@ struct StockSnapshot: Codable, Identifiable
         }
         
         
-        displayName = try values.decode(String.self, forKey: .displayName)
+//        displayName = try values.decode(String.self, forKey: .displayName)
         currency = try values.decode(String.self, forKey: .currency)
         symbol = try values.decode(String.self, forKey: .symbol)
         language = try values.decode(String.self, forKey: .language)

@@ -21,8 +21,6 @@ struct WatchlistView: View {
     
     @FetchRequest var stocks: FetchedResults<Stock> // stocks need load in init, because FetchRequest requires a predicate with the variable watchlist
     
-    
-    
     init (watchlist: Watchlist)
     {
         self.watchlist = watchlist
@@ -33,7 +31,6 @@ struct WatchlistView: View {
 
     var body: some View {
         VStack {
-            Text(watchlist.name ?? "NoName")
             List {
 
                 ForEach(stocks) { stock in
@@ -50,29 +47,64 @@ struct WatchlistView: View {
                     }) {
                         Image(systemName: "magnifyingglass")
                     }
-                    .sheet(isPresented: $isSearchPresented){
+                    .sheet(isPresented: $isSearchPresented, onDismiss: loadCurrentStockInfo) {
                         StockSearchView(watchlist: watchlist)
                     }
-
                 }
                 ToolbarItem {
                     EditButton()
                 }
             }
             .navigationTitle("\(watchlist.name ?? "Watchlist")")
+            .onAppear(perform: loadCurrentStockInfo)
         }
-//        }
-//        .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    func loadCurrentStockInfo()
+    {
+        print("onAppear called")
+        var searchString = ""
+        for s in stocks
+        {
+            searchString += s.wrappedSymbol+","
+        }
         
+        let apiCaller = APICaller.shared
+        apiCaller.getAllStockData(searchSymbol: searchString) {
+            connectionResult in
+            
+            switch connectionResult {
+                case .success(let theStocks):
+                    // link the stocks to the current stock prices, update the values,
+                    for snapshot in theStocks
+                    {
+                        if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
+                            stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
+                            var rand = Int.random(in: 1...100)
+                            stockCoreData.displayName = "Pear\(rand)"
+                            print("updated values for \(stockCoreData.wrappedSymbol)")
+                        }
+                    }
+                    try? moc.save()
+                    
+
+                case .failure(let error):
+                    print(error)
+
+            }
+        }
         
+       
     }
     
     func delete(at offsets: IndexSet) {
-//        watchList.stocks.remove(atOffsets: offsets)
-//        watchList.saveToUserDefaults()
-//        watchList.saveToUserDefaults()
+        
+        for index in offsets {
+            let stock = stocks[index]
+            moc.delete(stock)
+        }
+        try? moc.save()
     }
-    
     
 }
 

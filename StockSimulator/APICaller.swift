@@ -9,8 +9,9 @@ import Foundation
 
 
 enum ConnectionResult {
-   case success(StockSnapshot)
-   case failure(Error)
+    case success([StockSnapshot])
+//    case success([StockSnapshot])
+    case failure(Error)
 }
 
 final class APICaller{
@@ -36,6 +37,7 @@ final class APICaller{
     private init() {}
     
 
+    // this will get stock snapshots for all or multiple stocks... format needs to be SYMBOLA,SYMBOLB,SYMBOLC,... 
 //    public func getAllStockData(searchSymbol: String, completion: @escaping (Result<Stock, Error>) -> Void){
     public func getAllStockData(searchSymbol: String, completion: @escaping (ConnectionResult) -> Void){
         guard let url = URL(string: Constants.urlString + searchSymbol.uppercased()) else {
@@ -62,11 +64,13 @@ final class APICaller{
                         let decoder = JSONDecoder()
                         let investmentArray = try decoder.decode([StockSnapshot].self, from: json)
                         print(investmentArray)
-                        if investmentArray.count > 0
-                        {
-                            let stock = investmentArray[0]
-                            completion(.success(stock))
-                        }
+                        completion(.success(investmentArray))
+
+//                        if investmentArray.count > 0
+//                        {
+//                            let stock = investmentArray[0]
+//                            completion(.success(stock))
+//                        }
 
                     } catch {
                         print(error)
@@ -83,6 +87,8 @@ final class APICaller{
         }
         task.resume()
     }
+    
+    
 }
 
 

@@ -16,7 +16,7 @@ struct StockSearchView: View {
     
     @State var searchSymbol: String = ""
 //    @State var foundStock: Bool = false
-    @State var stockSnapshot: StockSnapshot?
+    @State var stockSnapshot: [StockSnapshot] = []
     
     @State private var isTradePresented = false
     
@@ -26,13 +26,14 @@ struct StockSearchView: View {
     init(watchlist: Watchlist)
     {
         self.watchlist = watchlist
+//        stockSnapshot = []
     }
     
     init(theAccount: Account)
     {
         account = theAccount
         self.watchlist = Watchlist() // this will load the stocks from UserDefaults...// need to fix this
-        
+//        stockSnapshot = []
     }
     
     var body: some View {
@@ -49,16 +50,29 @@ struct StockSearchView: View {
             }
             .padding()
             
-            if let theStockSnapshot = stockSnapshot
-            {
-                StockView(stock: theStockSnapshot)
-                
-                Button(action: {
-                    saveToCoreData(snapshot: theStockSnapshot)
-                    
-                }) {
-                    Text("Add to WatchList")
+//            if let theStockSnapshot = stockSnapshot
+//            {
+                List {
+                    ForEach(stockSnapshot)
+                    {
+                        stock in
+                        StockView(stock: stock)
+                        Button(action: {
+                            saveToCoreData(snapshot: stock)
+                            
+                        }) {
+                            Text("Add to WatchList")
+                        }
+                    }
                 }
+//                StockView(stock: theStockSnapshot)
+//
+//                Button(action: {
+//                    saveToCoreData(snapshot: theStockSnapshot)
+//
+//                }) {
+//                    Text("Add to WatchList")
+//                }
                 if let theAccount = account
                 {
 //                    HStack {
@@ -83,10 +97,10 @@ struct StockSearchView: View {
 //                    }
                 }
 
-            }
-            else {
-                Spacer()
-            }
+//            }
+//            else {
+//                Spacer()
+//            }
             Spacer()
         }
         .padding()
@@ -97,18 +111,24 @@ struct StockSearchView: View {
     
     func getStockData()
     {
-        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
+        stockSnapshot = []
+//        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
+        
+        // remove all spaces from search symbol
+        
+        searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
         let apiCaller = APICaller.shared
         apiCaller.getAllStockData(searchSymbol: searchSymbol) {
             connectionResult in
             
             switch connectionResult {
-                case .success(let theStock):
-                    stockSnapshot = theStock
+                case .success(let theStocks):
+                    stockSnapshot = theStocks
 //                    print("Success and should update stock to \(stock!.displayName)")
                 case .failure(let error):
                     print(error)
-                    stockSnapshot = nil
+                    stockSnapshot = []
+//                    stockSnapshot = nil
             }
         }
         
@@ -118,28 +138,16 @@ struct StockSearchView: View {
     {
         // save stock to coredata...
         let newStock = Stock(context: moc)
-        newStock.quoteType = snapshot.quoteType
-        newStock.displayName = snapshot.displayName
-        newStock.currency = snapshot.currency
-        newStock.symbol = snapshot.symbol
-        newStock.language = snapshot.language
-        newStock.ask = snapshot.ask
-        newStock.bid = snapshot.bid
-        newStock.market = snapshot.market
-        newStock.regularMarketDayLow = snapshot.regularMarketDayLow
-        newStock.regularMarketDayHigh = snapshot.regularMarketDayHigh
-        newStock.regularMarketPrice = snapshot.regularMarketPrice
-        newStock.id = snapshot.id
-        newStock.timeStamp = Date()
-        
+        newStock.updateValuesFromStockSnapshot(snapshot: snapshot)
+
         // make relationship between stock and the watchlist
         newStock.addToWatchlists(watchlist)
         watchlist.addToStocks(newStock)
-        
+
         try? moc.save() // save to CoreData
-        
+
         print("watchlist has \(String(describing: watchlist.stocks?.count)) stocks")
-        
+
         presentationMode.wrappedValue.dismiss()
     }
     

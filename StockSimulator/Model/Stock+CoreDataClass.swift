@@ -13,6 +13,7 @@ import SwiftUI
 
 public class Stock: NSManagedObject {
     
+    
     // This is used to make up sample data to test...
 //    init()
 //    {

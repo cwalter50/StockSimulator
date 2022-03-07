@@ -38,6 +38,23 @@ extension Stock {
     var wrappedDisplayName: String {
         displayName ?? "Unknown"
     }
+    
+    func updateValuesFromStockSnapshot(snapshot: StockSnapshot)
+    {
+        self.quoteType = snapshot.quoteType
+        self.displayName = snapshot.displayName
+        self.currency = snapshot.currency
+        self.symbol = snapshot.symbol
+        self.language = snapshot.language
+        self.ask = snapshot.ask
+        self.bid = snapshot.bid
+        self.market = snapshot.market
+        self.regularMarketDayLow = snapshot.regularMarketDayLow
+        self.regularMarketDayHigh = snapshot.regularMarketDayHigh
+        self.regularMarketPrice = snapshot.regularMarketPrice
+        self.id = snapshot.id
+        self.timeStamp = Date()
+    }
 
 }
 
