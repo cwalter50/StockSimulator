@@ -2,7 +2,7 @@
 //  Stock+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 3/4/22.
+//  Created by Christopher Walter on 3/12/22.
 //
 //
 
@@ -30,7 +30,8 @@ extension Stock {
     @NSManaged public var symbol: String?
     @NSManaged public var timeStamp: Date?
     @NSManaged public var watchlists: NSSet?
-    
+    @NSManaged public var transactions: NSSet?
+
     var wrappedSymbol: String {
         symbol ?? "Unknown"
     }
@@ -55,7 +56,6 @@ extension Stock {
         self.id = snapshot.id
         self.timeStamp = Date()
     }
-
 }
 
 // MARK: Generated accessors for watchlists
@@ -72,6 +72,23 @@ extension Stock {
 
     @objc(removeWatchlists:)
     @NSManaged public func removeFromWatchlists(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for transactions
+extension Stock {
+
+    @objc(addTransactionsObject:)
+    @NSManaged public func addToTransactions(_ value: Transaction)
+
+    @objc(removeTransactionsObject:)
+    @NSManaged public func removeFromTransactions(_ value: Transaction)
+
+    @objc(addTransactions:)
+    @NSManaged public func addToTransactions(_ values: NSSet)
+
+    @objc(removeTransactions:)
+    @NSManaged public func removeFromTransactions(_ values: NSSet)
 
 }
 

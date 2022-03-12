@@ -2,7 +2,7 @@
 //  Account+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 3/3/22.
+//  Created by Christopher Walter on 3/12/22.
 //
 //
 
@@ -16,11 +16,12 @@ extension Account {
         return NSFetchRequest<Account>(entityName: "Account")
     }
 
+    @NSManaged public var cash: Double
+    @NSManaged public var created: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var name: String?
-    @NSManaged public var cash: Double
     @NSManaged public var startingValue: Double
-    @NSManaged public var created: Date?
+    @NSManaged public var transactions: NSSet?
     
     var wrappedName: String {
         name ?? "No Name"
@@ -51,6 +52,24 @@ extension Account {
             return String(format: "-%.1f", growth)
         }
     }
+
+
+}
+
+// MARK: Generated accessors for transactions
+extension Account {
+
+    @objc(addTransactionsObject:)
+    @NSManaged public func addToTransactions(_ value: Transaction)
+
+    @objc(removeTransactionsObject:)
+    @NSManaged public func removeFromTransactions(_ value: Transaction)
+
+    @objc(addTransactions:)
+    @NSManaged public func addToTransactions(_ values: NSSet)
+
+    @objc(removeTransactions:)
+    @NSManaged public func removeFromTransactions(_ values: NSSet)
 
 }
 

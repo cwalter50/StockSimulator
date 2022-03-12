@@ -8,15 +8,23 @@
 import SwiftUI
 import Combine
 
+
+
 struct TradeFormView: View {
     
+    @Environment(\.managedObjectContext) var moc // CoreData
+    
     var account: Account
-    var stock: Stock
+    var stockSnapshot: StockSnapshot
     
     @State var tradeType: String = "BUY" // this should be BUY or SELL
     var tradeOptions = ["BUY", "SELL"]
     
     @State var numShares: String = ""
+    
+    @State var displayAlert = false
+    @State var alertTitle = ""
+    @State var alertMessage = ""
     
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
@@ -25,22 +33,22 @@ struct TradeFormView: View {
     {
         Form {
             Section(header: Text("ACCOUNT INFO")) {
-//                VStack(alignment: .leading) {
-//                    Text(account.name)
-//                        .font(.title)
-//                        .fontWeight(.bold)
-//                    HStack (alignment: .firstTextBaseline){
-//                        Text("Available Cash: ")
-//                        Spacer()
-//                        Text(String(format: "$%.2f", account.cash))
-//                    }
-//                    .font(.headline)
-////                    .padding([.vertical])
-//                }
+                VStack(alignment: .leading) {
+                    Text(account.wrappedName)
+                        .font(.title)
+                        .fontWeight(.bold)
+                    HStack (alignment: .firstTextBaseline){
+                        Text("Available Cash: ")
+                        Spacer()
+                        Text(String(format: "$%.2f", account.cash))
+                    }
+                    .font(.headline)
+//                    .padding([.vertical])
+                }
             }
             Section(header: Text("STOCK INFO"))
             {
-//                StockView(stock: stock)
+                StockView(stockSnapshot: stockSnapshot)
             }
             Section(header: Text("TRADE INFO"))
             {
@@ -74,9 +82,11 @@ struct TradeFormView: View {
                         .font(.title)
                         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
                 }
-                
-
-                
+            }
+            .alert(isPresented: $displayAlert) {
+                Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: Alert.Button.default(Text("OK")){
+                    // dismiss the page if the alert was a success...
+                })
             }
             
         }
@@ -93,54 +103,71 @@ struct TradeFormView: View {
     
     func executeTrade()
     {
-//        if tradeType == "BUY"
-//        {
-//            if let numSharesNum = Double(numShares)
-//            {
-//                let result = account.buyAsset(numShares: numSharesNum, stock: stock)
-//                if result == true
-//                {
-//                    print("successfully bought \(numSharesNum) \(stock.symbol) for \(stock.regularMarketPrice)")
-//                }
-//                else
-//                {
-//                    print("unable to buy stock.")
-//                }
-//            }
-//            
-//        }
-//        else if tradeType == "SELL"
-//        {
-//            if let numSharesNum = Double(numShares)
-//            {
-//                let result = account.sellAsset(numShares: numSharesNum, stock: stock)
-//                if result == true
-//                {
-//                    print("successfully sold \(numSharesNum) \(stock.symbol) for \(stock.regularMarketPrice)")
-//                }
-//                else
-//                {
-//                    print("unable to sell stock.")
-//                }
-//            }
-//        }
+        if tradeType == "BUY"
+        {
+            if let numSharesNum = Double(numShares)
+            {
+                // check if you can afford the trade first...
+                if canAffordTrade()
+                {
+                    let newTransaction = Transaction(context: moc)
+                    newTransaction.account = account
+                    newTransaction.id = UUID()
+                    newTransaction.timeStamp = Date()
+                    newTransaction.purchasePrice = stockSnapshot.regularMarketPrice
+                    
+                    let newStock = Stock(context: moc)
+                    newStock.updateValuesFromStockSnapshot(snapshot: stockSnapshot)
+                    
+                    newTransaction.stock = newStock
+                    newTransaction.account = account
+                    
+                    account.addToTransactions(newTransaction) // might not need this.
+                    
+                    try? moc.save() // save to CoreData
+                    print("transaction has been added to account")
+                    
+                    alertMessage = "Successfully bought \(numSharesNum) shares of \(stockSnapshot.symbol)"
+                    alertTitle = "Success"
+                    displayAlert.toggle()
+                    
+                }
+                else {
+                    alertTitle = "Error"
+                    alertMessage = "You do not have enough cash to make the transaction"
+                    displayAlert.toggle()
+                }
+            }
+            
+        }
+
+    }
+    
+    func canAffordTrade() -> Bool
+    {
+        if let numSharesNumber = Double(numShares)
+        {
+            return account.cash > stockSnapshot.regularMarketPrice * numSharesNumber
+        }
+        return false
     }
     
     func calculateTradePrice() -> String
     {
         if let numSharesNumber = Double(numShares) {
-            
-            let num = stock.regularMarketPrice * numSharesNumber
+
+            let num = stockSnapshot.regularMarketPrice * numSharesNumber
             return String(format: "Cost Basis: $%.2f", num)
         }
         else {
             return "Cost Basis: $0.00"
         }
+       
     }
 }
 
 struct TradeFormView_Previews: PreviewProvider {
     static var previews: some View {
-        TradeFormView(account: Account(), stock: Stock())
+        TradeFormView(account: Account(), stockSnapshot: StockSnapshot())
     }
 }

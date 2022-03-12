@@ -10,23 +10,23 @@ import SwiftUI
 struct StockView: View {
     
 
-    @State var stock: StockSnapshot
+    @State var stockSnapshot: StockSnapshot
     
     
     var body: some View {
         VStack {
             HStack (alignment: .firstTextBaseline){
                 VStack(alignment: .leading){
-                    Text(stock.symbol)
+                    Text(stockSnapshot.symbol)
                         .font(.title)
                         .fontWeight(.bold)
-                    Text(stock.displayName)
+                    Text(stockSnapshot.displayName)
                         .font(.body)
                         .foregroundColor(.secondary)
                         
                 }
                 Spacer()
-                Text(String(format: "$%.2f", stock.regularMarketPrice))
+                Text(String(format: "$%.2f", stockSnapshot.regularMarketPrice))
                     .font(.title)
             }
         }
@@ -41,7 +41,7 @@ struct StockView: View {
 
 struct StockView_Previews: PreviewProvider {
     static var previews: some View {
-        StockView(stock: StockSnapshot())
+        StockView(stockSnapshot: StockSnapshot())
         
     }
 }

@@ -8,16 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		8368B3D527D05B30008AF135 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3D427D05B30008AF135 /* DataController.swift */; };
-		8368B3E227D12215008AF135 /* Account+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3E027D12215008AF135 /* Account+CoreDataClass.swift */; };
-		8368B3E327D12215008AF135 /* Account+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3E127D12215008AF135 /* Account+CoreDataProperties.swift */; };
 		8368B3F527D2B936008AF135 /* StockSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F427D2B936008AF135 /* StockSnapshot.swift */; };
 		8368B3F727D2BB06008AF135 /* AddWatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */; };
 		8368B3FB27D2BD1E008AF135 /* WatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3FA27D2BD1E008AF135 /* WatchlistView.swift */; };
 		8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3FC27D2BD90008AF135 /* WatchlistsView.swift */; };
 		8368B40627D2C57C008AF135 /* Watchlist+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B40227D2C57C008AF135 /* Watchlist+CoreDataClass.swift */; };
 		8368B40727D2C57C008AF135 /* Watchlist+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B40327D2C57C008AF135 /* Watchlist+CoreDataProperties.swift */; };
-		8368B40827D2C57C008AF135 /* Stock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B40427D2C57C008AF135 /* Stock+CoreDataClass.swift */; };
-		8368B40927D2C57C008AF135 /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B40527D2C57C008AF135 /* Stock+CoreDataProperties.swift */; };
+		839E979827DCF9F40017C9AE /* Stock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E979427DCF9F40017C9AE /* Stock+CoreDataClass.swift */; };
+		839E979927DCF9F40017C9AE /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E979527DCF9F40017C9AE /* Stock+CoreDataProperties.swift */; };
+		839E97A027DD02340017C9AE /* Transaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E979C27DD02340017C9AE /* Transaction+CoreDataClass.swift */; };
+		839E97A127DD02340017C9AE /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E979D27DD02340017C9AE /* Transaction+CoreDataProperties.swift */; };
+		839E97A227DD02340017C9AE /* Account+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E979E27DD02340017C9AE /* Account+CoreDataClass.swift */; };
+		839E97A327DD02340017C9AE /* Account+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E979F27DD02340017C9AE /* Account+CoreDataProperties.swift */; };
 		83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */; };
 		83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD2227A5FEF800F3746B /* ContentView.swift */; };
 		83D3FD2527A5FEF800F3746B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83D3FD2427A5FEF800F3746B /* Assets.xcassets */; };
@@ -63,16 +65,18 @@
 
 /* Begin PBXFileReference section */
 		8368B3D427D05B30008AF135 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
-		8368B3E027D12215008AF135 /* Account+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8368B3E127D12215008AF135 /* Account+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8368B3F427D2B936008AF135 /* StockSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSnapshot.swift; sourceTree = "<group>"; };
 		8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchlistView.swift; sourceTree = "<group>"; };
 		8368B3FA27D2BD1E008AF135 /* WatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistView.swift; sourceTree = "<group>"; };
 		8368B3FC27D2BD90008AF135 /* WatchlistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistsView.swift; sourceTree = "<group>"; };
 		8368B40227D2C57C008AF135 /* Watchlist+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Watchlist+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8368B40327D2C57C008AF135 /* Watchlist+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Watchlist+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8368B40427D2C57C008AF135 /* Stock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8368B40527D2C57C008AF135 /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		839E979427DCF9F40017C9AE /* Stock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataClass.swift"; sourceTree = "<group>"; };
+		839E979527DCF9F40017C9AE /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		839E979C27DD02340017C9AE /* Transaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataClass.swift"; sourceTree = "<group>"; };
+		839E979D27DD02340017C9AE /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		839E979E27DD02340017C9AE /* Account+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataClass.swift"; sourceTree = "<group>"; };
+		839E979F27DD02340017C9AE /* Account+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83D3FD1D27A5FEF800F3746B /* StockSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSimulatorApp.swift; sourceTree = "<group>"; };
 		83D3FD2227A5FEF800F3746B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -203,12 +207,14 @@
 		83D3FD5727A60FCB00F3746B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8368B3E027D12215008AF135 /* Account+CoreDataClass.swift */,
-				8368B3E127D12215008AF135 /* Account+CoreDataProperties.swift */,
 				8368B40227D2C57C008AF135 /* Watchlist+CoreDataClass.swift */,
 				8368B40327D2C57C008AF135 /* Watchlist+CoreDataProperties.swift */,
-				8368B40427D2C57C008AF135 /* Stock+CoreDataClass.swift */,
-				8368B40527D2C57C008AF135 /* Stock+CoreDataProperties.swift */,
+				839E979427DCF9F40017C9AE /* Stock+CoreDataClass.swift */,
+				839E979527DCF9F40017C9AE /* Stock+CoreDataProperties.swift */,
+				839E979C27DD02340017C9AE /* Transaction+CoreDataClass.swift */,
+				839E979D27DD02340017C9AE /* Transaction+CoreDataProperties.swift */,
+				839E979E27DD02340017C9AE /* Account+CoreDataClass.swift */,
+				839E979F27DD02340017C9AE /* Account+CoreDataProperties.swift */,
 				83D3FD4F27A60D4600F3746B /* Stock.swift */,
 				8368B3F427D2B936008AF135 /* StockSnapshot.swift */,
 				83F9F71427CAAB2600C14D87 /* Asset.swift */,
@@ -349,26 +355,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				83D3FD5927A6101300F3746B /* StockView.swift in Sources */,
-				8368B3E227D12215008AF135 /* Account+CoreDataClass.swift in Sources */,
-				8368B3E327D12215008AF135 /* Account+CoreDataProperties.swift in Sources */,
 				83F9F71927CAED9900C14D87 /* TradeFormView.swift in Sources */,
+				839E97A227DD02340017C9AE /* Account+CoreDataClass.swift in Sources */,
 				83D3FD2A27A5FEF800F3746B /* Persistence.swift in Sources */,
-				8368B40827D2C57C008AF135 /* Stock+CoreDataClass.swift in Sources */,
+				839E979827DCF9F40017C9AE /* Stock+CoreDataClass.swift in Sources */,
 				83FA26DE27AA16CF008DA2BC /* Account.swift in Sources */,
+				839E97A327DD02340017C9AE /* Account+CoreDataProperties.swift in Sources */,
 				83FA26E227AA1F02008DA2BC /* WatchList.swift in Sources */,
 				8368B3FB27D2BD1E008AF135 /* WatchlistView.swift in Sources */,
 				8368B40627D2C57C008AF135 /* Watchlist+CoreDataClass.swift in Sources */,
+				839E97A027DD02340017C9AE /* Transaction+CoreDataClass.swift in Sources */,
 				83F9F71327CAAA4100C14D87 /* AccountRow.swift in Sources */,
 				8368B3D527D05B30008AF135 /* DataController.swift in Sources */,
 				83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */,
 				8368B3F727D2BB06008AF135 /* AddWatchlistView.swift in Sources */,
-				8368B40927D2C57C008AF135 /* Stock+CoreDataProperties.swift in Sources */,
+				839E979927DCF9F40017C9AE /* Stock+CoreDataProperties.swift in Sources */,
 				8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */,
 				83FA270D27BDF46D008DA2BC /* AddAccountView.swift in Sources */,
 				8368B40727D2C57C008AF135 /* Watchlist+CoreDataProperties.swift in Sources */,
 				83F9F71527CAAB2600C14D87 /* Asset.swift in Sources */,
 				83FA26E427B82461008DA2BC /* StockRow.swift in Sources */,
 				8368B3F527D2B936008AF135 /* StockSnapshot.swift in Sources */,
+				839E97A127DD02340017C9AE /* Transaction+CoreDataProperties.swift in Sources */,
 				83FA270B27BDF424008DA2BC /* AccountsView.swift in Sources */,
 				83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */,
 				83FA26E727B85F38008DA2BC /* StockSearchView.swift in Sources */,

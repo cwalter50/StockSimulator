@@ -20,7 +20,8 @@ final class APICaller{
     private struct Constants{
 //        static let apiKey = "BEDD33LJaE8HYMSFDX1Sf1lMVbkR3CKU518oCr8x" // stopped working 2/23/2022
 //        static let apiKey = "g4Kz4cnymT3w6iiUfowfT8s0Nthdk35adU4tjEq5" // stopped working on 3/5/22
-        static let apiKey = "JvcnVegPVxaamusnImc1S1pTgWQoSWnB1zwAIrnP" // started working on 3/5/22
+//        static let apiKey = "JvcnVegPVxaamusnImc1S1pTgWQoSWnB1zwAIrnP" // started working on 3/5/22. Stopped working on 3/12/22
+        static let apiKey = "u0oXimhO5g6AIR9DIy85D80DPTAtPQP95l9FiAkk" // started working on 3/12/22
         
 //        static let assetsEndpoint = "https://rest-sandbox.coinapi.io/v1asserts/"
 //        static let assetsEndpoint = "https://rest-sandbox.coinapi.io/v1/assets/"
