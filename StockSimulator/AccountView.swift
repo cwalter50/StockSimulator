@@ -21,7 +21,7 @@ struct AccountView: View {
     var body: some View {
         VStack(alignment: .center){
             HStack(alignment: .firstTextBaseline){
-                Text(account.name ?? "NoName")
+                Text(account.wrappedName)
                     .font(.title)
                 Spacer()
 //                Text(String(format: "$%.2f", account.calculateValue()))
@@ -45,11 +45,19 @@ struct AccountView: View {
                 }
             }
             List {
+                HStack(alignment: .center) {
+                    Text("Symbol/Qty")
+                    Spacer()
+                    Text("Total/Price")
+                    Spacer()
+                    Text("Total G/L")
+                }
                 ForEach (account.assets) {
                     asset in
                     AssetRow(asset: asset)
                 }
             }
+            .listStyle(.plain)
             
             
         }

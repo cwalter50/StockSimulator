@@ -15,19 +15,31 @@ struct AssetRow: View{
             HStack (alignment: .firstTextBaseline){
                 VStack(alignment: .leading){
                     Text(asset.stock.wrappedSymbol)
-                        .font(.title)
+                        .font(.title3)
                         .fontWeight(.bold)
-                    Text(asset.stock.wrappedDisplayName)
+                    Text(String(format: "%.2f shares", asset.totalShares))
                         .font(.body)
                         .foregroundColor(.secondary)
                         
                 }
                 Spacer()
-                VStack(alignment: .trailing) {
+                VStack(alignment: .center) {
                     Text(String(format: "$%.2f", asset.totalValue))
-                        .font(.title)
-                    Text(String(format: "%.2f shares", asset.totalShares))
+                        .font(.title3)
+                    Text(String(format: "$%.2f", asset.stock.regularMarketPrice))
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                    
                 }
+                
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Text(String(format: "$%.2f", asset.amountChange))
+                        .font(.title3)
+                    Text(String(format: "%.2f", asset.percentChange)+"%")
+                        .font(.body)
+                }
+                .foregroundColor(asset.percentChange < 0 ? Color.red : Color.green)
                 
             }
         }

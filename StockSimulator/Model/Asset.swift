@@ -40,7 +40,26 @@ class Asset: Identifiable
     }
     
     var totalValue: Double {
-        return totalShares * averagePurchasePrice
+        return totalShares * stock.regularMarketPrice
+    }
+    
+    var costBasis: Double {
+        return averagePurchasePrice * totalShares
+    }
+    
+    var percentChange: Double {
+        
+        if totalValue >= costBasis
+        {
+            return totalValue / costBasis - 1
+        }
+        else {
+            return 1 - totalValue / costBasis
+        }
+    }
+    
+    var amountChange: Double {
+        return totalValue - costBasis
     }
     
     init(transactions: [Transaction], stock: Stock)

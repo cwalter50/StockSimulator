@@ -99,15 +99,8 @@ struct TradeFormView: View {
             }
             
         }
+    }
 
-        
-    }
-    
-    
-    func saveAllAccountsToUserDefaults()
-    {
-        
-    }
     
     
     func executeTrade()

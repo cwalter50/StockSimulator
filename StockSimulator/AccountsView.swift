@@ -19,14 +19,6 @@ struct AccountsView: View {
     @State var isAddAccountPresented = false
     
     
-//    init()
-//    {
-//        // load accounts from userDefaults
-////        accounts = [Account]()
-//        loadAccountsFromUserDefaults()
-//
-//    }
-    
     var body: some View {
         NavigationView {
             List {
@@ -46,7 +38,7 @@ struct AccountsView: View {
                     }) {
                         Image(systemName: "plus")
                     }
-                    .sheet(isPresented: $isAddAccountPresented, onDismiss: loadAccountsFromUserDefaults) {
+                    .sheet(isPresented: $isAddAccountPresented) {
                         AddAccountView(name: "", startingAmount: "")
                     }
                 }
@@ -74,39 +66,6 @@ struct AccountsView: View {
         try? moc.save()
         
     }
-    
-    func saveToUserDefaults()
-    {
-//        let encoder = JSONEncoder()
-//        if let encoded = try? encoder.encode(accounts) {
-//            UserDefaults.standard.set(encoded, forKey: "accounts")
-//            print("saving accounts to UserDefaults: \(accounts.count) accounts")
-//        }
-//        else {
-//            print("failed to save accounts to user defaults")
-//        }
-    }
-    
-    
-    func loadAccountsFromUserDefaults ()
-    {
-//        // load accounts from userDefaults
-//        accounts = [Account]()
-//        if let theAccounts = UserDefaults.standard.data(forKey: "accounts")
-//        {
-//            let decoder = JSONDecoder()
-//            if let decoded = try? decoder.decode([Account].self, from: theAccounts) {
-//                accounts = decoded
-//                print("loaded Accounts from userdefaults in accounts view")
-//                print("found: \(accounts.count) accounts")
-////                return
-//            }
-//        }
-//        else {
-//            print("No record of accounts in user defaults")
-//        }
-    }
-    
     
 }
 
