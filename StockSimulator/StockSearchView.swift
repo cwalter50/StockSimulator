@@ -83,42 +83,7 @@ struct StockSearchView: View {
                         
                     }
                 }
-//                StockView(stock: theStockSnapshot)
-//
-//                Button(action: {
-//                    saveToCoreData(snapshot: theStockSnapshot)
-//
-//                }) {
-//                    Text("Add to WatchList")
-//                }
-//                if let theAccount = account
-//                {
-////                    HStack {
-//                        Button(action: {
-//                            isTradePresented.toggle()
-//                        }) {
-//                            Text("Trade")
-//                        }
-//                        .sheet(isPresented: $isTradePresented){
-////                            TradeFormView(account: theAccount, stock: theStock)
-//                        }
-////                        Button(action: {
-////                            // Remove From Account
-////                        }) {
-////                            Text("SELL")
-////                        }
-////                        Button(action: {
-////                            // Add to Account
-////                        }) {
-////                            Text("BUY")
-////                        }
-////                    }
-//                }
 
-//            }
-//            else {
-//                Spacer()
-//            }
             Spacer()
         }
         .padding()

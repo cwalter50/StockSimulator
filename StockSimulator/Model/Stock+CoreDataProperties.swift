@@ -32,6 +32,9 @@ extension Stock {
     @NSManaged public var watchlists: NSSet?
     @NSManaged public var transactions: NSSet?
 
+}
+
+extension Stock {
     var wrappedSymbol: String {
         symbol ?? "Unknown"
     }
@@ -56,7 +59,9 @@ extension Stock {
         self.id = snapshot.id
         self.timeStamp = Date()
     }
+
 }
+
 
 // MARK: Generated accessors for watchlists
 extension Stock {

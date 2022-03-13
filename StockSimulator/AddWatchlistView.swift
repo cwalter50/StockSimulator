@@ -37,7 +37,6 @@ struct AddWatchlistView: View {
                 if moc.hasChanges {
                     try? moc.save()
                 }
-                
                 presentationMode.wrappedValue.dismiss()
                 
             }){

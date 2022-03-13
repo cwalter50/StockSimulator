@@ -7,6 +7,123 @@
 
 import Foundation
 
+
+class Asset: Identifiable
+{
+    var transactions: [Transaction]
+    var id: UUID
+    
+    var stock: Stock
+    
+    var totalShares: Double {
+        
+        var total = 0.0
+        for transaction in transactions {
+            if transaction.isClosed == false
+            {
+                total += transaction.numShares
+            }
+        }
+        return total
+    }
+    
+    var averagePurchasePrice: Double {
+        
+        var sum = 0.0
+        for transaction in transactions {
+            if transaction.isClosed == false
+            {
+                sum += transaction.costBasis
+            }
+        }
+        return sum / totalShares
+    }
+    
+    var totalValue: Double {
+        return totalShares * averagePurchasePrice
+    }
+    
+    init(transactions: [Transaction], stock: Stock)
+    {
+        self.id = UUID()
+        self.transactions = transactions
+        self.stock = stock
+        
+    }
+    
+    
+}
+
+//class Asset: Identifiable
+//{
+//    var id: UUID // satisfies Identifiable and helps with lists
+//    var transactions: [Transaction]
+//    var stock : Stock
+//    var totalShares: Double
+//    var averagePurchasePrice: Double
+//    
+//    init(stock: Stock)
+//    {
+//        transactions = []
+//        self.stock = stock
+//        totalShares = 0
+//        averagePurchasePrice = stock.regularMarketPrice
+//        id = UUID()
+//        
+//    }
+//    
+//    init(transactions: [Transaction], stock: Stock)
+//    {
+//        // make sure transactions are in the correct date order...
+//        self.transactions = transactions
+//        
+//        self.stock = stock
+//        self.id = UUID()
+//        self.totalShares = 0
+//        
+//        averagePurchasePrice = 0
+//        
+//        var currentHoldings = [Transaction]()
+//        for transaction in transactions {
+//            if transaction.isBuy == true
+//            {
+//                totalShares += transaction.numShares
+//                currentHoldings.append(transaction)
+//            }
+//            else
+//            {
+//                totalShares -= transaction.numShares
+//                currentHoldings.append(transaction)
+////                totalCostBasis -=
+//                if totalShares <= 0
+//                {
+//                    currentHoldings.removeAll()
+//                }
+//            }
+//        }
+//
+//        averagePurchasePrice = stock.regularMarketPrice
+//        
+//    }
+//    
+//    func addTransaction(transaction : Transaction)
+//    {
+//        transactions.append(transaction)
+//        
+//        var total = 0
+//        for transaction in transactions {
+//            
+//        }
+//        
+//    }
+//    
+//    func calculateData()
+//    {
+//        
+//    }
+//    
+//}
+
 // This is the asset that we are buying and currently hold
 //class Asset: Codable, Identifiable
 //{

@@ -18,9 +18,9 @@ struct AccountRow: View {
                 .fontWeight(.bold)
             Spacer()
             VStack(alignment: .trailing){
-                Text(String(format: "$%.2f", account.calculateValue()))
+                Text(String(format: "$%.2f", account.currentValue))
                     .font(.headline)
-                Text(account.calculatePercentChange())
+                Text(account.percentChange)
                     .font(.body)
                     .foregroundColor(.secondary)
             }

@@ -23,24 +23,57 @@ extension Account {
     @NSManaged public var startingValue: Double
     @NSManaged public var transactions: NSSet?
     
+    
+    var assets: [Asset] {
+        
+        var theAssets = [Asset]()
+        if let theTransactionsSet = transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction]
+        {
+            for t in theTransactions {
+                // see if I already have asset in the assets
+                if let foundAsset = theAssets.first(where: {$0.stock.wrappedSymbol == t.stock?.wrappedSymbol}) {
+                    foundAsset.transactions.append(t)
+                }
+                else {
+                    // make a new asset and add it to theAssets
+                    if let theStock = t.stock {
+                        let newAsset = Asset(transactions: [t], stock: theStock)
+                        theAssets.append(newAsset)
+                    }
+                    
+                }
+            }
+            
+        }
+        
+        return theAssets
+        
+        
+        
+    }
+    
+    
+    
+
+}
+
+extension Account {
     var wrappedName: String {
         name ?? "No Name"
     }
     
-    func calculateValue() -> Double
-    {
+    var currentValue: Double {
         var total = cash
-//        for asset in assets {
-//            total += asset.totalShares * asset.stock.regularMarketPrice
-//        }
-
+        if let theTransactionsSet = self.transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction] {
+            for t in theTransactions {
+                total += t.currentValue
+            }
+            
+        }
         return total
-
     }
     
-    func calculatePercentChange() -> String
-    {
-        let currentValue = calculateValue()
+    var percentChange:String {
         if currentValue >= startingValue
         {
             let growth = (currentValue / startingValue - 1) * 100
@@ -52,9 +85,8 @@ extension Account {
             return String(format: "-%.1f", growth)
         }
     }
-
-
 }
+
 
 // MARK: Generated accessors for transactions
 extension Account {

@@ -15,8 +15,10 @@ struct StockSimulatorApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView(accounts: [])
+            ContentView(accounts: [])
                 .environment(\.managedObjectContext, dataController.container.viewContext)
+//            MainView(accounts: [])
+//                .environment(\.managedObjectContext, dataController.container.viewContext)
 //            StockView()
 //            WatchListView()
 //            ContentView()

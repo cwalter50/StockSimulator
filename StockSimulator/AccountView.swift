@@ -43,18 +43,13 @@ struct AccountView: View {
                 }){
                     StockSearchView(theAccount: account)
                 }
-                
-                
-                
             }
-//            Text("Assests")
-//                .font(.headline)
-//            List {
-//                ForEach (account.assets) {
-//                    asset in
-//                    StockRow(stock: asset.stock)
-//                }
-//            }
+            List {
+                ForEach (account.assets) {
+                    asset in
+                    AssetRow(asset: asset)
+                }
+            }
             
             
         }
