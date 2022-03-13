@@ -62,7 +62,7 @@ struct WatchlistView: View {
     
     func loadCurrentStockInfo()
     {
-        print("onAppear called")
+//        print("onAppear called")
         var searchString = ""
         for s in stocks
         {
@@ -111,7 +111,7 @@ struct WatchlistView: View {
 
 struct WatchlistView_Previews: PreviewProvider {
     static var previews: some View {
-        WatchListView(watchlist: Watchlist())
+        WatchlistView(watchlist: Watchlist())
     }
 }
 

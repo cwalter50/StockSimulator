@@ -39,7 +39,7 @@ struct AssetRow: View{
                     Text(String(format: "%.2f", asset.percentChange)+"%")
                         .font(.body)
                 }
-                .foregroundColor(asset.percentChange < 0 ? Color.red : Color.green)
+                .foregroundColor(asset.amountChange < 0 ? Color.red : Color.green)
                 
             }
         }

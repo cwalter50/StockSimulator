@@ -51,10 +51,10 @@ class Asset: Identifiable
         
         if totalValue >= costBasis
         {
-            return totalValue / costBasis - 1
+            return 100 * (totalValue / costBasis - 1)
         }
         else {
-            return 1 - totalValue / costBasis
+            return 100 * (1 - totalValue / costBasis)
         }
     }
     
