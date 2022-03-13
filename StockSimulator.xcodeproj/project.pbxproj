@@ -13,7 +13,6 @@
 		8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3FC27D2BD90008AF135 /* WatchlistsView.swift */; };
 		8368B40627D2C57C008AF135 /* Watchlist+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B40227D2C57C008AF135 /* Watchlist+CoreDataClass.swift */; };
 		8368B40727D2C57C008AF135 /* Watchlist+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B40327D2C57C008AF135 /* Watchlist+CoreDataProperties.swift */; };
-		839E97A527DD0ED80017C9AE /* WatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97A427DD0ED80017C9AE /* WatchlistView.swift */; };
 		839E97DF27DD87790017C9AE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97DE27DD87790017C9AE /* Extensions.swift */; };
 		839E97E627DD88DC0017C9AE /* Transaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97E027DD88DC0017C9AE /* Transaction+CoreDataClass.swift */; };
 		839E97E727DD88DC0017C9AE /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97E127DD88DC0017C9AE /* Transaction+CoreDataProperties.swift */; };
@@ -22,6 +21,7 @@
 		839E97EA27DD88DC0017C9AE /* Account+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97E427DD88DC0017C9AE /* Account+CoreDataClass.swift */; };
 		839E97EB27DD88DC0017C9AE /* Account+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97E527DD88DC0017C9AE /* Account+CoreDataProperties.swift */; };
 		839E97ED27DD9DC10017C9AE /* AssetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97EC27DD9DC10017C9AE /* AssetRow.swift */; };
+		839E97F127DE75930017C9AE /* WatchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97F027DE75930017C9AE /* WatchListView.swift */; };
 		83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */; };
 		83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD2227A5FEF800F3746B /* ContentView.swift */; };
 		83D3FD2527A5FEF800F3746B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83D3FD2427A5FEF800F3746B /* Assets.xcassets */; };
@@ -71,7 +71,6 @@
 		8368B3FC27D2BD90008AF135 /* WatchlistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistsView.swift; sourceTree = "<group>"; };
 		8368B40227D2C57C008AF135 /* Watchlist+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Watchlist+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8368B40327D2C57C008AF135 /* Watchlist+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Watchlist+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		839E97A427DD0ED80017C9AE /* WatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistView.swift; sourceTree = "<group>"; };
 		839E97DE27DD87790017C9AE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		839E97E027DD88DC0017C9AE /* Transaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataClass.swift"; sourceTree = "<group>"; };
 		839E97E127DD88DC0017C9AE /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		839E97E427DD88DC0017C9AE /* Account+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataClass.swift"; sourceTree = "<group>"; };
 		839E97E527DD88DC0017C9AE /* Account+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		839E97EC27DD9DC10017C9AE /* AssetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRow.swift; sourceTree = "<group>"; };
+		839E97F027DE75930017C9AE /* WatchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListView.swift; sourceTree = "<group>"; };
 		83D3FD1D27A5FEF800F3746B /* StockSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSimulatorApp.swift; sourceTree = "<group>"; };
 		83D3FD2227A5FEF800F3746B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -165,8 +165,8 @@
 				83F9F71627CAB04D00C14D87 /* AccountView.swift */,
 				839E97EC27DD9DC10017C9AE /* AssetRow.swift */,
 				83F9F71827CAED9900C14D87 /* TradeFormView.swift */,
-				839E97A427DD0ED80017C9AE /* WatchlistView.swift */,
 				8368B3FC27D2BD90008AF135 /* WatchlistsView.swift */,
+				839E97F027DE75930017C9AE /* WatchListView.swift */,
 				8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */,
 				83D3FD5827A6101300F3746B /* StockView.swift */,
 				83FA26E627B85F38008DA2BC /* StockSearchView.swift */,
@@ -382,9 +382,9 @@
 				83FA26E727B85F38008DA2BC /* StockSearchView.swift in Sources */,
 				839E97E827DD88DC0017C9AE /* Stock+CoreDataClass.swift in Sources */,
 				83F9F71727CAB04D00C14D87 /* AccountView.swift in Sources */,
+				839E97F127DE75930017C9AE /* WatchListView.swift in Sources */,
 				83D3FD5027A60D4600F3746B /* Stock.swift in Sources */,
 				83D3FD5227A60D5F00F3746B /* StockDaily.swift in Sources */,
-				839E97A527DD0ED80017C9AE /* WatchlistView.swift in Sources */,
 				83D3FD2D27A5FEF800F3746B /* StockSimulator.xcdatamodeld in Sources */,
 				839E97E627DD88DC0017C9AE /* Transaction+CoreDataClass.swift in Sources */,
 				839E97E927DD88DC0017C9AE /* Stock+CoreDataProperties.swift in Sources */,

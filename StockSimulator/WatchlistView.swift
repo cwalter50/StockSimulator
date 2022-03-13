@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-struct WatchlistView: View {
+struct WatchListView: View {
     
     var watchlist: Watchlist
     
@@ -109,9 +109,9 @@ struct WatchlistView: View {
     
 }
 
-struct WatchlistView_Previews: PreviewProvider {
+struct WatchListView_Previews: PreviewProvider {
     static var previews: some View {
-        WatchlistView(watchlist: Watchlist())
+        WatchListView(watchlist: Watchlist())
     }
 }
 

@@ -21,7 +21,7 @@ struct WatchlistsView: View {
             List {
                 ForEach(watchlists) {
                     watchlist in
-                    NavigationLink(destination: WatchlistView(watchlist: watchlist)) {
+                    NavigationLink(destination: WatchListView(watchlist: watchlist)) {
                         Text(watchlist.wrappedName)
                     }
                 }
