@@ -57,14 +57,14 @@ final class APICaller{
                     print("error in getting JSON")
                     return
                 }
-                    print(results)
+//                    print(results)
                 if let quoteResponse = results["quoteResponse"] as? [String:Any], let investmentResults = quoteResponse["result"] as? [[String:Any]] {
                     
                     do {
                         let json = try JSONSerialization.data(withJSONObject: investmentResults)
                         let decoder = JSONDecoder()
                         let investmentArray = try decoder.decode([StockSnapshot].self, from: json)
-                        print(investmentArray)
+//                        print(investmentArray)
                         completion(.success(investmentArray))
 
 //                        if investmentArray.count > 0

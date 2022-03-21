@@ -20,7 +20,6 @@ struct AssetRow: View{
                     Text(String(format: "%.2f shares", asset.totalShares))
                         .font(.body)
                         .foregroundColor(.secondary)
-                        
                 }
                 Spacer()
                 VStack(alignment: .center) {

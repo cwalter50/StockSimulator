@@ -31,6 +31,7 @@ struct AccountsView: View {
                 }
                 .onDelete(perform: delete)
             }
+            .navigationViewStyle(StackNavigationViewStyle())
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {

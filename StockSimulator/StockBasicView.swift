@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StockView: View {
+struct StockBasicView: View {
     
 
     @State var stockSnapshot: StockSnapshot
@@ -39,9 +39,9 @@ struct StockView: View {
 }
 
 
-struct StockView_Previews: PreviewProvider {
+struct StockBasicView_Previews: PreviewProvider {
     static var previews: some View {
-        StockView(stockSnapshot: StockSnapshot())
+        StockBasicView(stockSnapshot: StockSnapshot())
         
     }
 }

@@ -54,7 +54,7 @@ struct TradeFormView: View {
             }
             Section(header: Text("STOCK INFO"))
             {
-                StockView(stockSnapshot: stockSnapshot)
+                StockBasicView(stockSnapshot: stockSnapshot)
             }
             Section(header: Text("TRADE INFO"))
             {
@@ -77,12 +77,12 @@ struct TradeFormView: View {
                             }
                         }
                 }
-                Text(calculateTradePrice())
+                Text(tradeType == "BUY" ? "Cost Basis: " + calculateTradePrice(): "Total Proceeds: " +  calculateTradePrice())
                     .font(.headline)
                 
                 Button(action: {
                     executeTrade()
-                    presentationMode.wrappedValue.dismiss()
+//                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Trade")
                         .font(.title)
@@ -119,8 +119,6 @@ struct TradeFormView: View {
                     newTransaction.buyDate = Date()
                     newTransaction.purchasePrice = stockSnapshot.regularMarketPrice
                     newTransaction.numShares = numSharesNum
-                    newTransaction.costBasis = numSharesNum * stockSnapshot.regularMarketPrice // cost basis is when we buy
-                    newTransaction.totalProceeds = 0 // proceeds are when we sell
                     newTransaction.isClosed = false
                     
                     let newStock = Stock(context: moc)
@@ -157,20 +155,81 @@ struct TradeFormView: View {
                 if let theTransactionsSet = account.transactions, let transactions = Array(theTransactionsSet) as? [Transaction] {
                     let filtered = transactions.filter({$0.stock?.symbol == stockSnapshot.symbol})
                     
-                    if transactions.count > 0 {
+                    if filtered.count > 0 {
                         if let foundStock = transactions[0].stock {
                             let foundAsset = Asset(transactions: filtered, stock: foundStock)
                             
-                            if numSharesNum < foundAsset.totalShares { // we can sell the shares.
-                                // figure out how to sell asset
-                            }
-                            else {
-                                tradeStatus = .error
-                                alertMessage = "Cannot sell: You do not own \(numSharesNum) shares of \(foundStock.wrappedSymbol)"
+                            if numSharesNum == foundAsset.totalShares { // sell everything and close all transactions
+                                for t in filtered {
+                                    t.closeTransaction(sellPrice: stockSnapshot.regularMarketPrice)
+                                    
+                                    account.cash += t.totalProceeds
+                                    print("sold \(t.numShares) of \(foundStock.wrappedDisplayName)")
+                                }
+                                if moc.hasChanges {
+                                    try? moc.save()
+                                    print("Finished selling \(foundStock.wrappedSymbol): \(numSharesNum) total shares sold. and saved to CoreData")
+                                }
+                                alertMessage = "Successfully bought \(numSharesNum) shares of \(stockSnapshot.symbol)"
+                                tradeStatus = .success
                                 displayAlert.toggle()
                                 
                             }
-                        
+                            else if numSharesNum < foundAsset.totalShares { // we can sell the shares.
+                                // figure out how to sell asset. Use FILO. Right now just selling in any order
+                                var numSold = 0.0
+                                for t in filtered {
+                                    if numSold + t.numShares <= numSharesNum {
+                                        // close this transaction. we can sell it all
+                                        t.closeTransaction(sellPrice: foundStock.regularMarketPrice)
+                                        numSold += t.numShares
+                                        account.cash += t.totalProceeds
+                                        print("sold \(t.numShares) of \(foundStock.wrappedDisplayName)")
+                                    }
+                                    else if numSold + t.numShares > numSharesNum {
+                                        // split transaction into 2. 1 that has the number of shares we are trying to sell and 1 thats a new one with the remaining shares that arent sold. delete the original transaction
+                                        let newTransactionOpen = Transaction(context: moc)
+                                        newTransactionOpen.copyTransaction(from: t)
+                                        
+                                        let newTranactionClose = Transaction(context: moc)
+                                        newTranactionClose.copyTransaction(from: t)
+                                        
+                                        newTranactionClose.numShares = numSharesNum - numSold
+                                        
+                                        newTranactionClose.closeTransaction(sellPrice: stockSnapshot.regularMarketPrice)
+                                        
+                                        newTransactionOpen.numShares -= newTranactionClose.numShares
+
+                                        account.addToTransactions(newTranactionClose)
+                                        account.addToTransactions(newTransactionOpen)
+                                        
+                                        account.removeFromTransactions(t)
+                                        
+                                        numSold = numSharesNum // we just sold them all
+                                        account.cash += newTranactionClose.totalProceeds
+                                        print("sold \(newTranactionClose.numShares) of \(foundStock.wrappedDisplayName)")
+                                    }
+                                }
+                                if moc.hasChanges {
+                                    try? moc.save()
+                                    print("Finished selling \(foundStock.wrappedSymbol): \(numSharesNum) total shares sold. and saved to CoreData")
+                                }
+                                alertMessage = "Successfully sold \(numSharesNum) shares of \(stockSnapshot.symbol)"
+                                tradeStatus = .success
+                                displayAlert.toggle()
+                            }
+                            else {
+                                // numSharesNum > thatn the number of shares that you own
+                                
+                                tradeStatus = .error
+                                alertMessage = "Cannot sell: You do not own \(numSharesNum) shares of \(stockSnapshot.symbol)"
+                                displayAlert.toggle()
+                            }
+                        }
+                        else {
+                            tradeStatus = .error
+                            alertMessage = "Cannot sell: You do not own \(numSharesNum) shares of \(stockSnapshot.symbol)"
+                            displayAlert.toggle()
                         }
                         
                     }
@@ -205,10 +264,10 @@ struct TradeFormView: View {
         if let numSharesNumber = Double(numShares) {
 
             let num = stockSnapshot.regularMarketPrice * numSharesNumber
-            return String(format: "Cost Basis: $%.2f", num)
+            return String(format: "$%.2f", num)
         }
         else {
-            return "Cost Basis: $0.00"
+            return "$0.00"
         }
        
     }

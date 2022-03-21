@@ -25,7 +25,19 @@ extension Account {
     
     
     var assets: [Asset] {
+
+        get {
+            return loadAccountAssets()
+        }
+        set {
+            
+        }
         
+    }
+    
+    func loadAccountAssets() -> [Asset]
+    {
+        print("loading account assets")
         var theAssets = [Asset]()
         if let theTransactionsSet = transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction]
         {
@@ -47,9 +59,6 @@ extension Account {
         }
         
         return theAssets
-        
-        
-        
     }
     
     

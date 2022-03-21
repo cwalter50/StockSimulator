@@ -65,6 +65,21 @@ struct StockSnapshot: Codable, Identifiable
         id = UUID()
         
     }
+    
+    init(stock: Stock)
+    {
+        self.quoteType = stock.quoteType ?? "Unknown"
+        self.displayName = stock.wrappedDisplayName
+        self.currency = stock.currency ?? "Unknown"
+        self.symbol = stock.wrappedSymbol
+        self.language = stock.language ?? "Unknown"
+        self.ask = stock.ask
+        self.bid = stock.bid
+        self.market = stock.market ?? "Unknown"
+        self.regularMarketDayHigh = stock.regularMarketDayHigh
+        self.regularMarketDayLow = stock.regularMarketDayLow
+        self.regularMarketPrice = stock.regularMarketPrice
+    }
 
 
     // This is used to make up sample data to test...

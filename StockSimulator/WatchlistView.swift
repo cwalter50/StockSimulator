@@ -21,6 +21,8 @@ struct WatchlistView: View {
     
     @FetchRequest var stocks: FetchedResults<Stock> // stocks need load in init, because FetchRequest requires a predicate with the variable watchlist
     
+    @State var isShowingPullToRequest = false
+    
     init (watchlist: Watchlist)
     {
         self.watchlist = watchlist
@@ -40,6 +42,7 @@ struct WatchlistView: View {
                 .onDelete(perform: delete)
 //                .deleteDisabled(editMode?.wrappedValue != .active)
             }
+            
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {

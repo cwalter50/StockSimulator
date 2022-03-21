@@ -58,7 +58,7 @@ struct StockSearchView: View {
                     ForEach(stockSnapshots)
                     {
                         stockSnapshot in
-                        StockView(stockSnapshot: stockSnapshot)
+                        StockBasicView(stockSnapshot: stockSnapshot)
                         if let theWatchlist = watchlist
                         {
                             Button(action: {

@@ -12,23 +12,15 @@ struct AccountView: View {
     @Environment(\.managedObjectContext) var moc
     
     // will allow us to dismiss
-    @Environment(\.presentationMode) var presentationMode
+//    @Environment(\.presentationMode) var presentationMode
+//    var presentationMode: PresentationMode
     
     var account: Account
-    
-    @FetchRequest var transactions: FetchedResults<Transaction> // transactions need load in init, because FetchRequest requires a predicate with the variable account
     
     
     @State var isSearchPresented = false
     @State var showingDeleteAlert = false
     
-    init(account: Account)
-    {
-        self.account = account
-        
-        self._transactions = FetchRequest(entity: Transaction.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Transaction.buyDate, ascending: true)], predicate: NSPredicate(format: "(ANY account == %@)", self.account), animation: Animation.default)
-        
-    }
     
     var body: some View {
         VStack(alignment: .center){
@@ -66,15 +58,23 @@ struct AccountView: View {
                 }
                 ForEach (account.assets) {
                     asset in
-                    AssetRow(asset: asset)
+                    if asset.totalShares > 0 {
+                        NavigationLink(destination: AssetView(asset: asset, account: account)) {
+                            AssetRow(asset: asset)
+                        }
+                    }
+                    
                 }
+                
             }
             .listStyle(.plain)
             
             
         }
         .padding(20)
+//        .navigationViewStyle(StackNavigationViewStyle())
         .navigationTitle("Account Overview")
+        .navigationViewStyle(StackNavigationViewStyle())
         .alert(isPresented: $showingDeleteAlert) {
             Alert(title: Text("Delete \(account.name ?? "Account")?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete"), action: deleteAccount), secondaryButton: .cancel())
         }
@@ -94,25 +94,22 @@ struct AccountView: View {
     func loadCurrentStockInfo()
     {
         print("load current Stock Info Called")
-        
-        
+        account.assets = account.loadAccountAssets()
         // load the Stocks
         var stocks = [Stock]()
-//        guard let theTransactionsSet = account.transactions else {
-//            print("no transactionset")
-//            return
-//        }
-//
-//        guard let theTransactions = theTransactionsSet as? [Transaction] else {
-//            print("the transactionset is not an array")
-//            return
-//        }
+        
+        guard let transactions = account.transactions?.allObjects as? [Transaction] else {
+            print("no transactions loaded")
+            return
+        }
         for t in transactions {
             if let theStock = t.stock {
                 stocks.append(theStock)
             }
         }
-        print("found \(stocks.count)")
+        print("found \(transactions.count) transactions")
+        
+        
         
         var searchString = ""
         for s in stocks
@@ -132,10 +129,10 @@ struct AccountView: View {
                         if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
                             stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
                             
-                            stockCoreData.regularMarketPrice -= 1
+//                            stockCoreData.regularMarketPrice += 2
 //                            var rand = Int.random(in: 1...100)
 //                            stockCoreData.displayName = "Pear\(rand)"
-                            print("updated values for \(stockCoreData.wrappedSymbol)")
+//                            print("updated values for \(stockCoreData.wrappedSymbol)")
                         }
                     }
                 
@@ -153,11 +150,12 @@ struct AccountView: View {
     
     func deleteAccount()
     {
+        print("deleteAccount called")
         moc.delete(account)
 
             // uncomment this line if you want to make the deletion permanent
         try? moc.save()
-        presentationMode.wrappedValue.dismiss()
+//        presentationMode.wrappedValue.dismiss()
     }
 }
 
