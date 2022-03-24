@@ -18,9 +18,41 @@ struct AssetView: View {
     var body: some View {
         VStack {
             Text(asset.stock.wrappedSymbol)
+            Button(action: {
+                getChartData()
+            }){
+               Text("Load Chart Data")
+            }
             TradeFormView(account: account, stockSnapshot: StockSnapshot(stock: asset.stock))
+            
         }
         .navigationTitle(asset.stock.wrappedSymbol)
+        
+    }
+    
+    
+    func getChartData()
+    {
+//        stockSnapshots = []
+//        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
+        
+        // remove all spaces from search symbol
+        
+        var searchSymbol = "AAPL"
+        let apiCaller = APICaller.shared
+        apiCaller.getChartData(searchSymbol: searchSymbol) {
+            connectionResult in
+            
+            switch connectionResult {
+            case .success(let array):
+                print("success")
+            case .chartSuccess(let string):
+                print("chartSuccess")
+            case .failure(let error):
+                print("failure")
+            }
+        }
+        
         
     }
 }

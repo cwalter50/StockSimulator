@@ -16,7 +16,15 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            Text("Home Tab")
+            VStack {
+                Text("Home Tab")
+                Button(action: {
+                    getChartData()
+                }) {
+                    Text("Load Chart Data")
+                }
+            }
+            
                 .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
                     Image(systemName: "house.fill")
@@ -46,24 +54,30 @@ struct ContentView: View {
         }
     }
     
-    func loadAccountsFromUserDefaults()
+    func getChartData()
     {
-//        if let theAccounts = UserDefaults.standard.data(forKey: "accounts")
-//        {
-//            let decoder = JSONDecoder()
-//            if let decoded = try? decoder.decode([Account].self, from: theAccounts) {
-//                self.accounts = decoded
-//                print("loaded from userdefaults")
-//                return
-//            }
-//        }
-//        else {
-//            print("No record of items in user defaults")
-//        }
-//        // failed to load anything from user defaults
-//        self.accounts = []
+//        stockSnapshots = []
+//        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
+        
+        // remove all spaces from search symbol
+        
+        var searchSymbol = "F"
+        let apiCaller = APICaller.shared
+        apiCaller.getChartData(searchSymbol: searchSymbol) {
+            connectionResult in
+            
+            switch connectionResult {
+            case .success(let array):
+                print("success")
+            case .chartSuccess(let string):
+                print("chartSuccess")
+            case .failure(let error):
+                print("failure")
+            }
+        }
+        
+        
     }
-
 }
 
 struct ContentView_Previews: PreviewProvider {

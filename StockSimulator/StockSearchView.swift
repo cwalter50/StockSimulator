@@ -112,6 +112,8 @@ struct StockSearchView: View {
                     print(error)
                     stockSnapshots = []
 //                    stockSnapshot = nil
+                case .chartSuccess(let theAnswer):
+                    print("Chart Success \(theAnswer)")
             }
         }
         

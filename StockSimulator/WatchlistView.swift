@@ -94,6 +94,8 @@ struct WatchlistView: View {
 
                 case .failure(let error):
                     print(error)
+                case .chartSuccess(let theString):
+                    print("ChartSuccess")
 
             }
         }
