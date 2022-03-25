@@ -33,7 +33,9 @@ final class APICaller{
         
 //        "https://yfapi.net/v8/finance/chart/AAPL?range=1mo&region=US&interval=1d&lang=en&events=div%2Csplit"
         static let charturlStringPt1 = "https://yfapi.net/v8/finance/chart/"
-        static let charturlStringPt2 = "?range=1mo&region=US&interval=1d&lang=en&events=div%2Csplit"
+        
+        static let charturlRange = "?range="
+        static let charturlStringPt2 = "&region=US&interval=1d&lang=en&events=div%2Csplit"
         //        let urlString = "https://yfapi.net/v8/finance/chart/AAPL"
         //        let urlString = "https://yfapi.net/v8/finance/spark?symbols=AAPL,MSFT"
         //        let urlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=AAPL%2CBTC-USD%2CEURUSD%3DX"
@@ -96,9 +98,9 @@ final class APICaller{
     }
     
     
-    func getChartData(searchSymbol: String, completion: @escaping (ConnectionResult) -> Void)
+    func getChartData(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
     {
-        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlStringPt2) else {
+        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2) else {
             return
         }
         
@@ -115,7 +117,7 @@ final class APICaller{
                     print("error in getting JSON")
                     return
                 }
-//                print(results)
+                print(results)
                 
                 
                 let chartData = ChartData(results: results)

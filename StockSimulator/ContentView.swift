@@ -65,7 +65,7 @@ struct ContentView: View {
         
         var searchSymbol = "F"
         let apiCaller = APICaller.shared
-        apiCaller.getChartData(searchSymbol: searchSymbol) {
+        apiCaller.getChartData(searchSymbol: searchSymbol, range: "1mo") {
             connectionResult in
             
             switch connectionResult {

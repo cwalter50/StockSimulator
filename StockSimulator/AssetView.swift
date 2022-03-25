@@ -41,7 +41,7 @@ struct AssetView: View {
         
         var searchSymbol = "AAPL"
         let apiCaller = APICaller.shared
-        apiCaller.getChartData(searchSymbol: searchSymbol) {
+        apiCaller.getChartData(searchSymbol: searchSymbol, range: "1mo") {
             connectionResult in
             
             switch connectionResult {

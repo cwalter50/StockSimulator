@@ -36,34 +36,34 @@ final class ChartViewModel: ObservableObject {
     
     func loadData(symbol: String, completion: @escaping() -> Void ) {
         
-//        let searchSymbol = "F"
-        let apiCaller = APICaller.shared
-        apiCaller.getChartData(searchSymbol: symbol) {
-            connectionResult in
-            
-            switch connectionResult {
-            case .success(_):
-                print("success")
-                self.chartData = []
-                completion()
-            case .chartSuccess(let theChartData):
-                print("chartSuccess")
-                
-                DispatchQueue.main.async {
-                    self.chartData = theChartData.close.normalized
-                    completion()
-                }
-                
-            case .failure(_):
-                print("failure")
-                self.chartData = []
-                completion()
-            }
-        }
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            self.chartData = ChartMockData.oneMonth.normalized
-//            completion()
+////        let searchSymbol = "F"
+//        let apiCaller = APICaller.shared
+//        apiCaller.getChartData(searchSymbol: symbol) {
+//            connectionResult in
+//            
+//            switch connectionResult {
+//            case .success(_):
+//                print("success")
+//                self.chartData = []
+//                completion()
+//            case .chartSuccess(let theChartData):
+//                print("chartSuccess")
+//                
+//                DispatchQueue.main.async {
+//                    self.chartData = theChartData.close.normalized
+//                    completion()
+//                }
+//                
+//            case .failure(_):
+//                print("failure")
+//                self.chartData = []
+//                completion()
+//            }
 //        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.chartData = ChartMockData.oneMonth.normalized
+            completion()
+        }
     }
 }
 
@@ -74,30 +74,51 @@ struct ChartView: View {
     @State private var animateChart = false
     @State private var showLoader = false
     
+    @State private var selectedTimeInterval = "1mo"
+    
+//    var timeRanges = ["1d","5d","1mo", "3mo","6mo","ytd","1y","2y","5y","10y","max"]
+    var timeRanges = ["1d","5d","1mo","6mo","ytd","1y","max"]
+
+    
     var stockSnapshot: StockSnapshot
     
     var body: some View {
-        ZStack {
-            LineGraph(dataPoints: viewModel.chartData)
-                .trim(to: animateChart ? 1 : 0)
-                .stroke(Color.blue)
-    //            .border(Color.black)
-                .frame(width: 350, height: 300)
-                .onAppear(perform: {
-                    showLoader = true
-                    viewModel.loadData(symbol: stockSnapshot.symbol) {
-                        showLoader = false
-                        withAnimation(.easeInOut(duration: 2)) {
-                            animateChart = true
-                        }
-                    }
-                    
-                })
-            if showLoader {
-                ChartLoader()
+        VStack {
+            Picker("Time Interval", selection: $selectedTimeInterval) {
+                ForEach(timeRanges, id: \.self) {
+                    Text($0)
+                }
             }
-            
+            .pickerStyle(SegmentedPickerStyle())
+            .onChange(of: selectedTimeInterval) { value in
+                print("picker changed")
+                // figure out how to reload the data if picker changes
+
+            }
+            ZStack {
+//                LineGraph(dataPoints: viewModel.chartData)
+                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
+                    .trim(to: animateChart ? 1 : 0)
+                    .stroke(Color.blue)
+        //            .border(Color.black)
+                    .frame(width: 350, height: 300)
+                    .onAppear(perform: {
+                        showLoader = true
+                        viewModel.loadData(symbol: stockSnapshot.symbol) {
+                            showLoader = false
+                            withAnimation(.easeInOut(duration: 2)) {
+                                animateChart = true
+                            }
+                        }
+                        
+                    })
+                if showLoader {
+                    ChartLoader()
+                }
+                
+            }
         }
+
 
     }
 }
