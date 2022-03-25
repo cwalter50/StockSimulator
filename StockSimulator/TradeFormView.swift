@@ -63,7 +63,7 @@ struct TradeFormView: View {
                         Text($0)
                     }
                 }
-                .pickerStyle(.segmented)
+                .pickerStyle(SegmentedPickerStyle())
                 HStack(alignment: .firstTextBaseline) {
                     Text("Shares: ")
                         .font(.headline)

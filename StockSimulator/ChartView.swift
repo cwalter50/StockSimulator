@@ -34,11 +34,11 @@ struct ChartLoader: View {
 final class ChartViewModel: ObservableObject {
     @Published var chartData = [Double]()
     
-    func loadData(completion: @escaping() -> Void ) {
+    func loadData(symbol: String, completion: @escaping() -> Void ) {
         
-        let searchSymbol = "F"
+//        let searchSymbol = "F"
         let apiCaller = APICaller.shared
-        apiCaller.getChartData(searchSymbol: searchSymbol) {
+        apiCaller.getChartData(searchSymbol: symbol) {
             connectionResult in
             
             switch connectionResult {
@@ -74,7 +74,7 @@ struct ChartView: View {
     @State private var animateChart = false
     @State private var showLoader = false
     
-//    var stock: Stock
+    var stockSnapshot: StockSnapshot
     
     var body: some View {
         ZStack {
@@ -85,7 +85,7 @@ struct ChartView: View {
                 .frame(width: 350, height: 300)
                 .onAppear(perform: {
                     showLoader = true
-                    viewModel.loadData {
+                    viewModel.loadData(symbol: stockSnapshot.symbol) {
                         showLoader = false
                         withAnimation(.easeInOut(duration: 2)) {
                             animateChart = true
@@ -104,6 +104,6 @@ struct ChartView: View {
 
 struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
-        ChartView()
+        ChartView(stockSnapshot: StockSnapshot())
     }
 }

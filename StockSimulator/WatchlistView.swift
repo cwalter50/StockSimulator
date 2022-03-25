@@ -36,7 +36,10 @@ struct WatchlistView: View {
             List {
 
                 ForEach(stocks) { stock in
-                    StockRow(stock: stock)
+                    NavigationLink(
+                        destination: StockDetailView(stock: stock)) {
+                        StockRow(stock: stock)
+                    }
                     
                 }
                 .onDelete(perform: delete)

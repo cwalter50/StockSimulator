@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		380958B727EE1CB000705D9F /* StockDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380958B627EE1CB000705D9F /* StockDetailView.swift */; };
 		8368B3D527D05B30008AF135 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3D427D05B30008AF135 /* DataController.swift */; };
 		8368B3F527D2B936008AF135 /* StockSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F427D2B936008AF135 /* StockSnapshot.swift */; };
 		8368B3F727D2BB06008AF135 /* AddWatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */; };
@@ -70,6 +71,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		380958B627EE1CB000705D9F /* StockDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailView.swift; sourceTree = "<group>"; };
 		8368B3D427D05B30008AF135 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		8368B3F427D2B936008AF135 /* StockSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSnapshot.swift; sourceTree = "<group>"; };
 		8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchlistView.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				839E97F227DE77CA0017C9AE /* WatchlistView.swift */,
 				8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */,
 				83813CB827E7EDFA009344FE /* StockBasicView.swift */,
+				380958B627EE1CB000705D9F /* StockDetailView.swift */,
 				83FA26E627B85F38008DA2BC /* StockSearchView.swift */,
 				83FA26E327B82461008DA2BC /* StockRow.swift */,
 				83813CE027ED528C009344FE /* ChartView.swift */,
@@ -388,6 +391,7 @@
 				83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */,
 				83813CE327ED533D009344FE /* Extensions.swift in Sources */,
 				8368B3F727D2BB06008AF135 /* AddWatchlistView.swift in Sources */,
+				380958B727EE1CB000705D9F /* StockDetailView.swift in Sources */,
 				83813CBC27E7F72F009344FE /* Transaction+CoreDataClass.swift in Sources */,
 				8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */,
 				839E97EB27DD88DC0017C9AE /* Account+CoreDataProperties.swift in Sources */,

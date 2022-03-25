@@ -67,7 +67,7 @@ struct AccountView: View {
                 }
                 
             }
-            .listStyle(.plain)
+            .listStyle(PlainListStyle())
             
             
         }

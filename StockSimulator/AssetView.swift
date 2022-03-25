@@ -23,7 +23,7 @@ struct AssetView: View {
             }){
                Text("Load Chart Data")
             }
-            ChartView()
+            ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
             TradeFormView(account: account, stockSnapshot: StockSnapshot(stock: asset.stock))
             
         }
