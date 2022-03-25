@@ -23,6 +23,8 @@ struct ContentView: View {
                 }) {
                     Text("Load Chart Data")
                 }
+                ChartView()
+//                ChartView(stock: Stock())
             }
             
                 .font(.system(size: 30, weight: .bold, design: .rounded))

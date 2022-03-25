@@ -10,7 +10,7 @@ import Foundation
 
 enum ConnectionResult {
     case success([StockSnapshot])
-    case chartSuccess(String)
+    case chartSuccess(ChartData)
 //    case success([StockSnapshot])
     case failure(Error)
 }
@@ -119,40 +119,9 @@ final class APICaller{
                 
                 
                 let chartData = ChartData(results: results)
-                print(chartData)
-//                do {
-//                    let json = try JSONSerialization.data(withJSONObject: results)
-//                    let chartData = try JSONDecoder().decode(ChartData.self, from: json)
-//
-//                    print(chartData)
-//
-//
-//                } catch {
-//                    print(error)
-//                }
-//                if let quoteResponse = results["quoteResponse"] as? [String:Any], let investmentResults = quoteResponse["result"] as? [[String:Any]] {
-//
-//                    do {
-//                        let json = try JSONSerialization.data(withJSONObject: investmentResults)
-//                        let decoder = JSONDecoder()
-//                        let investmentArray = try decoder.decode([StockSnapshot].self, from: json)
-////                        print(investmentArray)
-//                        print("loaded stock data")
-//                        completion(.success(investmentArray))
-//
-////                        if investmentArray.count > 0
-////                        {
-////                            let stock = investmentArray[0]
-////                            completion(.success(stock))
-////                        }
-//
-//                    } catch {
-//                        print(error)
-//                        completion(.failure(error))
-//                    }
-////                        print(investmentResults)
-//                }
+//                print(chartData)
                 
+                completion(.chartSuccess(chartData))
             } catch {
                 print("Cannot Decode JSON Response")
                 completion(.failure(error))
