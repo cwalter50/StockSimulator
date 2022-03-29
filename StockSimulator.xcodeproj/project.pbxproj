@@ -22,6 +22,7 @@
 		83813CE327ED533D009344FE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CE227ED533D009344FE /* Extensions.swift */; };
 		83813CE527ED5461009344FE /* ChartMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CE427ED5461009344FE /* ChartMockData.swift */; };
 		83813CE727ED589E009344FE /* LineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CE627ED589E009344FE /* LineGraph.swift */; };
+		83813CEC27F27FEF009344FE /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CEB27F27FEF009344FE /* ChartViewModel.swift */; };
 		839E97E827DD88DC0017C9AE /* Stock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97E227DD88DC0017C9AE /* Stock+CoreDataClass.swift */; };
 		839E97E927DD88DC0017C9AE /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97E327DD88DC0017C9AE /* Stock+CoreDataProperties.swift */; };
 		839E97EA27DD88DC0017C9AE /* Account+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97E427DD88DC0017C9AE /* Account+CoreDataClass.swift */; };
@@ -83,6 +84,7 @@
 		83813CE227ED533D009344FE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		83813CE427ED5461009344FE /* ChartMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartMockData.swift; sourceTree = "<group>"; };
 		83813CE627ED589E009344FE /* LineGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraph.swift; sourceTree = "<group>"; };
+		83813CEB27F27FEF009344FE /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
 		839E97E227DD88DC0017C9AE /* Stock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataClass.swift"; sourceTree = "<group>"; };
 		839E97E327DD88DC0017C9AE /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		839E97E427DD88DC0017C9AE /* Account+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			children = (
 				83813CE627ED589E009344FE /* LineGraph.swift */,
 				83813CE027ED528C009344FE /* ChartView.swift */,
+				83813CEB27F27FEF009344FE /* ChartViewModel.swift */,
 			);
 			path = ChartViews;
 			sourceTree = "<group>";
@@ -199,10 +202,10 @@
 				83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */,
 				83D3FD2227A5FEF800F3746B /* ContentView.swift */,
 				83813CE827F27F17009344FE /* WatchListViews */,
+				83813CEA27F27F6D009344FE /* ChartViews */,
 				83813CE927F27F46009344FE /* AccountViews */,
 				83813CB827E7EDFA009344FE /* StockBasicView.swift */,
 				380958B627EE1CB000705D9F /* StockDetailView.swift */,
-				83813CEA27F27F6D009344FE /* ChartViews */,
 				83FA26E627B85F38008DA2BC /* StockSearchView.swift */,
 				83FA26E327B82461008DA2BC /* StockRow.swift */,
 				83813CE227ED533D009344FE /* Extensions.swift */,
@@ -409,6 +412,7 @@
 				8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */,
 				839E97EB27DD88DC0017C9AE /* Account+CoreDataProperties.swift in Sources */,
 				83FA270D27BDF46D008DA2BC /* AddAccountView.swift in Sources */,
+				83813CEC27F27FEF009344FE /* ChartViewModel.swift in Sources */,
 				8368B40727D2C57C008AF135 /* Watchlist+CoreDataProperties.swift in Sources */,
 				83F9F71527CAAB2600C14D87 /* Asset.swift in Sources */,
 				83FA26E427B82461008DA2BC /* StockRow.swift in Sources */,

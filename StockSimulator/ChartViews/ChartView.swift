@@ -31,41 +31,6 @@ struct ChartLoader: View {
     }
 }
 
-final class ChartViewModel: ObservableObject {
-    @Published var chartData = [Double]()
-    
-    func loadData(symbol: String, completion: @escaping() -> Void ) {
-        
-////        let searchSymbol = "F"
-//        let apiCaller = APICaller.shared
-//        apiCaller.getChartData(searchSymbol: symbol) {
-//            connectionResult in
-//            
-//            switch connectionResult {
-//            case .success(_):
-//                print("success")
-//                self.chartData = []
-//                completion()
-//            case .chartSuccess(let theChartData):
-//                print("chartSuccess")
-//                
-//                DispatchQueue.main.async {
-//                    self.chartData = theChartData.close.normalized
-//                    completion()
-//                }
-//                
-//            case .failure(_):
-//                print("failure")
-//                self.chartData = []
-//                completion()
-//            }
-//        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.chartData = ChartMockData.oneMonth.normalized
-            completion()
-        }
-    }
-}
 
 struct ChartView: View {
 
@@ -73,6 +38,8 @@ struct ChartView: View {
     
     @State private var animateChart = false
     @State private var showLoader = false
+    
+    @State private var trimValue: CGFloat = 0
     
     @State private var selectedTimeInterval = "1mo"
     
@@ -93,33 +60,37 @@ struct ChartView: View {
             .onChange(of: selectedTimeInterval) { value in
                 print("picker changed")
                 // figure out how to reload the data if picker changes
-
+                loadData()
             }
             ZStack {
-//                LineGraph(dataPoints: viewModel.chartData)
-                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
-                    .trim(to: animateChart ? 1 : 0)
+                LineGraph(dataPoints: viewModel.chartData)
+//                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
+                    .trim(to: animateChart ? 1 : trimValue)
                     .stroke(Color.blue)
-        //            .border(Color.black)
                     .frame(width: 350, height: 300)
                     .onAppear(perform: {
-                        showLoader = true
-                        viewModel.loadData(symbol: stockSnapshot.symbol) {
-                            showLoader = false
-                            withAnimation(.easeInOut(duration: 2)) {
-                                animateChart = true
-                            }
-                        }
-                        
+                        loadData()
                     })
                 if showLoader {
                     ChartLoader()
                 }
-                
             }
         }
-
-
+    }
+    
+    
+    func loadData()
+    {
+        showLoader = true
+        viewModel.chartData = []
+        animateChart = false
+        trimValue = 0
+        viewModel.loadData(symbol: stockSnapshot.symbol, range: selectedTimeInterval) {
+            showLoader = false
+            withAnimation(.easeInOut(duration: 2)) {
+                animateChart = true
+            }
+        }
     }
 }
 
