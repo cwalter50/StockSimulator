@@ -25,6 +25,7 @@ struct ContentView: View {
                 }
 //                ChartView()
                 ChartView(stockSnapshot: StockSnapshot())
+                    .frame(width: 350, height: 300)
             }
             
                 .font(.system(size: 30, weight: .bold, design: .rounded))

@@ -50,29 +50,22 @@ struct ChartView: View {
     var stockSnapshot: StockSnapshot
     
     var body: some View {
-        VStack {
-            Picker("Time Interval", selection: $selectedTimeInterval) {
-                ForEach(timeRanges, id: \.self) {
-                    Text($0)
-                }
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .onChange(of: selectedTimeInterval) { value in
-                print("picker changed")
-                // figure out how to reload the data if picker changes
-                loadData()
-            }
-            ZStack {
-                LineGraph(dataPoints: viewModel.chartData)
-//                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
-                    .trim(to: animateChart ? 1 : trimValue)
-                    .stroke(Color.blue)
-                    .frame(width: 350, height: 300)
-                    .onAppear(perform: {
-                        loadData()
-                    })
-                if showLoader {
-                    ChartLoader()
+        GeometryReader { gr in
+            VStack {
+                rangePicker
+                ZStack {
+                    LineGraph(dataPoints: viewModel.chartData)
+    //                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
+                        .trim(to: animateChart ? 1 : trimValue)
+                        .stroke(Color.blue)
+                        .background(chartBackground)
+                        .frame(width: gr.size.width, height: gr.size.height)
+                        .onAppear(perform: {
+                            loadData()
+                        })
+                    if showLoader {
+                        ChartLoader()
+                    }
                 }
             }
         }
@@ -97,5 +90,52 @@ struct ChartView: View {
 struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
         ChartView(stockSnapshot: StockSnapshot())
+            .frame(width: 350, height: 300)
     }
+}
+
+extension ChartView {
+    
+    private var rangePicker: some View {
+        Picker("Time Interval", selection: $selectedTimeInterval) {
+            ForEach(timeRanges, id: \.self) {
+                Text($0)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        .onChange(of: selectedTimeInterval) { value in
+            print("picker changed")
+            // figure out how to reload the data if picker changes
+            loadData()
+        }
+    }
+    
+    private var chartBackground: some View {
+        VStack {
+            Divider()
+            Spacer()
+            Divider()
+            Spacer()
+            Divider()
+            Spacer()
+            Divider()
+            Spacer()
+            Divider()
+        }
+    }
+    
+//    private var chartYAxis: some View {
+//        VStack {
+//            Text("\(maxY)")
+//            Spacer()
+//            Text("\(q3)")
+//            Spacer()
+//            Text("\(medY)")
+//            Spacer()
+//            Text("\(q1)")
+//            Spacer()
+//            Text("\(minY)")
+//        }
+//    }
+    
 }
