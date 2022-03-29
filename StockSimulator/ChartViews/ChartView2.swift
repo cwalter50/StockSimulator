@@ -79,20 +79,24 @@ extension ChartView2 {
             Divider()
             Spacer()
             Divider()
+            Spacer()
+            Divider()
+            Spacer()
+            Divider()
         }
     }
     
     private var chartYAxis: some View {
         VStack {
-            Text("\(maxY)")
+            Text("\(maxY.priceFormatted)")
             Spacer()
-            Text("\(q3)")
+            Text("\(q3.priceFormatted)")
             Spacer()
-            Text("\(medY)")
+            Text("\(medY.priceFormatted)")
             Spacer()
-            Text("\(q1)")
+            Text("\(q1.priceFormatted)")
             Spacer()
-            Text("\(minY)")
+            Text("\(minY.priceFormatted)")
         }
     }
     

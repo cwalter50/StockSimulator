@@ -23,6 +23,7 @@ struct ContentView: View {
                 }) {
                     Text("Load Chart Data")
                 }
+
 //                ChartView()
                 ChartView(stockSnapshot: StockSnapshot())
                     .frame(width: 350, height: 300)
