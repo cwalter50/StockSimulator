@@ -49,6 +49,9 @@ struct ChartView: View {
     
     var stockSnapshot: StockSnapshot
     
+    
+
+    
     var body: some View {
         GeometryReader { gr in
             VStack {
@@ -124,7 +127,7 @@ extension ChartView {
         }
     }
     
-    // fi
+
     
 //    private var chartYAxis: some View {
 //        VStack {

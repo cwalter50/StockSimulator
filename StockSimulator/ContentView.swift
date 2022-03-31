@@ -20,19 +20,12 @@ struct ContentView: View {
                 Text("Home Tab")
                 Button(action: {
                     getChartData()
-                    let timeStamps = ChartMockData.mockData.timestamp
-                    
-                    for t in timeStamps
-                    {
-                        let date = Date(timeIntervalSince1970: Double(t))
-                        print(date)
-                        
-                    }
                 }) {
                     Text("Load Chart Data")
                 }
 
 //                ChartView()
+//                ChartView2()
                 ChartView(stockSnapshot: StockSnapshot())
                     .frame(width: 350, height: 300)
             }
