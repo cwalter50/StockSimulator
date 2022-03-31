@@ -39,17 +39,17 @@ struct AssetView: View {
         
         // remove all spaces from search symbol
         
-        var searchSymbol = "AAPL"
+        let searchSymbol = "AAPL"
         let apiCaller = APICaller.shared
         apiCaller.getChartData(searchSymbol: searchSymbol, range: "1mo") {
             connectionResult in
             
             switch connectionResult {
-            case .success(let array):
+            case .success(_):
                 print("success")
-            case .chartSuccess(let string):
+            case .chartSuccess(_):
                 print("chartSuccess")
-            case .failure(let error):
+            case .failure(_):
                 print("failure")
             }
         }

@@ -59,7 +59,7 @@ struct StockSearchView: View {
                     {
                         stockSnapshot in
                         StockBasicView(stockSnapshot: stockSnapshot)
-                        if let theWatchlist = watchlist
+                        if watchlist != nil
                         {
                             Button(action: {
                                 saveToWatchlistCoreData(snapshot: stockSnapshot)

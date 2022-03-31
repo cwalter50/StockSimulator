@@ -27,7 +27,7 @@ struct ChartView2: View {
         
         let priceChange = (data.last ?? 0) - (data.first ?? 0)
         
-        lineColor = priceChange > 0 ? Color.green : Color.red
+        lineColor = priceChange > 0 ?  Color.theme.green : Color.theme.red
     }
     var body: some View {
         chartView2
@@ -88,15 +88,15 @@ extension ChartView2 {
     
     private var chartYAxis: some View {
         VStack {
-            Text("\(maxY.priceFormatted)")
+            Text("\(maxY.formattedWithAbbreviations())")
             Spacer()
-            Text("\(q3.priceFormatted)")
+            Text("\(q3.formattedWithAbbreviations())")
             Spacer()
-            Text("\(medY.priceFormatted)")
+            Text("\(medY.formattedWithAbbreviations())")
             Spacer()
-            Text("\(q1.priceFormatted)")
+            Text("\(q1.formattedWithAbbreviations())")
             Spacer()
-            Text("\(minY.priceFormatted)")
+            Text("\(minY.formattedWithAbbreviations())")
         }
     }
     

@@ -142,7 +142,7 @@ struct AccountView: View {
                 case .failure(let error):
                     print(error)
                 
-            case .chartSuccess(let theString):
+            case .chartSuccess(_):
                 print("ChartSuccess")
                 
 
