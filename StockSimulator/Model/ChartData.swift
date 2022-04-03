@@ -250,6 +250,26 @@ struct ChartData: Codable {
         
     }
     
+    init (emptyData: Bool)
+    {
+        if emptyData == true
+        {
+            self.init()
+        }
+        else
+        {
+            self.init()
+            adjclose = []
+            close = []
+            high = []
+            low = []
+            open = []
+            volume = []
+            timestamp = []
+        }
+
+    }
+    
     
     
     init(results: [String: Any])

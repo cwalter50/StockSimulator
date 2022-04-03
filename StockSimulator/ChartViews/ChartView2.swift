@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// I built this following a tutorial. It is not in use in the actual app, but I used a lot of the parts to build the actual ChartView
 struct ChartView2: View {
     // data contains the [Double] called close of all of the chart Data, as well as [Int] that are the timeStamps that go with that close data
     private let data: ChartData

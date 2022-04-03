@@ -8,30 +8,6 @@
 import SwiftUI
 
 
-struct ChartLoader: View {
-    private let animation = Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)
-    
-    @State var isAtMaxScale = false
-    
-    private let maxScale: CGFloat = 1.5
-    var body: some View {
-        VStack{
-            Text("Loading")
-                .font(.custom("Avenir", size: 16))
-            RoundedRectangle(cornerRadius: 25)
-                .fill(Color.blue)
-                .frame(width: UIScreen.main.bounds.width/2, height: 3)
-                .scaleEffect(CGSize(width: isAtMaxScale ? maxScale: 0.01, height: 1.0))
-                .onAppear(perform: {
-                    withAnimation(animation) {
-                        self.isAtMaxScale.toggle()
-                    }
-                })
-        }
-    }
-}
-
-
 struct ChartView: View {
 
     @ObservedObject var viewModel = ChartViewModel()
@@ -49,28 +25,30 @@ struct ChartView: View {
     
     var stockSnapshot: StockSnapshot
     
-    
-
-    
     var body: some View {
         GeometryReader { gr in
             VStack {
                 rangePicker
                 ZStack {
-                    LineGraph(dataPoints: viewModel.chartData)
-    //                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
-                        .trim(to: animateChart ? 1 : trimValue)
-                        .stroke(Color.blue)
+                    linegraph
                         .background(chartBackground)
+                        .overlay(chartYAxis.padding(.horizontal,4), alignment: .leading)
                         .frame(width: gr.size.width, height: gr.size.height)
+
                         .onAppear(perform: {
                             loadData()
                         })
+                        
+
                     if showLoader {
                         ChartLoader()
                     }
                 }
+                chartDateLabels
+                    .padding(.horizontal, 4)
             }
+            .font(.caption)
+            .foregroundColor(Color.theme.secondaryText)
         }
     }
     
@@ -78,7 +56,7 @@ struct ChartView: View {
     func loadData()
     {
         showLoader = true
-        viewModel.chartData = []
+        viewModel.chartData = ChartData(emptyData: true)
         animateChart = false
         trimValue = 0
         viewModel.loadData(symbol: stockSnapshot.symbol, range: selectedTimeInterval) {
@@ -127,20 +105,41 @@ extension ChartView {
         }
     }
     
+    private var linegraph: some View {
+        LineGraph(dataPoints: viewModel.chartData.close.normalized)
+        
+//                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
+            .trim(to: animateChart ? 1 : trimValue)
+//                        .stroke(lineColor)
+            .stroke(viewModel.lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            .shadow(color: viewModel.lineColor, radius: 10, x: 0, y: 10)
+            .shadow(color: viewModel.lineColor.opacity(0.5), radius: 10, x: 0, y: 10)
+            .shadow(color: viewModel.lineColor.opacity(0.2), radius: 10, x: 0, y: 10)
+            .shadow(color: viewModel.lineColor.opacity(0.1), radius: 10, x: 0, y: 10)
+    }
+    
+    private var chartDateLabels: some View {
+        HStack {
+            Text(viewModel.startingDate.asShortDateString())
+            Spacer()
+            Text(viewModel.endingDate.asShortDateString())
+        }
+    }
+    
 
     
-//    private var chartYAxis: some View {
-//        VStack {
-//            Text("\(maxY)")
-//            Spacer()
-//            Text("\(q3)")
-//            Spacer()
-//            Text("\(medY)")
-//            Spacer()
-//            Text("\(q1)")
-//            Spacer()
-//            Text("\(minY)")
-//        }
-//    }
+    private var chartYAxis: some View {
+        VStack {
+            Text("\(viewModel.maxY.formattedWithAbbreviations())")
+            Spacer()
+            Text("\(viewModel.q3.formattedWithAbbreviations())")
+            Spacer()
+            Text("\(viewModel.medY.formattedWithAbbreviations())")
+            Spacer()
+            Text("\(viewModel.q1.formattedWithAbbreviations())")
+            Spacer()
+            Text("\(viewModel.minY.formattedWithAbbreviations())")
+        }
+    }
     
 }

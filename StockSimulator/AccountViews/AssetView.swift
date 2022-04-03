@@ -24,7 +24,7 @@ struct AssetView: View {
                Text("Load Chart Data")
             }
             ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
-            TradeFormView(account: account, stockSnapshot: StockSnapshot(stock: asset.stock))
+//            TradeFormView(account: account, stockSnapshot: StockSnapshot(stock: asset.stock))
             
         }
         .navigationTitle(asset.stock.wrappedSymbol)
