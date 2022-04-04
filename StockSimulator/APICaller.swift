@@ -30,12 +30,14 @@ final class APICaller{
         
         static let quoteurlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols="
         
+//         'https://yfapi.net/v8/finance/chart/AAPL?range=1d&region=US&interval=5m&lang=en&events=div%2Csplit'
         
 //        "https://yfapi.net/v8/finance/chart/AAPL?range=1mo&region=US&interval=1d&lang=en&events=div%2Csplit"
         static let charturlStringPt1 = "https://yfapi.net/v8/finance/chart/"
         
         static let charturlRange = "?range="
-        static let charturlStringPt2 = "&region=US&interval=1d&lang=en&events=div%2Csplit"
+        static let charturlStringPt2 = "&region=US&interval="
+        static let charturlStringPt3 = "&lang=en&events=div%2Csplit"
         //        let urlString = "https://yfapi.net/v8/finance/chart/AAPL"
         //        let urlString = "https://yfapi.net/v8/finance/spark?symbols=AAPL,MSFT"
         //        let urlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=AAPL%2CBTC-USD%2CEURUSD%3DX"
@@ -100,9 +102,21 @@ final class APICaller{
     
     func getChartData(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
     {
-        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2) else {
+        
+        var interval = "1d"
+
+//        if range == "1d" || range == "5d"
+//        {
+//            interval = "5m"
+//        }
+//        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2 + interval + Constants.charturlStringPt3) else {
+//            return
+//        }
+        guard let url = URL(string: "https://yfapi.net/v8/finance/chart/\(searchSymbol.uppercased())?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit") else {
             return
         }
+        
+    
         
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
@@ -117,11 +131,12 @@ final class APICaller{
                     print("error in getting JSON")
                     return
                 }
-                print(results)
+//                print(results)
                 
-                
+//                print(results)
                 let chartData = ChartData(results: results)
 //                print(chartData)
+                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
                 
                 completion(.chartSuccess(chartData))
             } catch {

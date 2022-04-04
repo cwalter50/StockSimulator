@@ -63,9 +63,7 @@ struct AccountView: View {
                             AssetRow(asset: asset)
                         }
                     }
-                    
                 }
-                
             }
             .listStyle(PlainListStyle())
             

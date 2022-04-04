@@ -252,7 +252,7 @@ struct ChartData: Codable {
     
     init (emptyData: Bool)
     {
-        if emptyData == true
+        if emptyData == false
         {
             self.init()
         }

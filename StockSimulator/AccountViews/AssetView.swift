@@ -46,30 +46,30 @@ struct AssetView: View {
         .navigationTitle(asset.stock.wrappedSymbol)
     }
     
-    func getChartData()
-    {
-//        stockSnapshots = []
-//        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
-        
-        // remove all spaces from search symbol
-        
-        let searchSymbol = "AAPL"
-        let apiCaller = APICaller.shared
-        apiCaller.getChartData(searchSymbol: searchSymbol, range: "1mo") {
-            connectionResult in
-            
-            switch connectionResult {
-            case .success(_):
-                print("success")
-            case .chartSuccess(_):
-                print("chartSuccess")
-            case .failure(_):
-                print("failure")
-            }
-        }
-        
-        
-    }
+//    func getChartData()
+//    {
+////        stockSnapshots = []
+////        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
+//        
+//        // remove all spaces from search symbol
+//        
+//        let searchSymbol = "AAPL"
+//        let apiCaller = APICaller.shared
+//        apiCaller.getChartData(searchSymbol: searchSymbol, range: "1mo") {
+//            connectionResult in
+//            
+//            switch connectionResult {
+//            case .success(_):
+//                print("success")
+//            case .chartSuccess(_):
+//                print("chartSuccess")
+//            case .failure(_):
+//                print("failure")
+//            }
+//        }
+//        
+//        
+//    }
 }
 
 struct AssetView_Previews: PreviewProvider {
