@@ -37,7 +37,8 @@ struct TradeFormView: View {
     
     var body: some View
     {
-        Form {
+        
+        Group{
             Section(header: Text("ACCOUNT INFO")) {
                 VStack(alignment: .leading) {
                     Text(account.wrappedName)
@@ -86,6 +87,7 @@ struct TradeFormView: View {
                 }) {
                     Text("Trade")
                         .font(.title)
+                        .foregroundColor(Color.blue)
                         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
                 }
             }

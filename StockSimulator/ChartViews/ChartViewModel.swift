@@ -64,7 +64,7 @@ final class ChartViewModel: ObservableObject {
         
         let priceChange = (self.chartData.close.last ?? 0) - (self.chartData.close.first ?? 0)
         
-        self.lineColor = priceChange > 0 ?  Color.theme.green : Color.theme.red
+        self.lineColor = priceChange >= 0 ?  Color.theme.green : Color.theme.red
         
         let lastDateTimeInterval = TimeInterval(self.chartData.timestamp.last ?? 0)
         let firstDateTimeInterval = TimeInterval(self.chartData.timestamp.first ?? 0)

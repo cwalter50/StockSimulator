@@ -33,7 +33,7 @@ struct ChartView: View {
                     linegraph
                         .background(chartBackground)
                         .overlay(chartYAxis.padding(.horizontal,4), alignment: .leading)
-                        .frame(width: gr.size.width, height: gr.size.height)
+                        
 
                         .onAppear(perform: {
                             loadData()
@@ -47,6 +47,7 @@ struct ChartView: View {
                 chartDateLabels
                     .padding(.horizontal, 4)
             }
+            .frame(width: gr.size.width, height: gr.size.height)
             .font(.caption)
             .foregroundColor(Color.theme.secondaryText)
         }

@@ -16,6 +16,8 @@ struct StockDetailView: View {
             StockBasicView(stockSnapshot: StockSnapshot(stock: stock))
 //            ChartView()
             ChartView(stockSnapshot: StockSnapshot(stock: stock))
+                .frame(height: 300)
+            Spacer()
         }
         
         

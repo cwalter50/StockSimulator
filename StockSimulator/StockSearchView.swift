@@ -47,6 +47,7 @@ struct StockSearchView: View {
                 
                 Button(action: getStockData) {
                     Text("Search")
+                    
                 }
                 
             }
@@ -66,6 +67,7 @@ struct StockSearchView: View {
                                 
                             }) {
                                 Text("Add to WatchList")
+                                    .foregroundColor(Color.blue)
                             }
                         }
                         if let theAccount = account
@@ -74,9 +76,12 @@ struct StockSearchView: View {
                                 isTradePresented.toggle()
                             }) {
                                 Text("Trade")
+                                    .foregroundColor(Color.blue)
                             }
                             .sheet(isPresented: $isTradePresented){
+                                List {
                                 TradeFormView(account: theAccount, stockSnapshot: stockSnapshot)
+                                }
                             }
                         }
                         

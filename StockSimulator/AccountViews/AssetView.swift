@@ -16,21 +16,35 @@ struct AssetView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack {
-            Text(asset.stock.wrappedSymbol)
-            Button(action: {
-                getChartData()
-            }){
-               Text("Load Chart Data")
+        List {
+            Section {
+                StockBasicView(stockSnapshot: StockSnapshot(stock: asset.stock))
+                ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
+//                StockDetailView(stock: asset.stock)
+                    .frame(height: 300)
+//                    .padding()
             }
-            ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
+//            .padding([.bottom], 20)
+            
+            yourSharesSection
+            .font(.body)
+            
+            Section(header: Text("Trade Info")) {
+                TradeFormView(account: account, stockSnapshot: StockSnapshot(stock: asset.stock))
+            }
+            
+            
+            
+            
+            
+            
+            
 //            TradeFormView(account: account, stockSnapshot: StockSnapshot(stock: asset.stock))
+//            Spacer()
             
         }
         .navigationTitle(asset.stock.wrappedSymbol)
-        
     }
-    
     
     func getChartData()
     {
@@ -61,5 +75,44 @@ struct AssetView: View {
 struct AssetView_Previews: PreviewProvider {
     static var previews: some View {
         AssetView(asset: Asset(transactions: [], stock: Stock()), account: Account())
+    }
+}
+
+extension AssetView {
+    
+    private var yourSharesSection: some View {
+        Section(header: Text("Your Shares")) {
+            HStack{
+                Text("Market Value:")
+                Spacer()
+                Text(String(format: "$%.2f", asset.totalValue))
+                    .foregroundColor(Color.theme.secondaryText)
+            }
+            
+            HStack {
+                Text("Unrealized Gain:")
+                Spacer()
+                Text(String(format: "$%.2f", asset.amountChange))
+                    .foregroundColor(asset.amountChange >= 0 ? Color.theme.green : Color.theme.red)
+            }
+            HStack {
+                Text("Day Gain/Loss:")
+                Spacer()
+                Text("ToDo: Figure out")
+                    .foregroundColor(Color.theme.secondaryText)
+            }
+            HStack {
+                Text("Quantity:")
+                Spacer()
+                Text(String(format: "%.2f", asset.totalShares))
+                    .foregroundColor(Color.theme.secondaryText)
+            }
+            HStack {
+                Text("Average Price:")
+                Spacer()
+                Text(String(format: "$%.2f", asset.averagePurchasePrice))
+                    .foregroundColor(Color.theme.secondaryText)
+            }
+        }
     }
 }
