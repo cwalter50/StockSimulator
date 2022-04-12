@@ -8,12 +8,12 @@
 import Foundation
 
 
-class Asset: Identifiable
+class Asset: Identifiable, ObservableObject
 {
-    var transactions: [Transaction]
-    var id: UUID
+    @Published var transactions: [Transaction]
+    @Published var id: UUID
     
-    var stock: Stock
+    @Published var stock: Stock
     
     var totalShares: Double {
         

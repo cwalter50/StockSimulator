@@ -106,7 +106,7 @@ struct StockSearchView: View {
         
         searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
         let apiCaller = APICaller.shared
-        apiCaller.getAllStockData(searchSymbol: searchSymbol) {
+        apiCaller.getAllStockData(searchSymbols: searchSymbol) {
             connectionResult in
             
             switch connectionResult {

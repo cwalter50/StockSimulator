@@ -49,8 +49,8 @@ final class APICaller{
 
     // this will get stock snapshots for all or multiple stocks... format needs to be SYMBOLA,SYMBOLB,SYMBOLC,... 
 //    public func getAllStockData(searchSymbol: String, completion: @escaping (Result<Stock, Error>) -> Void){
-    public func getAllStockData(searchSymbol: String, completion: @escaping (ConnectionResult) -> Void){
-        guard let url = URL(string: Constants.quoteurlString + searchSymbol.uppercased()) else {
+    public func getAllStockData(searchSymbols: String, completion: @escaping (ConnectionResult) -> Void){
+        guard let url = URL(string: Constants.quoteurlString + searchSymbols.uppercased()) else {
             return
         }
         
@@ -59,7 +59,10 @@ final class APICaller{
         request.httpMethod = "GET"
         
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
-            guard let data = data else { return }
+            guard let data = data else {
+                return
+                
+            }
 
             do {
                 guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
@@ -98,7 +101,6 @@ final class APICaller{
         }
         task.resume()
     }
-    
     
     func getChartData(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
     {

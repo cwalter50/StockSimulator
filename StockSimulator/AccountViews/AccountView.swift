@@ -17,6 +17,19 @@ struct AccountView: View {
     
     var account: Account
     
+    @FetchRequest var transactions: FetchedResults<Transaction>
+
+    init (account: Account)
+    {
+        self.account = account
+        _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
+        print("init on AccountView Called")
+
+//        account.assets = loadAccountAssets()
+    }
+    
+
+    
     
     @State var isSearchPresented = false
     @State var showingDeleteAlert = false
@@ -116,7 +129,7 @@ struct AccountView: View {
         }
         
         let apiCaller = APICaller.shared
-        apiCaller.getAllStockData(searchSymbol: searchString) {
+        apiCaller.getAllStockData(searchSymbols: searchString) {
             connectionResult in
             
             switch connectionResult {
@@ -126,11 +139,6 @@ struct AccountView: View {
                     {
                         if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
                             stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
-                            
-//                            stockCoreData.regularMarketPrice += 2
-//                            var rand = Int.random(in: 1...100)
-//                            stockCoreData.displayName = "Pear\(rand)"
-//                            print("updated values for \(stockCoreData.wrappedSymbol)")
                         }
                     }
                 

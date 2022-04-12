@@ -63,50 +63,7 @@ struct AddAccountView: View {
 
         }
     }
-    
-//    func loadAccountsFromUserDefaults() -> [Account]
-//    {
-//        var accounts = [Account]()
-//        if let theAccounts = UserDefaults.standard.data(forKey: "accounts")
-//        {
-//            let decoder = JSONDecoder()
-//            if let decoded = try? decoder.decode([Account].self, from: theAccounts) {
-//                accounts = decoded
-//                print("loaded Accounts from userdefaults in AddAccountView")
-//                print("found \(accounts.count) accounts")
-//
-//            }
-//        }
-//        else {
-//            print("No record of accounts in user defaults on AddAccountView")
-//        }
-//        return accounts
-//    }
-//
-//    func saveAccountsToUserDefaults()
-//    {
-//        // load all previous accounts, add this account to the list, save the account to the list, save all accounts to User defaults
-//
-//        var accounts = loadAccountsFromUserDefaults()
-//
-//        // add new account to accounts, and save it.
-//        let cash = Double(self.startingAmount) ?? 1000.00
-//
-//        let newAccount = Account(name: self.name, cash: cash)
-//
-//        accounts.append(newAccount)
-//        let encoder = JSONEncoder()
-//        if let encoded = try? encoder.encode(accounts) {
-//            UserDefaults.standard.set(encoded, forKey: "accounts")
-//            print("saving accounts to UserDefaults: \(accounts.count) accounts")
-//        }
-//        else {
-//            print("failed to save anything to user defaults")
-//        }
-//
-//        // dismiss view
-//        presentationMode.wrappedValue.dismiss()
-//    }
+
 }
 
 struct AddAccountView_Previews: PreviewProvider {

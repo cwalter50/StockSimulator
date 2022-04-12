@@ -33,13 +33,9 @@ struct ChartView: View {
                     linegraph
                         .background(chartBackground)
                         .overlay(chartYAxis.padding(.horizontal,4), alignment: .leading)
-                        
-
                         .onAppear(perform: {
                             loadData()
                         })
-                        
-
                     if showLoader {
                         ChartLoader()
                     }

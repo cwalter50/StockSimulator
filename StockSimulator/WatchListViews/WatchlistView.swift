@@ -76,7 +76,7 @@ struct WatchlistView: View {
         }
         
         let apiCaller = APICaller.shared
-        apiCaller.getAllStockData(searchSymbol: searchString) {
+        apiCaller.getAllStockData(searchSymbols: searchString) {
             connectionResult in
             
             switch connectionResult {
