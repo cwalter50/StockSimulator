@@ -12,23 +12,19 @@ import CoreData
 
 public class Account: NSManagedObject {
 
+//    @Published var assets: [Asset] = []
     var assets: [Asset] {
-
         get {
             return loadAccountAssets()
         }
         set {
 //            self.assets = loadAccountAssets()
         }
-
     }
-//    @Published var assets: [Asset] = []
-
-
     
     func loadAccountAssets() -> [Asset]
     {
-        print("loading account assets")
+//        print("loading account assets")
         var theAssets = [Asset]()
         if let theTransactionsSet = transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction]
         {

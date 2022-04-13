@@ -9,7 +9,15 @@ import SwiftUI
 
 struct AssetRow: View{
     
-    var asset: Asset
+    @ObservedObject var asset: Asset
+    
+//    @State var stock: Stock
+//    
+//    init(asset: Asset)
+//    {
+//        
+//    }
+    
     var body: some View {
         VStack {
             HStack (alignment: .firstTextBaseline){

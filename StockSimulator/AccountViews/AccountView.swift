@@ -11,25 +11,18 @@ struct AccountView: View {
     // CoreData
     @Environment(\.managedObjectContext) var moc
     
-    // will allow us to dismiss
-//    @Environment(\.presentationMode) var presentationMode
-//    var presentationMode: PresentationMode
-    
     var account: Account
-    
     @FetchRequest var transactions: FetchedResults<Transaction>
     
-//    @FetchRequest var stocks: FetchedResults<Stock> // stocks need load in init, because FetchRequest requires a predicate with the variable watchlist
-
+    
     init (account: Account)
     {
         self.account = account
         _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
         print("init on AccountView Called")
-
-//        account.assets = loadAccountAssets()
-//        self._stocks = FetchRequest(entity: Stock.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Stock.symbol, ascending: true)], predicate: NSPredicate(format: "(ANY watchlists == %@)", self.watchlist), animation: Animation.default)
+        
     }
+    
     
     @State var isSearchPresented = false
     @State var showingDeleteAlert = false
@@ -122,7 +115,10 @@ struct AccountView: View {
         }
         for t in transactions {
             if let theStock = t.stock {
-                stocks.append(theStock)
+                if t.isClosed == false {
+                    stocks.append(theStock)
+                }
+                
             }
         }
         print("found \(transactions.count) transactions")
@@ -145,7 +141,10 @@ struct AccountView: View {
                         if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
                             stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
                             print("updated values for \(stockCoreData.wrappedSymbol) to \(stockCoreData.regularMarketPrice)")
-//                            let a = account.assets.first(where: $0.stock == stockCoreData)
+                            if let currentAsset = account.assets.first(where: {$0.stock.wrappedSymbol == stockCoreData.wrappedSymbol}) {
+                                currentAsset.stock = stockCoreData
+                                
+                            }
                         }
                     }
                 

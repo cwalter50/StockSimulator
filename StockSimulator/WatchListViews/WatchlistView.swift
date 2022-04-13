@@ -21,8 +21,6 @@ struct WatchlistView: View {
     
     @FetchRequest var stocks: FetchedResults<Stock> // stocks need load in init, because FetchRequest requires a predicate with the variable watchlist
     
-    @State var isShowingPullToRequest = false
-    
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
     
