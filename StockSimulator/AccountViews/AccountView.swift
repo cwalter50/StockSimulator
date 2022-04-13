@@ -18,6 +18,8 @@ struct AccountView: View {
     var account: Account
     
     @FetchRequest var transactions: FetchedResults<Transaction>
+    
+//    @FetchRequest var stocks: FetchedResults<Stock> // stocks need load in init, because FetchRequest requires a predicate with the variable watchlist
 
     init (account: Account)
     {
@@ -26,13 +28,15 @@ struct AccountView: View {
         print("init on AccountView Called")
 
 //        account.assets = loadAccountAssets()
+//        self._stocks = FetchRequest(entity: Stock.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Stock.symbol, ascending: true)], predicate: NSPredicate(format: "(ANY watchlists == %@)", self.watchlist), animation: Animation.default)
     }
-    
-
-    
     
     @State var isSearchPresented = false
     @State var showingDeleteAlert = false
+    
+    // this should display an error on the api caller
+    @State private var showingErrorAlert = false
+    @State private var errorMessage = ""
     
     
     var body: some View {
@@ -89,6 +93,9 @@ struct AccountView: View {
         .alert(isPresented: $showingDeleteAlert) {
             Alert(title: Text("Delete \(account.name ?? "Account")?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete"), action: deleteAccount), secondaryButton: .cancel())
         }
+        .alert(isPresented: $showingErrorAlert) {
+            Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
+        }
         .toolbar {
             Button {
                 showingDeleteAlert = true
@@ -104,7 +111,7 @@ struct AccountView: View {
     
     func loadCurrentStockInfo()
     {
-        print("load current Stock Info Called")
+        print("load current Stock Info Called on account \(account.wrappedName)")
         account.assets = account.loadAccountAssets()
         // load the Stocks
         var stocks = [Stock]()
@@ -120,16 +127,14 @@ struct AccountView: View {
         }
         print("found \(transactions.count) transactions")
         
-        
-        
         var searchString = ""
-        for s in stocks
+        for s in stocks.unique()
         {
             searchString += s.wrappedSymbol+","
         }
         
         let apiCaller = APICaller.shared
-        apiCaller.getAllStockData(searchSymbols: searchString) {
+        apiCaller.getQuoteData(searchSymbols: searchString) {
             connectionResult in
             
             switch connectionResult {
@@ -139,23 +144,23 @@ struct AccountView: View {
                     {
                         if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
                             stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
+                            print("updated values for \(stockCoreData.wrappedSymbol) to \(stockCoreData.regularMarketPrice)")
+//                            let a = account.assets.first(where: $0.stock == stockCoreData)
                         }
                     }
                 
-                if moc.hasChanges {
-                    try? moc.save()
-                }
+                    if moc.hasChanges {
+                        try? moc.save()
+                    }
                 case .failure(let error):
+                    errorMessage = error
                     print(error)
+                    showingErrorAlert = true
                 
-            case .chartSuccess(_):
-                print("ChartSuccess")
-                
-
+                default:
+                    print("connectionResult was not success or failure")
             }
         }
-        
-       
     }
     
     func deleteAccount()

@@ -22,11 +22,6 @@ extension Account {
     @NSManaged public var name: String?
     @NSManaged public var startingValue: Double
     @NSManaged public var transactions: NSSet?
-    
-    
-
-    
-    
 
 }
 

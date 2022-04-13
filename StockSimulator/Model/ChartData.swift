@@ -29,6 +29,8 @@ struct MetaData: Codable {
     
     var currentTradingPeriod: CurrentTradingPeriod?
     
+
+    
 //    var post: CurrentTradingPeriod?
 //    var pre: CurrentTradingPeriod?
 //    var regular: CurrentTradingPeriod?
@@ -79,6 +81,8 @@ struct ChartData: Codable {
     var timestamp: [Int]
     
     var metaData: MetaData?
+    
+    var errorMessage: String?
     
     // this is sample 1 month data for AAPL on 3/30/22
     init()
@@ -320,21 +324,16 @@ struct ChartData: Codable {
                         print(error)
                     }
                 }
-
-                
-                
             }
-
         }
         else {
-            print("Error parsing the data")
+            errorMessage = results["message"] as? String ?? "Error Found Parsing ChartData"
+            print(errorMessage)
+            print(results)
             
         }
 
     }
-    
-    
-    
 }
 
 

@@ -8,50 +8,47 @@
 import Foundation
 import SwiftUI
 
+enum ChartDataResult {
+    case success(ChartData)
+    case failure(String)
+}
+
 final class ChartViewModel: ObservableObject {
-    @Published var chartData = ChartData() // this contains close, adjclose, volume, high, low, etc
+    @Published var chartData: ChartData = ChartData() // this contains close, adjclose, volume, high, low, etc
     @Published var maxY: Double = 0.0
     @Published var minY: Double = 0.0
     @Published var medY: Double = 0.0
     @Published var q1: Double = 0.0
     @Published var q3: Double = 0.0
-    @Published var lineColor: Color = Color.theme.red
+    @Published var lineColor: Color = Color.theme.green
     @Published var startingDate: Date = Date()
     @Published var endingDate: Date = Date()
     
-    func loadData(symbol: String, range: String, completion: @escaping() -> Void ) {
+    func loadData(symbol: String, range: String, completion: @escaping(ChartDataResult) -> Void ) {
         
-////        let searchSymbol = "F"
         let apiCaller = APICaller.shared
         apiCaller.getChartData(searchSymbol: symbol, range: range) {
             connectionResult in
 
             switch connectionResult {
-            case .success(_):
-                print("success")
-                self.chartData = ChartData(emptyData: true)
-                completion()
-            case .chartSuccess(let theChartData):
-                print("chartSuccess")
-                print("loaded data for \(symbol) in the range \(range)")
-//                print(theChartData)
-                DispatchQueue.main.async {
-                    self.loadData(from: theChartData)
-                    completion()
-                }
+                case .chartSuccess(let theChartData):
+                    print("loaded data for \(symbol) in the range \(range)")
+    //                print(theChartData)
 
-            case .failure(_):
-                print("failure")
-                self.chartData = ChartData(emptyData: true)
-                completion()
+                    DispatchQueue.main.async {
+                        self.loadData(from: theChartData)
+                        completion(.success(theChartData))
+                    }
+                case .failure(let errorMessage):
+                    print("failure loading chart data")
+                    self.chartData = ChartData(emptyData: true)
+                    completion(.failure(errorMessage))
+                default:
+                    print("loading chart data was not a success or failure")
+                    self.chartData = ChartData(emptyData: true)
             }
+        
         }
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-////            self.chartData = ChartMockData.mockData
-//            self.loadData(from: ChartMockData.mockData)
-////            self.chartData = ChartMockData.oneMonth.normalized
-//            completion()
-//        }
     }
     
     

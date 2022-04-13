@@ -12,7 +12,7 @@ enum ConnectionResult {
     case success([StockSnapshot])
     case chartSuccess(ChartData)
 //    case success([StockSnapshot])
-    case failure(Error)
+    case failure(String)
 }
 
 final class APICaller{
@@ -24,52 +24,49 @@ final class APICaller{
 //        static let apiKey = "JvcnVegPVxaamusnImc1S1pTgWQoSWnB1zwAIrnP" // started working on 3/5/22. Stopped working on 3/12/22
         static let apiKey = "u0oXimhO5g6AIR9DIy85D80DPTAtPQP95l9FiAkk" // started working on 3/12/22
         
-//        static let assetsEndpoint = "https://rest-sandbox.coinapi.io/v1asserts/"
-//        static let assetsEndpoint = "https://rest-sandbox.coinapi.io/v1/assets/"
-//        http://rest-sandbox.coinapi.io/v1/assets/?apikey=C120E6F5-11DD-48D4-8715-E9734B5D56ED
         
         static let quoteurlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols="
         
 //         'https://yfapi.net/v8/finance/chart/AAPL?range=1d&region=US&interval=5m&lang=en&events=div%2Csplit'
         
 //        "https://yfapi.net/v8/finance/chart/AAPL?range=1mo&region=US&interval=1d&lang=en&events=div%2Csplit"
-        static let charturlStringPt1 = "https://yfapi.net/v8/finance/chart/"
+        static let charturlStringStart = "https://yfapi.net/v8/finance/chart/"
         
         static let charturlRange = "?range="
-        static let charturlStringPt2 = "&region=US&interval="
-        static let charturlStringPt3 = "&lang=en&events=div%2Csplit"
+        static let charturlStringInterval = "&region=US&interval="
+        static let charturlStringEnd = "&lang=en&events=div%2Csplit"
         //        let urlString = "https://yfapi.net/v8/finance/chart/AAPL"
         //        let urlString = "https://yfapi.net/v8/finance/spark?symbols=AAPL,MSFT"
-        //        let urlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=AAPL%2CBTC-USD%2CEURUSD%3DX"
-        //        let urlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=AAPL"
+        //        let urlString =
     }
 
     private init() {}
     
-
-    // this will get stock snapshots for all or multiple stocks... format needs to be SYMBOLA,SYMBOLB,SYMBOLC,... 
+    // this will get stock snapshots for all or multiple stocks... format needs to be SYMBOLA,SYMBOLB,SYMBOLC,... Max of 10 symbols
 //    public func getAllStockData(searchSymbol: String, completion: @escaping (Result<Stock, Error>) -> Void){
-    public func getAllStockData(searchSymbols: String, completion: @escaping (ConnectionResult) -> Void){
-        guard let url = URL(string: Constants.quoteurlString + searchSymbols.uppercased()) else {
+    public func getQuoteData(searchSymbols: String, completion: @escaping (ConnectionResult) -> Void){
+        let urlString = Constants.quoteurlString + searchSymbols.uppercased()
+        guard let url = URL(string: urlString) else {
             return
         }
-        
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
         request.httpMethod = "GET"
         
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
-            guard let data = data else {
-                return
-                
-            }
 
+            guard let data = data else { return }
             do {
                 guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
                     print("error in getting JSON")
                     return
                 }
 //                    print(results)
+                // results will sometimes display a message like ["message": Limit Exceeded]
+                if let message = results["message"] as? String
+                {
+                    completion(.failure(message))
+                }
                 if let quoteResponse = results["quoteResponse"] as? [String:Any], let investmentResults = quoteResponse["result"] as? [[String:Any]] {
                     
                     do {
@@ -77,25 +74,19 @@ final class APICaller{
                         let decoder = JSONDecoder()
                         let investmentArray = try decoder.decode([StockSnapshot].self, from: json)
 //                        print(investmentArray)
-                        print("loaded stock data")
+                        print("loaded stock data for url \(url.absoluteString)")
                         completion(.success(investmentArray))
-
-//                        if investmentArray.count > 0
-//                        {
-//                            let stock = investmentArray[0]
-//                            completion(.success(stock))
-//                        }
 
                     } catch {
                         print(error)
-                        completion(.failure(error))
+                        completion(.failure(error.localizedDescription))
                     }
 //                        print(investmentResults)
                 }
                 
             } catch {
                 print("Cannot Decode JSON Response")
-                completion(.failure(error))
+                completion(.failure(error.localizedDescription))
                 return
             }
         }
@@ -114,11 +105,10 @@ final class APICaller{
 //        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2 + interval + Constants.charturlStringPt3) else {
 //            return
 //        }
-        guard let url = URL(string: "https://yfapi.net/v8/finance/chart/\(searchSymbol.uppercased())?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit") else {
+        let urlString = "https://yfapi.net/v8/finance/chart/\(searchSymbol.uppercased())?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit"
+        guard let url = URL(string: urlString) else {
             return
         }
-        
-    
         
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
@@ -134,8 +124,9 @@ final class APICaller{
                     return
                 }
 //                print(results)
-                
-//                print(results)
+                if let message = results["message"] as? String {
+                    completion(.failure(message))
+                }
                 let chartData = ChartData(results: results)
 //                print(chartData)
                 print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
@@ -143,7 +134,7 @@ final class APICaller{
                 completion(.chartSuccess(chartData))
             } catch {
                 print("Cannot Decode JSON Response")
-                completion(.failure(error))
+                completion(.failure(error.localizedDescription))
                 return
             }
         }

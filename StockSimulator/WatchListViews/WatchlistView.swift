@@ -23,6 +23,9 @@ struct WatchlistView: View {
     
     @State var isShowingPullToRequest = false
     
+    @State private var showingErrorAlert = false
+    @State private var errorMessage = ""
+    
     init (watchlist: Watchlist)
     {
         self.watchlist = watchlist
@@ -61,6 +64,9 @@ struct WatchlistView: View {
                     EditButton()
                 }
             }
+            .alert(isPresented: $showingErrorAlert) {
+                Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
+            }
             .navigationTitle("\(watchlist.name ?? "Watchlist")")
             .onAppear(perform: loadCurrentStockInfo)
         }
@@ -76,7 +82,7 @@ struct WatchlistView: View {
         }
         
         let apiCaller = APICaller.shared
-        apiCaller.getAllStockData(searchSymbols: searchString) {
+        apiCaller.getQuoteData(searchSymbols: searchString) {
             connectionResult in
             
             switch connectionResult {
@@ -97,8 +103,11 @@ struct WatchlistView: View {
 
                 case .failure(let error):
                     print(error)
-            case .chartSuccess(_):
-                    print("ChartSuccess")
+                    errorMessage = error
+                    showingErrorAlert = true
+                
+                default:
+                    print("ConnectionResult is not success or failure")
 
             }
         }

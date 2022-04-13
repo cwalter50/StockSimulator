@@ -19,10 +19,12 @@ struct ChartView: View {
     
     @State private var selectedTimeInterval = "1mo"
     
+    @State private var showingErrorAlert = false
+    @State private var errorMessage = ""
+    
 //    var timeRanges = ["1d","5d","1mo", "3mo","6mo","ytd","1y","2y","5y","10y","max"]
     var timeRanges = ["1d","5d","1mo","6mo","ytd","1y","max"]
 
-    
     var stockSnapshot: StockSnapshot
     
     var body: some View {
@@ -46,6 +48,10 @@ struct ChartView: View {
             .frame(width: gr.size.width, height: gr.size.height)
             .font(.caption)
             .foregroundColor(Color.theme.secondaryText)
+            .alert(isPresented: $showingErrorAlert) {
+                Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
+            }
+            
         }
     }
     
@@ -53,14 +59,23 @@ struct ChartView: View {
     func loadData()
     {
         showLoader = true
-        viewModel.chartData = ChartData(emptyData: true)
+//        viewModel.chartData = ChartData(emptyData: true)
         animateChart = false
         trimValue = 0
         viewModel.loadData(symbol: stockSnapshot.symbol, range: selectedTimeInterval) {
-            showLoader = false
-            withAnimation(.easeInOut(duration: 2)) {
-                animateChart = true
+            chartDataResult in
+            switch chartDataResult {
+            case .success(_):
+                showLoader = false
+                withAnimation(.easeInOut(duration: 2)) {
+                    animateChart = true
+                }
+            case .failure(let error):
+                errorMessage = error
+                showingErrorAlert = true
+                showLoader = false
             }
+            
         }
     }
 }

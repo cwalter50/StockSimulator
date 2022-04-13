@@ -23,6 +23,9 @@ struct StockSearchView: View {
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
     
+    @State private var showingErrorAlert = false
+    @State private var errorMessage = ""
+    
     init(watchlist: Watchlist)
     {
         self.watchlist = watchlist
@@ -32,10 +35,6 @@ struct StockSearchView: View {
     init(theAccount: Account)
     {
         account = theAccount
-        
-        // figure out how to add watchlist later if we want to user to be able to save to watchlist
-//        self.watchlist = Watchlist() // this will load the stocks from UserDefaults...// need to fix this
-//        stockSnapshot = []
     }
     
     var body: some View {
@@ -52,6 +51,9 @@ struct StockSearchView: View {
                 
             }
             .padding()
+            .alert(isPresented: $showingErrorAlert) {
+                Alert(title: Text("Error"), message: Text("\(errorMessage)"), primaryButton: .default(Text("OK"), action: nil), secondaryButton: .cancel())
+            }
             
 //            if let theStockSnapshot = stockSnapshot
 //            {
@@ -106,7 +108,7 @@ struct StockSearchView: View {
         
         searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
         let apiCaller = APICaller.shared
-        apiCaller.getAllStockData(searchSymbols: searchSymbol) {
+        apiCaller.getQuoteData(searchSymbols: searchSymbol) {
             connectionResult in
             
             switch connectionResult {
@@ -116,7 +118,8 @@ struct StockSearchView: View {
                 case .failure(let error):
                     print(error)
                     stockSnapshots = []
-//                    stockSnapshot = nil
+                    errorMessage = error
+                    showingErrorAlert = true
                 case .chartSuccess(let theAnswer):
                     print("Chart Success \(theAnswer)")
             }

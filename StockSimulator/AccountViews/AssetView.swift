@@ -20,11 +20,8 @@ struct AssetView: View {
             Section {
                 StockBasicView(stockSnapshot: StockSnapshot(stock: asset.stock))
                 ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
-//                StockDetailView(stock: asset.stock)
                     .frame(height: 300)
-//                    .padding()
             }
-//            .padding([.bottom], 20)
             
             yourSharesSection
             .font(.body)
@@ -33,43 +30,11 @@ struct AssetView: View {
                 TradeFormView(account: account, stockSnapshot: StockSnapshot(stock: asset.stock))
             }
             
-            
-            
-            
-            
-            
-            
-//            TradeFormView(account: account, stockSnapshot: StockSnapshot(stock: asset.stock))
-//            Spacer()
-            
         }
         .navigationTitle(asset.stock.wrappedSymbol)
     }
     
-//    func getChartData()
-//    {
-////        stockSnapshots = []
-////        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
-//        
-//        // remove all spaces from search symbol
-//        
-//        let searchSymbol = "AAPL"
-//        let apiCaller = APICaller.shared
-//        apiCaller.getChartData(searchSymbol: searchSymbol, range: "1mo") {
-//            connectionResult in
-//            
-//            switch connectionResult {
-//            case .success(_):
-//                print("success")
-//            case .chartSuccess(_):
-//                print("chartSuccess")
-//            case .failure(_):
-//                print("failure")
-//            }
-//        }
-//        
-//        
-//    }
+
 }
 
 struct AssetView_Previews: PreviewProvider {
