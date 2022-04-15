@@ -11,8 +11,6 @@ struct AccountsView: View {
     
     @Environment(\.managedObjectContext) var moc // CoreData
     
-    @Environment(\.editMode) private var editMode
-    
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.created, ascending: false)], animation: Animation.default) var accounts: FetchedResults<Account>
     
 
@@ -29,7 +27,6 @@ struct AccountsView: View {
                     }
 
                 }
-                .onDelete(perform: delete)
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .toolbar {
@@ -51,20 +48,6 @@ struct AccountsView: View {
 
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        
-    }
-    
-    
-    func delete(at offsets: IndexSet) {
-//        accounts.remove(atOffsets: offsets)
-//        saveToUserDefaults()
-        
-        for index in offsets {
-            let account = accounts[index]
-            moc.delete(account)
-        }
-        
-        try? moc.save()
         
     }
     

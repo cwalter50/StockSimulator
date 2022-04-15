@@ -84,9 +84,10 @@ struct ChartData: Codable {
     
     var errorMessage: String?
     
-    // this is sample 1 month data for AAPL on 3/30/22
+    // this is sample 1 month data for AAPL on 3/30/22 // this is mockData
     init()
     {
+        print("init() called on chartData it is MockData")
         adjclose = [165.1199951171875,
                     163.1999969482422,
                     166.5599975585938,
@@ -256,13 +257,10 @@ struct ChartData: Codable {
     
     init (emptyData: Bool)
     {
-        if emptyData == false
+        print("init(emptyData) called on chartData")
+        self.init()
+        if emptyData == true
         {
-            self.init()
-        }
-        else
-        {
-            self.init()
             adjclose = []
             close = []
             high = []
@@ -271,24 +269,18 @@ struct ChartData: Codable {
             volume = []
             timestamp = []
         }
-
     }
-    
-    
     
     init(results: [String: Any])
     {
         self.init()
-        
         if let chart = results["chart"] as? [String:Any], let result = chart["result"] as? [[String:Any]]
         {
             if result.count > 0
             {
 //                print(result[0])
-                
                 self.timestamp = result[0]["timestamp"] as? [Int] ?? [Int]()
 //                print(timestamp)
-                
                 if let indicators = result[0]["indicators"] as? [String: Any], let quote = indicators["quote"] as? [[String: Any]], let adjClose2 = indicators["adjclose"] as? [[String: Any]] {
                     
                     if quote.count > 0
@@ -328,7 +320,7 @@ struct ChartData: Codable {
         }
         else {
             errorMessage = results["message"] as? String ?? "Error Found Parsing ChartData"
-            print(errorMessage)
+            print(errorMessage ?? "Error")
             print(results)
             
         }

@@ -27,6 +27,7 @@ struct ChartView: View {
 
     var stockSnapshot: StockSnapshot
     
+    
     var body: some View {
         GeometryReader { gr in
             VStack {
@@ -37,6 +38,7 @@ struct ChartView: View {
                         .overlay(chartYAxis.padding(.horizontal,4), alignment: .leading)
                         .onAppear(perform: {
                             loadData()
+                            print("onAppear called in ChartView")
                         })
                     if showLoader {
                         ChartLoader()
@@ -75,7 +77,6 @@ struct ChartView: View {
                 showingErrorAlert = true
                 showLoader = false
             }
-            
         }
     }
 }

@@ -14,7 +14,7 @@ enum ChartDataResult {
 }
 
 final class ChartViewModel: ObservableObject {
-    @Published var chartData: ChartData = ChartData() // this contains close, adjclose, volume, high, low, etc
+    @Published var chartData: ChartData = ChartData(emptyData: true) // this contains close, adjclose, volume, high, low, etc
     @Published var maxY: Double = 0.0
     @Published var minY: Double = 0.0
     @Published var medY: Double = 0.0
@@ -36,9 +36,10 @@ final class ChartViewModel: ObservableObject {
     //                print(theChartData)
 
                     DispatchQueue.main.async {
-                        self.loadData(from: theChartData)
-                        completion(.success(theChartData))
+                        self.setData(from: theChartData)
+                        
                     }
+                    completion(.success(theChartData))
                 case .failure(let errorMessage):
                     print("failure loading chart data")
                     self.chartData = ChartData(emptyData: true)
@@ -52,7 +53,7 @@ final class ChartViewModel: ObservableObject {
     }
     
     
-    func loadData(from chartData: ChartData)
+    func setData(from chartData: ChartData)
     {
         self.chartData = chartData
         self.maxY = self.chartData.close.max() ?? 0

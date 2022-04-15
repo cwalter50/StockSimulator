@@ -12,9 +12,9 @@ class Asset: Identifiable, ObservableObject
 {
     @Published var transactions: [Transaction]
     @Published var id: UUID
-    
     @Published var stock: Stock
     
+
     var totalShares: Double {
         
         var total = 0.0

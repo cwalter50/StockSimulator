@@ -18,7 +18,7 @@ struct StockDetailView: View {
             ChartView(stockSnapshot: StockSnapshot(stock: stock))
                 .frame(height: 300)
             Spacer()
-        }
+        }.padding()
         
         
     }

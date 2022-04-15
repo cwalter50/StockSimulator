@@ -18,18 +18,7 @@ struct ContentView: View {
         TabView {
             VStack {
                 Text("Home Tab")
-                Button(action: {
-                    getChartData()
-                }) {
-                    Text("Load Chart Data")
-                }
-
-//                ChartView()
-//                ChartView2()
-//                ChartView(stockSnapshot: StockSnapshot())
-//                    .frame(width: 350, height: 300)
             }
-            
                 .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
                     Image(systemName: "house.fill")
@@ -37,16 +26,14 @@ struct ContentView: View {
                 }
          
             AccountsView()
-//                .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
-                    Image(systemName: "bookmark.circle.fill")
+                    Image(systemName: "dollarsign.square.fill")
                     Text("Accounts")
                 }
          
             WatchlistsView()
-//                .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
-                    Image(systemName: "video.circle.fill")
+                    Image(systemName: "book.circle.fill")
                     Text("WatchLists")
                 }
          
@@ -57,30 +44,6 @@ struct ContentView: View {
                     Text("Profile")
                 }
         }
-    }
-    
-    func getChartData()
-    {
-//        stockSnapshots = []
-//        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
-        
-        // remove all spaces from search symbol
-        
-        let searchSymbol = "F"
-        let apiCaller = APICaller.shared
-        apiCaller.getChartData(searchSymbol: searchSymbol, range: "1mo") {
-            connectionResult in
-            
-            switch connectionResult {
-            case .success(_):
-                print("success")
-            case .chartSuccess(_):
-                print("chartSuccess")
-            case .failure(_):
-                print("failure")
-            }
-        }
-        
         
     }
 }
@@ -88,5 +51,8 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView(accounts: [])
+            
+            
     }
 }
+

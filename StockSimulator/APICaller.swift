@@ -95,16 +95,17 @@ final class APICaller{
     
     func getChartData(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
     {
-        
         var interval = "1d"
 
 //        if range == "1d" || range == "5d"
 //        {
-//            interval = "5m"
+//            interval = "15m"
 //        }
 //        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2 + interval + Constants.charturlStringPt3) else {
 //            return
 //        }
+        
+//    https://yfapi.net/v8/finance/chart/AAPL?range=5d&region=US&interval=15m&lang=en&events=div%2Csplit
         let urlString = "https://yfapi.net/v8/finance/chart/\(searchSymbol.uppercased())?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit"
         guard let url = URL(string: urlString) else {
             return
@@ -118,7 +119,6 @@ final class APICaller{
             guard let data = data else { return }
 
             do {
-                
                 guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
                     print("error in getting JSON")
                     return

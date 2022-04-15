@@ -20,6 +20,7 @@ struct AccountView: View {
         self.account = account
         _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
         print("init on AccountView Called")
+//        loadCurrentStockInfo()
         
     }
     
@@ -41,6 +42,9 @@ struct AccountView: View {
 //                Text(String(format: "$%.2f", account.calculateValue()))
 //                    .font(.headline)
             }
+            .alert(isPresented: $showingDeleteAlert) {
+                Alert(title: Text("Delete \(account.name ?? "Account")?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete"), action: deleteAccount), secondaryButton: .cancel())
+            }
             Text(String(format: "Cash: $%.2f", account.cash))
                 .font(.headline)
             HStack(alignment: .firstTextBaseline) {
@@ -57,6 +61,9 @@ struct AccountView: View {
                 }){
                     StockSearchView(theAccount: account)
                 }
+            }
+            .alert(isPresented: $showingErrorAlert) {
+                Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
             }
             List {
                 HStack(alignment: .center) {
@@ -76,19 +83,13 @@ struct AccountView: View {
                 }
             }
             .listStyle(PlainListStyle())
-            
-            
         }
         .padding(20)
 //        .navigationViewStyle(StackNavigationViewStyle())
         .navigationTitle("Account Overview")
         .navigationViewStyle(StackNavigationViewStyle())
-        .alert(isPresented: $showingDeleteAlert) {
-            Alert(title: Text("Delete \(account.name ?? "Account")?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete"), action: deleteAccount), secondaryButton: .cancel())
-        }
-        .alert(isPresented: $showingErrorAlert) {
-            Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
-        }
+
+
         .toolbar {
             Button {
                 showingDeleteAlert = true
@@ -105,14 +106,10 @@ struct AccountView: View {
     func loadCurrentStockInfo()
     {
         print("load current Stock Info Called on account \(account.wrappedName)")
-        account.assets = account.loadAccountAssets()
+//        account.assets = account.loadAccountAssets()
         // load the Stocks
         var stocks = [Stock]()
         
-        guard let transactions = account.transactions?.allObjects as? [Transaction] else {
-            print("no transactions loaded")
-            return
-        }
         for t in transactions {
             if let theStock = t.stock {
                 if t.isClosed == false {
@@ -141,10 +138,6 @@ struct AccountView: View {
                         if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
                             stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
                             print("updated values for \(stockCoreData.wrappedSymbol) to \(stockCoreData.regularMarketPrice)")
-                            if let currentAsset = account.assets.first(where: {$0.stock.wrappedSymbol == stockCoreData.wrappedSymbol}) {
-                                currentAsset.stock = stockCoreData
-                                
-                            }
                         }
                     }
                 
