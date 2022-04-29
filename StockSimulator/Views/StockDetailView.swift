@@ -11,6 +11,13 @@ struct StockDetailView: View {
     
     var stock: Stock
     
+//    init(stock: Stock)
+//    {
+//        // load most recent data for stock
+//        self.stock = stock
+//        
+//    }
+    
     var body: some View {
         VStack {
             StockBasicView(stockSnapshot: StockSnapshot(stock: stock))

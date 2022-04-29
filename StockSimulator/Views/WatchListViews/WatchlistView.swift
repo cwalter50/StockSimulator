@@ -44,10 +44,19 @@ struct WatchlistView: View {
                     
                 }
                 .onDelete(perform: delete)
-//                .deleteDisabled(editMode?.wrappedValue != .active)
+                
             }
-            
+            .listStyle(PlainListStyle())
+
             .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        loadCurrentStockInfo()
+                    }) {
+//                        Text("Reload")
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         isSearchPresented.toggle()
@@ -61,6 +70,7 @@ struct WatchlistView: View {
                 ToolbarItem {
                     EditButton()
                 }
+                
             }
             .alert(isPresented: $showingErrorAlert) {
                 Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
@@ -90,9 +100,7 @@ struct WatchlistView: View {
                     {
                         if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
                             stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
-                            
-//                            var rand = Int.random(in: 1...100)
-//                            stockCoreData.displayName = "Pear\(rand)"
+
                             print("updated values for \(stockCoreData.wrappedSymbol)")
                         }
                     }
@@ -126,7 +134,18 @@ struct WatchlistView: View {
 
 struct WatchlistView_Previews: PreviewProvider {
     static var previews: some View {
-        WatchlistView(watchlist: Watchlist())
+        let context = PersistenceController.preview.container.viewContext
+        //Test data
+        let newWatchlist = Watchlist.init(context: context)
+        newWatchlist.name = "Sample"
+        
+        return WatchlistView(watchlist: newWatchlist).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        
+        
+//        WatchlistView(watchlist: Watchlist(context: DataController().container.viewContext))
+
+
+//            .environment(\.managedObjectContext, DataController().container.viewContext)
     }
 }
 

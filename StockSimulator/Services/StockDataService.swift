@@ -1,0 +1,64 @@
+//
+//  StockDataService.swift
+//  StockSimulator
+//
+//  Created by Christopher Walter on 4/24/22.
+//
+
+import Foundation
+import Combine
+
+class StockDataService {
+    
+    @Published var stockSnapshots: [StockSnapshot] = []
+    
+    var stockSubscription: AnyCancellable?
+    init() {
+        getQuoteData(searchSymbols: "AAPL")
+    }
+
+    private func getQuoteData(searchSymbols: String)
+    {
+        let urlString = Constants.quoteurlString + searchSymbols.uppercased()
+        guard let url = URL(string: urlString) else { return }
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+        request.httpMethod = "GET"
+
+        
+        // Download Data using Combine. The teacher thinks it is the future of iOS Programming. Very powerful. A lot of the code for this has been refractored and put into static functions in NetworkingManager
+        stockSubscription = NetworkingManager.download(urlRequest: request, url: url)
+            .decode(type: [StockSnapshot].self, decoder: JSONDecoder())
+            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] (returnedStocks) in
+                self?.stockSnapshots = returnedStocks
+                self?.stockSubscription?.cancel()
+            })
+    }
+    
+    
+    
+    
+    private struct Constants{
+//        static let apiKey = "BEDD33LJaE8HYMSFDX1Sf1lMVbkR3CKU518oCr8x" // stopped working 2/23/2022
+//        static let apiKey = "g4Kz4cnymT3w6iiUfowfT8s0Nthdk35adU4tjEq5" // stopped working on 3/5/22
+//        static let apiKey = "JvcnVegPVxaamusnImc1S1pTgWQoSWnB1zwAIrnP" // started working on 3/5/22. Stopped working on 3/12/22
+        static let apiKey = "u0oXimhO5g6AIR9DIy85D80DPTAtPQP95l9FiAkk" // started working on 3/12/22
+        
+        static let quoteurlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols="
+        
+//         'https://yfapi.net/v8/finance/chart/AAPL?range=1d&region=US&interval=5m&lang=en&events=div%2Csplit'
+        
+//        "https://yfapi.net/v8/finance/chart/AAPL?range=1mo&region=US&interval=1d&lang=en&events=div%2Csplit"
+        static let charturlStringStart = "https://yfapi.net/v8/finance/chart/"
+        
+        static let charturlRange = "?range="
+        static let charturlStringInterval = "&region=US&interval="
+        static let charturlStringEnd = "&lang=en&events=div%2Csplit"
+    }
+
+}
+
+
+
+
+

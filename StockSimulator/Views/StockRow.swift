@@ -17,14 +17,28 @@ struct StockRow: View {
                 Text(stock.symbol ?? "Unknown")
                     .font(.title)
                     .fontWeight(.bold)
-                Text(stock.displayName ?? "Unknown")
+                Text(stock.wrappedDisplayName)
                     .font(.body)
                     .foregroundColor(.secondary)
             }
             Spacer()
-            Text(String(format: "$%.2f", stock.regularMarketPrice))
-                .font(.title)
+            VStack {
+                Text(String(format: "$%.2f", stock.regularMarketPrice))
+                                .font(.title)
+                HStack {
+                    Text(stock.regularMarketChangeFormatted)
+                    
+                    Text(stock.regularMarketChangePercentFormatted)
+                }
+                .foregroundColor(stock.regularMarketChange >= 0 ? Color.theme.green : Color.theme.red)
+                .font(.headline)
+            }
+
+            
+            
         }
+        
+        
     }
 }
 

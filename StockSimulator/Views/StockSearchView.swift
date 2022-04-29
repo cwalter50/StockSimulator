@@ -43,7 +43,6 @@ struct StockSearchView: View {
                 TextField("Enter Stock Symbol", text: $searchSymbol)
 //                TextField("StockSymbol", text: $searchSymbol, prompt: Text("Enter Stock Symbol"))
                     .autocapitalization(.allCharacters)
-                
                 Button(action: getStockData) {
                     Text("Search")
                     
@@ -54,9 +53,6 @@ struct StockSearchView: View {
             .alert(isPresented: $showingErrorAlert) {
                 Alert(title: Text("Error"), message: Text("\(errorMessage)"), primaryButton: .default(Text("OK"), action: nil), secondaryButton: .cancel())
             }
-            
-//            if let theStockSnapshot = stockSnapshot
-//            {
                 List {
                     ForEach(stockSnapshots)
                     {
@@ -86,10 +82,9 @@ struct StockSearchView: View {
                                 }
                             }
                         }
-                        
-                        
                     }
                 }
+                .listStyle(PlainListStyle())
 
             Spacer()
         }

@@ -34,6 +34,9 @@ public class Account: NSManagedObject {
         }
         return theAssets
     }
+    
+    
+    
 //    var assets: [Asset] {
 //        get {
 //            return loadAccountAssets()

@@ -32,6 +32,14 @@ struct AccountsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
+                        print("hello")
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                    }
+
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
                         isAddAccountPresented.toggle()
                     }) {
                         Image(systemName: "plus")
@@ -49,6 +57,13 @@ struct AccountsView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
+    }
+    
+    func loadAccountValues()
+    {
+        for account in accounts {
+            
+        }
     }
     
 }
