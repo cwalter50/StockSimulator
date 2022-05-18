@@ -14,34 +14,81 @@ class StockDataService {
     
     var stockSubscription: AnyCancellable?
     init() {
-        getQuoteData(searchSymbols: "AAPL")
+//        getQuoteData(searchSymbols: "")
     }
 
-    private func getQuoteData(searchSymbols: String)
+    func getQuoteData(searchSymbols: String)
     {
+        
         let urlString = Constants.quoteurlString + searchSymbols.uppercased()
-        guard let url = URL(string: urlString) else { return }
+//        let urlString = Constants.quoteurlString + "AAPL"
+        guard let url = URL(string: urlString) else {
+            return
+        }
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
         request.httpMethod = "GET"
-
         
-        // Download Data using Combine. The teacher thinks it is the future of iOS Programming. Very powerful. A lot of the code for this has been refractored and put into static functions in NetworkingManager
-        stockSubscription = NetworkingManager.download(urlRequest: request, url: url)
-            .decode(type: [StockSnapshot].self, decoder: JSONDecoder())
-            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] (returnedStocks) in
-                self?.stockSnapshots = returnedStocks
-                self?.stockSubscription?.cancel()
-            })
+        let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
+
+            guard let data = data else { return }
+            do {
+                guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
+                    print("error in getting JSON")
+                    return
+                }
+                if let message = results["message"] as? String
+                {
+                    print(message)
+//                    completion(.failure(message))
+                }
+                do {
+                    let json = try JSONSerialization.data(withJSONObject: results)
+//                    print(json)
+                    let decoder = JSONDecoder()
+                    let quoteSnapshot = try decoder.decode(QuoteSnapshot.self, from: json)
+                    print(quoteSnapshot)
+                    self.stockSnapshots = quoteSnapshot.quoteResponse.result
+                    print("Found these stocks: \(self.stockSnapshots)")
+
+//                    completion(.success(quoteSnapshot.quoteResponse.result))
+                }
+                catch {
+                    print(error)
+//                    completion(.failure(error.localizedDescription))
+                }
+            }
+            catch {
+                print(error)
+//                completion(.failure(error.localizedDescription))
+            }
+        }
+        task.resume()
+        
+        
+        
+//        let urlString = Constants.quoteurlString + searchSymbols.uppercased()
+//        guard let url = URL(string: urlString) else { return }
+//        var request = URLRequest(url: url)
+//        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+//        request.httpMethod = "GET"
+//
+//
+//
+//
+//        // Download Data using Combine. The teacher thinks it is the future of iOS Programming. Very powerful. A lot of the code for this has been refractored and put into static functions in NetworkingManager
+//        stockSubscription = NetworkingManager.download(urlRequest: request, url: url)
+//            .decode(type: [StockSnapshot].self, decoder: JSONDecoder())
+//            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] (returnedStocks) in
+//                self?.stockSnapshots = returnedStocks
+//                self?.stockSubscription?.cancel()
+//            })
     }
     
     
     
     
     private struct Constants{
-//        static let apiKey = "BEDD33LJaE8HYMSFDX1Sf1lMVbkR3CKU518oCr8x" // stopped working 2/23/2022
-//        static let apiKey = "g4Kz4cnymT3w6iiUfowfT8s0Nthdk35adU4tjEq5" // stopped working on 3/5/22
-//        static let apiKey = "JvcnVegPVxaamusnImc1S1pTgWQoSWnB1zwAIrnP" // started working on 3/5/22. Stopped working on 3/12/22
         static let apiKey = "u0oXimhO5g6AIR9DIy85D80DPTAtPQP95l9FiAkk" // started working on 3/12/22
         
         static let quoteurlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols="

@@ -1,64 +1,14 @@
 //
-//  Extensions.swift
+//  Double.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 3/24/22.
+//  Created by Christopher Walter on 5/18/22.
 //
 
 import Foundation
-import SwiftUI
-
-
-// This is used to normalize the data in an array so that we can plot it on the graph. Data is all over the place and change the values to all be between 0 and 1. 0 in min, 1 is max. might have to change this to 0.1 and 0.9 in the future, so that we have some white space at the top and bottom of the chart
-extension Array where Element == Double {
-    // Return the elements of the sequence Normalized
-    var normalized: [Double] {
-        if let min = self.min(), let max = self.max() {
-            return self.map { ($0 - min) / ( max - min) }
-        }
-        else {
-            // we do not have a minimum and maximum
-            return []
-        }
-    }
-    
-    
-
-    
-}
-
-
-extension Date
-{
-    
-    // convert a time since 1970 into a date to be displayed
-//    init()
-    private var shortFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        return formatter
-    }
-    
-    func asShortDateString() -> String {
-        return shortFormatter.string(from: self)
-    }
-    
-}
-
-
 
 extension Double {
-    func autoFormat() -> Double
-    {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.maximumFractionDigits = 2
-        
-        return Double(truncating: formatter.number(from: "\(self)") ?? 0)
-    }
-}
-
-extension Double {
+    
     var priceFormatted:String{
         let strValue = String(format: "%.2f", self)
 //        let strValue = "\(self)"
@@ -75,9 +25,15 @@ extension Double {
 
         return "\(money).\(cents)"
     }
-}
-
-extension Double {
+    
+    func autoFormat() -> Double
+    {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 2
+        
+        return Double(truncating: formatter.number(from: "\(self)") ?? 0)
+    }
     
     /// Converts a Double into a Currency with 2 decimal places
     /// ```
@@ -192,15 +148,3 @@ extension Double {
 
     
 }
-
-
-
-
-// This is used to get only unique values in an array
-extension Sequence where Iterator.Element: Hashable {
-    func unique() -> [Iterator.Element] {
-        var seen: Set<Iterator.Element> = []
-        return filter { seen.insert($0).inserted }
-    }
-}
-

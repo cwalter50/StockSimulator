@@ -42,12 +42,12 @@ extension Account {
         if currentValue >= startingValue
         {
             let growth = (currentValue / startingValue - 1) * 100
-            return String(format: "+%.1f", growth)
+            return String(format: "+%.1f", growth) + "%"
         }
         else
         {
             let growth = (1 - currentValue / startingValue) * 100
-            return String(format: "-%.1f", growth)
+            return String(format: "-%.1f", growth) + "%"
         }
     }
     

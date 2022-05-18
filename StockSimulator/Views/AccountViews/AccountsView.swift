@@ -13,6 +13,7 @@ struct AccountsView: View {
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.created, ascending: false)], animation: Animation.default) var accounts: FetchedResults<Account>
     
+//    @ObservedObject var viewModel = AccountsViewModel()
 
     @State var isAddAccountPresented = false
     
@@ -20,19 +21,20 @@ struct AccountsView: View {
     var body: some View {
         NavigationView {
             List {
+                
                 ForEach(accounts) {
+//                ForEach(viewModel.accounts) {
                     account in
                     NavigationLink(destination: AccountView(account: account)) {
                         AccountRow(account: account)
                     }
-
                 }
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        print("hello")
+                        loadData()
                     }) {
                         Image(systemName: "arrow.clockwise")
                     }
@@ -53,18 +55,28 @@ struct AccountsView: View {
                 }
             }
             .navigationTitle("Accounts")
+            .onAppear(perform: loadData)
 
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
     }
     
-    func loadAccountValues()
-    {
-        for account in accounts {
-            
-        }
+    func loadData () {
+//        viewModel.loadAccountsValue { result in
+//            switch result {
+//            case .success(let theAccounts):
+//                print("1")
+//            case .failure(let hello):
+//                print(hello)
+//            }
+//            
+//            
+//        }
     }
+    
+    
+    
     
 }
 

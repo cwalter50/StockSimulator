@@ -9,6 +9,8 @@ import SwiftUI
 
 struct StockSearchView: View {
     
+//    var stockVM = StockDataService()
+    
     @Environment(\.managedObjectContext) var moc // CoreData
     
     var watchlist: Watchlist?
@@ -96,6 +98,10 @@ struct StockSearchView: View {
     
     func getStockData()
     {
+//        searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
+//        stockVM.getQuoteData(searchSymbols: searchSymbol)
+//        stockVM.loadStocks(searchSymbols: searchSymbol)
+        
         stockSnapshots = []
 //        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
         
