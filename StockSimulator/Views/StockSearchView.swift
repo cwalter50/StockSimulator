@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StockSearchView: View {
     
-//    var stockVM = StockDataService()
+    @ObservedObject var stockVM = StocksViewModel()
     
     @Environment(\.managedObjectContext) var moc // CoreData
     
@@ -18,7 +18,7 @@ struct StockSearchView: View {
     
     @State var searchSymbol: String = ""
 //    @State var foundStock: Bool = false
-    @State var stockSnapshots: [StockSnapshot] = []
+//    @State var stockSnapshots: [StockSnapshot] = []
     
     @State private var isTradePresented = false
     
@@ -43,7 +43,6 @@ struct StockSearchView: View {
         VStack {
             HStack {
                 TextField("Enter Stock Symbol", text: $searchSymbol)
-//                TextField("StockSymbol", text: $searchSymbol, prompt: Text("Enter Stock Symbol"))
                     .autocapitalization(.allCharacters)
                 Button(action: getStockData) {
                     Text("Search")
@@ -56,7 +55,7 @@ struct StockSearchView: View {
                 Alert(title: Text("Error"), message: Text("\(errorMessage)"), primaryButton: .default(Text("OK"), action: nil), secondaryButton: .cancel())
             }
                 List {
-                    ForEach(stockSnapshots)
+                    ForEach(stockVM.stockSnapshots)
                     {
                         stockSnapshot in
                         StockBasicView(stockSnapshot: stockSnapshot)
@@ -98,33 +97,33 @@ struct StockSearchView: View {
     
     func getStockData()
     {
-//        searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
-//        stockVM.getQuoteData(searchSymbols: searchSymbol)
-//        stockVM.loadStocks(searchSymbols: searchSymbol)
-        
-        stockSnapshots = []
-//        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
-        
-        // remove all spaces from search symbol
-        
         searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
-        let apiCaller = APICaller.shared
-        apiCaller.getQuoteData(searchSymbols: searchSymbol) {
-            connectionResult in
-            
-            switch connectionResult {
-                case .success(let theStocks):
-                    stockSnapshots = theStocks
-//                    print("Success and should update stock to \(stock!.displayName)")
-                case .failure(let error):
-                    print(error)
-                    stockSnapshots = []
-                    errorMessage = error
-                    showingErrorAlert = true
-                case .chartSuccess(let theAnswer):
-                    print("Chart Success \(theAnswer)")
-            }
-        }
+//        stockVM.getQuoteData(searchSymbols: searchSymbol)
+        stockVM.loadStocks(searchSymbols: searchSymbol)
+        
+//        stockSnapshots = []
+////        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
+//
+//        // remove all spaces from search symbol
+//
+//        searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
+//        let apiCaller = APICaller.shared
+//        apiCaller.getQuoteData(searchSymbols: searchSymbol) {
+//            connectionResult in
+//
+//            switch connectionResult {
+//                case .success(let theStocks):
+//                    stockSnapshots = theStocks
+////                    print("Success and should update stock to \(stock!.displayName)")
+//                case .failure(let error):
+//                    print(error)
+//                    stockSnapshots = []
+//                    errorMessage = error
+//                    showingErrorAlert = true
+//                case .chartSuccess(let theAnswer):
+//                    print("Chart Success \(theAnswer)")
+//            }
+//        }
         
     }
     

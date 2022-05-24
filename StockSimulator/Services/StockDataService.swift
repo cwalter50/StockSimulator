@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class StockDataService {
+class StockDataService: ObservableObject {
     
     @Published var stockSnapshots: [StockSnapshot] = []
     
@@ -90,9 +90,7 @@ class StockDataService {
     
     private struct Constants{
         static let apiKey = "u0oXimhO5g6AIR9DIy85D80DPTAtPQP95l9FiAkk" // started working on 3/12/22
-        
         static let quoteurlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols="
-        
 //         'https://yfapi.net/v8/finance/chart/AAPL?range=1d&region=US&interval=5m&lang=en&events=div%2Csplit'
         
 //        "https://yfapi.net/v8/finance/chart/AAPL?range=1mo&region=US&interval=1d&lang=en&events=div%2Csplit"

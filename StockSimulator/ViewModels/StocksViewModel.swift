@@ -22,25 +22,26 @@ class StocksViewModel: ObservableObject {
         addSubscribers()
     }
     
+    // this is used to link the data on StockData Service with the data here on StockViewModel
     func addSubscribers() {
         
-//        $stockSnapshots
-//            .combineLatest(stockDataService.$stockSnapshots)
-//            .map { 
-//                
-//            }
-//            .sink { [weak self] returnedStocks in
-//                self?.stockSnapshots = returnedStocks
-//                
-//            }
-            
+        stockDataService.$stockSnapshots
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] returnStocks in
+                self?.stockSnapshots = returnStocks
+                
+            }
+            .store(in: &cancellables)
     }
     
     func loadStocks(searchSymbols: String)
     {
         stockDataService.getQuoteData(searchSymbols: searchSymbols)
+
         
     }
+    
+    
     
     
 }
