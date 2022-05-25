@@ -51,6 +51,9 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView(accounts: [])
+            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
+//            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+
             
             
     }
