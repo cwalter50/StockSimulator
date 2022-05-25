@@ -110,7 +110,10 @@ struct WatchlistView: View {
                 case .failure(let error):
                     print(error)
                     errorMessage = error
-                    showingErrorAlert = true
+                    if stocks.count > 0 {
+                        showingErrorAlert = true
+                    }
+                    
                 
                 default:
                     print("ConnectionResult is not success or failure")
