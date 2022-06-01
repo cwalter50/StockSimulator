@@ -147,7 +147,10 @@ struct AccountView: View {
                 case .failure(let error):
                     errorMessage = error
                     print(error)
-                    showingErrorAlert = true
+                    if account.assets.count > 0 {
+                        showingErrorAlert = true
+                    }
+
                 
                 default:
                     print("connectionResult was not success or failure")
@@ -167,7 +170,13 @@ struct AccountView: View {
 }
 
 struct AccountView_Previews: PreviewProvider {
+
     static var previews: some View {
-        AccountView(account: Account())
+
+        
+        AccountView(account: dev.sampleAccount())
+//        AccountView(account: Account(context: dev.dataController.container.viewContext))
+//        AccountView(account: Account())
+
     }
 }
