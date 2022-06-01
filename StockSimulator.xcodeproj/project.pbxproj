@@ -30,6 +30,7 @@
 		838613A528352B8100FFBC34 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613A428352B8100FFBC34 /* Array.swift */; };
 		838613A728352BBD00FFBC34 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613A628352BBD00FFBC34 /* UIApplication.swift */; };
 		838613A928352BED00FFBC34 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613A828352BED00FFBC34 /* PreviewProvider.swift */; };
+		838613AB2846E18900FFBC34 /* WatchlistDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613AA2846E18900FFBC34 /* WatchlistDataService.swift */; };
 		838AD1A72808FBFD0035F0C5 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838AD1A62808FBFD0035F0C5 /* Color.swift */; };
 		839CD19A281987E500DFC77B /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839CD199281987E500DFC77B /* NetworkingManager.swift */; };
 		839CD1A1281A098A00DFC77B /* Stock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839CD19F281A098A00DFC77B /* Stock+CoreDataClass.swift */; };
@@ -102,6 +103,7 @@
 		838613A428352B8100FFBC34 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		838613A628352BBD00FFBC34 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		838613A828352BED00FFBC34 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
+		838613AA2846E18900FFBC34 /* WatchlistDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistDataService.swift; sourceTree = "<group>"; };
 		838AD1A62808FBFD0035F0C5 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		839CD199281987E500DFC77B /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		839CD19F281A098A00DFC77B /* Stock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				836E864D281625E8006EB6D9 /* StockDataService.swift */,
+				838613AA2846E18900FFBC34 /* WatchlistDataService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -275,11 +278,11 @@
 			children = (
 				83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */,
 				838AD1A9280900A10035F0C5 /* ViewModels */,
+				836E86502816261F006EB6D9 /* Services */,
 				83D3FD5727A60FCB00F3746B /* Model */,
 				838AD1A82809005D0035F0C5 /* Views */,
 				838AD1A52808FBEB0035F0C5 /* Extensions */,
 				83D3FD5527A60E7D00F3746B /* APICaller.swift */,
-				836E86502816261F006EB6D9 /* Services */,
 				836E864F281625EF006EB6D9 /* Utilities */,
 				83D3FD2427A5FEF800F3746B /* Assets.xcassets */,
 				8368B3D427D05B30008AF135 /* DataController.swift */,
@@ -482,6 +485,7 @@
 				838613A328352B5A00FFBC34 /* Date.swift in Sources */,
 				83813CBC27E7F72F009344FE /* Transaction+CoreDataClass.swift in Sources */,
 				83813CEE27F28860009344FE /* ChartView2.swift in Sources */,
+				838613AB2846E18900FFBC34 /* WatchlistDataService.swift in Sources */,
 				8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */,
 				839E97EB27DD88DC0017C9AE /* Account+CoreDataProperties.swift in Sources */,
 				839CD1A1281A098A00DFC77B /* Stock+CoreDataClass.swift in Sources */,

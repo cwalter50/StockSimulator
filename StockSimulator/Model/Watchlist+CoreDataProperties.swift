@@ -15,7 +15,6 @@ extension Watchlist {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Watchlist> {
         return NSFetchRequest<Watchlist>(entityName: "Watchlist")
     }
-
     @NSManaged public var name: String?
     @NSManaged public var id: UUID?
     @NSManaged public var created: Date?

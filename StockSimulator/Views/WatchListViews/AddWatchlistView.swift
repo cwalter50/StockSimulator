@@ -12,7 +12,6 @@ struct AddWatchlistView: View {
     
     @Environment(\.managedObjectContext) var moc // CoreData
 
-    
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
     
@@ -21,7 +20,7 @@ struct AddWatchlistView: View {
             Section{
                 HStack {
                     Text("Name:")
-                    TextField("Enter Account Name", text: $name)
+                    TextField("Enter Watchlist Name", text: $name)
                         .autocapitalization(.words)
 //                            .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
@@ -51,5 +50,6 @@ struct AddWatchlistView: View {
 struct AddWatchlistView_Previews: PreviewProvider {
     static var previews: some View {
         AddWatchlistView(name: "")
+            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
     }
 }

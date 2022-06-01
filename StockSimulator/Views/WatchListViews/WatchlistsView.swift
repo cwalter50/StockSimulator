@@ -24,9 +24,11 @@ struct WatchlistsView: View {
                     NavigationLink(destination: WatchlistView(watchlist: watchlist)) {
                         Text(watchlist.wrappedName)
                     }
+                    
                 }
                 .onDelete(perform: delete)
             }
+//            .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -51,16 +53,11 @@ struct WatchlistsView: View {
     
     
     func delete(at offsets: IndexSet) {
-//        accounts.remove(atOffsets: offsets)
-//        saveToUserDefaults()
-        
         for index in offsets {
             let watchlist = watchlists[index]
             moc.delete(watchlist)
         }
-        
         try? moc.save()
-        
     }
     
 }
@@ -68,5 +65,6 @@ struct WatchlistsView: View {
 struct WatchlistsView_Previews: PreviewProvider {
     static var previews: some View {
         WatchlistsView()
+            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
     }
 }

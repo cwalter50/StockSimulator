@@ -113,15 +113,10 @@ struct WatchlistView: View {
                     if stocks.count > 0 {
                         showingErrorAlert = true
                     }
-                    
-                
                 default:
                     print("ConnectionResult is not success or failure")
-
             }
         }
-        
-       
     }
     
     func delete(at offsets: IndexSet) {

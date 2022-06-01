@@ -21,7 +21,6 @@ struct AccountsView: View {
     var body: some View {
         NavigationView {
             List {
-                
                 ForEach(accounts) {
 //                ForEach(viewModel.accounts) {
                     account in
@@ -85,5 +84,6 @@ struct AccountsView_Previews: PreviewProvider {
         
         
         AccountsView()
+            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
     }
 }

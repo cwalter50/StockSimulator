@@ -33,7 +33,7 @@ struct ContentView: View {
          
             WatchlistsView()
                 .tabItem {
-                    Image(systemName: "book.circle.fill")
+                    Image(systemName: "list.bullet.rectangle")
                     Text("WatchLists")
                 }
          

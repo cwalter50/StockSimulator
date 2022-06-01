@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StockSearchView: View {
     
-    @ObservedObject var stockVM = StocksViewModel()
+    @ObservedObject var vm = StocksViewModel()
     
     @Environment(\.managedObjectContext) var moc // CoreData
     
@@ -55,13 +55,14 @@ struct StockSearchView: View {
                 Alert(title: Text("Error"), message: Text("\(errorMessage)"), primaryButton: .default(Text("OK"), action: nil), secondaryButton: .cancel())
             }
                 List {
-                    ForEach(stockVM.stockSnapshots)
+                    ForEach(vm.stockSnapshots)
                     {
                         stockSnapshot in
                         StockBasicView(stockSnapshot: stockSnapshot)
                         if watchlist != nil
                         {
                             Button(action: {
+                                
                                 saveToWatchlistCoreData(snapshot: stockSnapshot)
                                 
                             }) {
@@ -99,51 +100,27 @@ struct StockSearchView: View {
     {
         searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
 //        stockVM.getQuoteData(searchSymbols: searchSymbol)
-        stockVM.loadStocks(searchSymbols: searchSymbol)
-        
-//        stockSnapshots = []
-////        stockSnapshot = nil // this is needed so STOCKVIEW Reloads after looking up a Stock...
-//
-//        // remove all spaces from search symbol
-//
-//        searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
-//        let apiCaller = APICaller.shared
-//        apiCaller.getQuoteData(searchSymbols: searchSymbol) {
-//            connectionResult in
-//
-//            switch connectionResult {
-//                case .success(let theStocks):
-//                    stockSnapshots = theStocks
-////                    print("Success and should update stock to \(stock!.displayName)")
-//                case .failure(let error):
-//                    print(error)
-//                    stockSnapshots = []
-//                    errorMessage = error
-//                    showingErrorAlert = true
-//                case .chartSuccess(let theAnswer):
-//                    print("Chart Success \(theAnswer)")
-//            }
-//        }
+        vm.loadStocks(searchSymbols: searchSymbol)
         
     }
     
     func saveToWatchlistCoreData(snapshot: StockSnapshot)
     {
-        // save stock to coredata...
-        let newStock = Stock(context: moc)
-        newStock.updateValuesFromStockSnapshot(snapshot: snapshot)
-
-        // make relationship between stock and the watchlist
-        if let theWatchlist = watchlist
-        {
-            newStock.addToWatchlists(theWatchlist)
-            theWatchlist.addToStocks(newStock)
-
-            try? moc.save() // save to CoreData
-
-            print("watchlist has \(String(describing: theWatchlist.stocks?.count)) stocks")
-        }
-
+        vm.updateWatchlist(snapshot: snapshot, watchlist: watchlist)
+//        // save stock to coredata...
+//        let newStock = Stock(context: moc)
+//        newStock.updateValuesFromStockSnapshot(snapshot: snapshot)
+//
+//        // make relationship between stock and the watchlist
+//        if let theWatchlist = watchlist
+//        {
+//            newStock.addToWatchlists(theWatchlist)
+//            theWatchlist.addToStocks(newStock)
+//
+//            try? moc.save() // save to CoreData
+//
+//            print("watchlist has \(String(describing: theWatchlist.stocks?.count)) stocks")
+//        }
         presentationMode.wrappedValue.dismiss()
     }
     
@@ -151,6 +128,8 @@ struct StockSearchView: View {
 
 struct StockSearchView_Previews: PreviewProvider {
     static var previews: some View {
+//        StockSearchView(watchlist: Watchlist(context: dev.dataController.container.viewContext))
         StockSearchView(watchlist: Watchlist())
+            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
     }
 }
