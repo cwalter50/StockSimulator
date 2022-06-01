@@ -36,6 +36,22 @@ class DeveloperPreview {
         return account
     }
     
+    func sampleWatchlist() -> Watchlist
+    {
+        let context = dataController.container.viewContext
+        let watchlist = Watchlist(context: context)
+        watchlist.name = "Sample"
+        
+        let stock = Stock(context: context)
+        stock.symbol = "TEST"
+        stock.displayName = "ABC STOCK"
+        stock.regularMarketPrice = 21.34
+        
+        watchlist.addToStocks(stock)
+        
+        return watchlist
+    }
+    
 
 //
 //    let stat1 = StatisticModel(title: "Market Cap", value: "$12.5Bn", percentageChange: 25.34)

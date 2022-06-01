@@ -76,6 +76,8 @@ struct WatchlistView: View {
                 Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
             }
             .navigationTitle("\(watchlist.name ?? "Watchlist")")
+            
+        
             .onAppear(perform: loadCurrentStockInfo)
         }
     }
@@ -132,18 +134,13 @@ struct WatchlistView: View {
 
 struct WatchlistView_Previews: PreviewProvider {
     static var previews: some View {
-        let context = PersistenceController.preview.container.viewContext
+        let context = dev.dataController.container.viewContext
         //Test data
-        let newWatchlist = Watchlist.init(context: context)
-        newWatchlist.name = "Sample"
-        
-        return WatchlistView(watchlist: newWatchlist).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-        
-        
-//        WatchlistView(watchlist: Watchlist(context: DataController().container.viewContext))
 
-
-//            .environment(\.managedObjectContext, DataController().container.viewContext)
+        
+        return WatchlistView(watchlist: dev.sampleWatchlist())
+            .environment(\.managedObjectContext, context)
+        
     }
 }
 

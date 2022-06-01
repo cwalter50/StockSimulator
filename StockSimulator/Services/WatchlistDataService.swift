@@ -50,6 +50,7 @@ class WatchlistDataService {
                 print("saved stock: \(newStock.wrappedSymbol) to watchlist: \(theWatchlist.wrappedName)")
             }
         }
+        getWatchlists()
     }
 //    func updatePortfolio(coin: CoinModel, amount: Double)
 //    {
