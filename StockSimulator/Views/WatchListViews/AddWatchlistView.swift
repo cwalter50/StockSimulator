@@ -11,7 +11,7 @@ struct AddWatchlistView: View {
     @State var name: String
     
     @Environment(\.managedObjectContext) var moc // CoreData
-    @EnvironmentObject var vm : StocksViewModel
+//    @EnvironmentObject var vm : StocksViewModel
 
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
@@ -37,6 +37,7 @@ struct AddWatchlistView: View {
                 if moc.hasChanges {
                     try? moc.save()
                 }
+                print("view should dismiss")
                 presentationMode.wrappedValue.dismiss()
                 
             }){
@@ -51,5 +52,6 @@ struct AddWatchlistView_Previews: PreviewProvider {
     static var previews: some View {
         AddWatchlistView(name: "")
             .environment(\.managedObjectContext, dev.dataController.container.viewContext)
+//            .environmentObject(dev.stockVM)
     }
 }

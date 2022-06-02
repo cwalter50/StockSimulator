@@ -17,7 +17,8 @@ class StocksViewModel: ObservableObject {
     
     private let stockDataService = StockDataService()
     
-    private let dataController = DataController()
+//    @EnvironmentObject var dataController: DataController
+//    private let dataController = DataController()
 
     private var cancellables = Set<AnyCancellable>()
     
@@ -37,13 +38,13 @@ class StocksViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        dataController.$savedWatchlists
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] returnWatchlists in
-                self?.watchlists = returnWatchlists
-
-            }
-            .store(in: &cancellables)
+//        dataController.$savedWatchlists
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] returnWatchlists in
+//                self?.watchlists = returnWatchlists
+//
+//            }
+//            .store(in: &cancellables)
     }
     
     func loadStocks(searchSymbols: String)
@@ -59,18 +60,18 @@ class StocksViewModel: ObservableObject {
     
     // For CoreData Watchlists..
     
-    func updateWatchlist(snapshot: StockSnapshot, watchlist: Watchlist?) {
-        dataController.updateWatchlist(snapshot: snapshot, watchlist: watchlist)
-    }
-    
-    func addWatchlist(name: String) {
-        dataController.addWatchlist(name: name)
-    }
-    
-    func deleteWatchlist(watchlist: Watchlist)
-    {
-        dataController.deleteWatchlist(watchlist: watchlist)
-    }
+//    func updateWatchlist(snapshot: StockSnapshot, watchlist: Watchlist?) {
+//        dataController.updateWatchlist(snapshot: snapshot, watchlist: watchlist)
+//    }
+//    
+//    func addWatchlist(name: String) {
+//        dataController.addWatchlist(name: name)
+//    }
+//    
+//    func deleteWatchlist(watchlist: Watchlist)
+//    {
+//        dataController.deleteWatchlist(watchlist: watchlist)
+//    }
     
     
     

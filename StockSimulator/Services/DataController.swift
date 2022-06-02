@@ -23,6 +23,8 @@ class DataController: ObservableObject
             }
             self.getWatchlists()
         }
+        
+        print("init on DataController called")
     }
     
     // MARK: Public

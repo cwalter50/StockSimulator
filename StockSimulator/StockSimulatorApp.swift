@@ -19,6 +19,7 @@ struct StockSimulatorApp: App {
             ContentView(accounts: [])
                 .environment(\.managedObjectContext, dataController.container.viewContext)
                 .environmentObject(stockVM)
+                .environmentObject(dataController)
         }
     }
 }
