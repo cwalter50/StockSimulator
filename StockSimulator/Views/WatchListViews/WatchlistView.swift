@@ -93,7 +93,7 @@ struct WatchlistView: View {
             searchString += s.wrappedSymbol+","
         }
         
-        vm.updateStockPrices(searchSymbols: searchString, stocks: stocks)
+        vm.updateStockPrices(searchSymbols: searchString, stocks: stocks) // this may be working and may not. try tomorrow when market is live.
         
 //        let apiCaller = APICaller.shared
 //        apiCaller.getQuoteData(searchSymbols: searchString) {
