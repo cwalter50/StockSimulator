@@ -1,28 +1,25 @@
 //
-//  WatchlistDataService.swift
+//  DataController.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 5/31/22.
+//  Created by Christopher Walter on 3/2/22.
 //
 
-import Foundation
 import CoreData
+import SwiftUI
+import Combine
 
-// this will read from CoreData
-class WatchlistDataService {
-    
-    private let container: NSPersistentContainer
-    private let containerName: String = "StockSimulator"
-    private let entityName: String = "Watchlist"
+
+class DataController: ObservableObject
+{
+    let container = NSPersistentContainer(name: "StockSimulator")
     
     @Published var savedWatchlists: [Watchlist] = []
     
-    
     init() {
-        container = NSPersistentContainer(name: containerName)
-        container.loadPersistentStores { _, error in
+        container.loadPersistentStores { description, error in
             if let error = error {
-                print("Error loading CoreData: \(error)")
+                print("Core Data failed to load: \(error.localizedDescription)")
             }
             self.getWatchlists()
         }
@@ -52,6 +49,23 @@ class WatchlistDataService {
         }
         getWatchlists()
     }
+    
+    func addWatchlist(name: String)
+    {
+        // add the WatchList
+        let newWatchlist = Watchlist(context: container.viewContext)
+        newWatchlist.id = UUID()
+        newWatchlist.name = name
+        newWatchlist.created = Date()
+        
+        applyChanges()
+    }
+    
+    func deleteWatchlist(watchlist: Watchlist)
+    {
+        container.viewContext.delete(watchlist)
+        applyChanges()
+    }
 //    func updatePortfolio(coin: CoinModel, amount: Double)
 //    {
 //        // check if coin is in portfolio.
@@ -71,13 +85,14 @@ class WatchlistDataService {
     // MARK: Private
     private func getWatchlists()
     {
-        let request = NSFetchRequest<Watchlist>(entityName: entityName)
+        let request = NSFetchRequest<Watchlist>(entityName: "Watchlist")
         do {
             savedWatchlists = try container.viewContext.fetch(request)
         } catch let error {
             print("Error fetching entities: \(error)")
         }
     }
+    
     
 //    private func add(coin: CoinModel, amount: Double) {
 //        let entity = PortfolioEntity(context: container.viewContext)
@@ -87,11 +102,14 @@ class WatchlistDataService {
 //    }
     
     private func save() {
-        do {
-            try container.viewContext.save()
-        } catch let error {
-            print("Error saving to Core Data: \(error)")
+        if container.viewContext.hasChanges {
+            do {
+                try container.viewContext.save()
+            } catch let error {
+                print("Error saving to Core Data: \(error)")
+            }
         }
+        
     }
     
     private func applyChanges()
@@ -106,11 +124,8 @@ class WatchlistDataService {
 //        applyChanges()
 //    }
     
-    private func delete(entity: Watchlist)
-    {
-        container.viewContext.delete(entity)
-        applyChanges()
-    }
     
     
+
 }
+

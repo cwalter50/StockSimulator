@@ -81,7 +81,7 @@ final class APICaller{
     
     func getChartData(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
     {
-        var interval = "1d"
+        let interval = "1d"
 
 //        if range == "1d" || range == "5d"
 //        {

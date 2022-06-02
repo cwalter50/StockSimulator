@@ -11,6 +11,7 @@ struct AddWatchlistView: View {
     @State var name: String
     
     @Environment(\.managedObjectContext) var moc // CoreData
+//    @EnvironmentObject var vm : StocksViewModel
 
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
@@ -26,7 +27,7 @@ struct AddWatchlistView: View {
                 }
             }
             Button(action: {
-                
+//                vm.addWatchlist(name: name)
                 // add the WatchList
                 let newWatchlist = Watchlist(context: moc)
                 newWatchlist.id = UUID()
@@ -42,7 +43,6 @@ struct AddWatchlistView: View {
                 Text("Save")
             }
             .disabled(name.isEmpty)
-
         }
     }
 }

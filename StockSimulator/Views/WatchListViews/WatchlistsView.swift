@@ -12,6 +12,7 @@ struct WatchlistsView: View {
     
     @Environment(\.editMode) private var editMode
     
+//    @EnvironmentObject var vm: StocksViewModel
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Watchlist.created, ascending: false)], animation: Animation.default) var watchlists: FetchedResults<Watchlist>
     
     @State var isAddWatchlistPresented = false
@@ -48,23 +49,24 @@ struct WatchlistsView: View {
 
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        
     }
     
     
     func delete(at offsets: IndexSet) {
         for index in offsets {
             let watchlist = watchlists[index]
+//            vm.deleteWatchlist(watchlist: watchlist)
             moc.delete(watchlist)
         }
         try? moc.save()
     }
-    
 }
 
 struct WatchlistsView_Previews: PreviewProvider {
     static var previews: some View {
         WatchlistsView()
-            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
+           .environment(\.managedObjectContext, dev.dataController.container.viewContext)
+
+        
     }
 }

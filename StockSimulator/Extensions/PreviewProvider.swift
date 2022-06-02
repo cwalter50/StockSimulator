@@ -49,6 +49,13 @@ class DeveloperPreview {
         
         watchlist.addToStocks(stock)
         
+        let stock2 = Stock(context: context)
+        stock2.symbol = "TEST2"
+        stock2.displayName = "DEF STOCK"
+        stock2.regularMarketPrice = 56.78
+        
+        watchlist.addToStocks(stock2)
+        
         return watchlist
     }
     

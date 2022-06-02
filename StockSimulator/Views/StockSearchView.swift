@@ -106,21 +106,21 @@ struct StockSearchView: View {
     
     func saveToWatchlistCoreData(snapshot: StockSnapshot)
     {
-        vm.updateWatchlist(snapshot: snapshot, watchlist: watchlist)
+//        vm.updateWatchlist(snapshot: snapshot, watchlist: watchlist)
 //        // save stock to coredata...
-//        let newStock = Stock(context: moc)
-//        newStock.updateValuesFromStockSnapshot(snapshot: snapshot)
-//
-//        // make relationship between stock and the watchlist
-//        if let theWatchlist = watchlist
-//        {
-//            newStock.addToWatchlists(theWatchlist)
-//            theWatchlist.addToStocks(newStock)
-//
-//            try? moc.save() // save to CoreData
-//
-//            print("watchlist has \(String(describing: theWatchlist.stocks?.count)) stocks")
-//        }
+        let newStock = Stock(context: moc)
+        newStock.updateValuesFromStockSnapshot(snapshot: snapshot)
+
+        // make relationship between stock and the watchlist
+        if let theWatchlist = watchlist
+        {
+            newStock.addToWatchlists(theWatchlist)
+            theWatchlist.addToStocks(newStock)
+
+            try? moc.save() // save to CoreData
+
+            print("watchlist has \(String(describing: theWatchlist.stocks?.count)) stocks")
+        }
         presentationMode.wrappedValue.dismiss()
     }
     

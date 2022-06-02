@@ -7,19 +7,23 @@
 
 import Foundation
 import Combine
+import CoreData
+import SwiftUI
 
 class StockDataService: ObservableObject {
     
     @Published var stockSnapshots: [StockSnapshot] = []
+    
+
+    @Environment(\.managedObjectContext) var moc
     
     var stockSubscription: AnyCancellable?
     init() {
 //        getQuoteData(searchSymbols: "")
     }
 
-    func getQuoteData(searchSymbols: String)
+    func updateStockData(searchSymbols: String, stocks: FetchedResults<Stock>)
     {
-        
         let urlString = Constants.quoteurlString + searchSymbols.uppercased()
 //        let urlString = Constants.quoteurlString + "AAPL"
         guard let url = URL(string: urlString) else {
@@ -49,7 +53,66 @@ class StockDataService: ObservableObject {
                     let quoteSnapshot = try decoder.decode(QuoteSnapshot.self, from: json)
                     print(quoteSnapshot)
                     self.stockSnapshots = quoteSnapshot.quoteResponse.result
-                    print("Found these stocks: \(self.stockSnapshots)")
+//                    print("Found these stocks: \(self.stockSnapshots)")
+                    
+                    // update Stock prices in CoreData
+                    for snapshot in self.stockSnapshots {
+                        if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
+                            stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
+
+                            print("updated values for \(stockCoreData.wrappedSymbol)")
+                        }
+                        
+                    }
+                    try? self.moc.save()
+
+//                    completion(.success(quoteSnapshot.quoteResponse.result))
+                }
+                catch {
+                    print(error)
+//                    completion(.failure(error.localizedDescription))
+                }
+            }
+            catch {
+                print(error)
+//                completion(.failure(error.localizedDescription))
+            }
+        }
+        task.resume()
+    }
+    
+    func getQuoteData(searchSymbols: String)
+    {
+        let urlString = Constants.quoteurlString + searchSymbols.uppercased()
+//        let urlString = Constants.quoteurlString + "AAPL"
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
+
+            guard let data = data else { return }
+            do {
+                guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
+                    print("error in getting JSON")
+                    return
+                }
+                if let message = results["message"] as? String
+                {
+                    print(message)
+//                    completion(.failure(message))
+                }
+                do {
+                    let json = try JSONSerialization.data(withJSONObject: results)
+//                    print(json)
+                    let decoder = JSONDecoder()
+                    let quoteSnapshot = try decoder.decode(QuoteSnapshot.self, from: json)
+                    print(quoteSnapshot)
+                    self.stockSnapshots = quoteSnapshot.quoteResponse.result
+//                    print("Found these stocks: \(self.stockSnapshots)")
 
 //                    completion(.success(quoteSnapshot.quoteResponse.result))
                 }

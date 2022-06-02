@@ -13,11 +13,12 @@ class StocksViewModel: ObservableObject {
     
     @Published var stockSnapshots: [StockSnapshot] = []
     
-    @Published var watchlists: [Watchlist] = []
+//    @Published var watchlists: [Watchlist] = []
     
     private let stockDataService = StockDataService()
-//    private let watchlistDataService = WatchlistDataService()
+    
 //    private let dataController = DataController()
+
     private var cancellables = Set<AnyCancellable>()
     
     
@@ -36,7 +37,7 @@ class StocksViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-//        watchlistDataService.$savedWatchlists
+//        dataController.$savedWatchlists
 //            .receive(on: DispatchQueue.main)
 //            .sink { [weak self] returnWatchlists in
 //                self?.watchlists = returnWatchlists
@@ -50,9 +51,26 @@ class StocksViewModel: ObservableObject {
         stockDataService.getQuoteData(searchSymbols: searchSymbols)
     }
     
-    func updateWatchlist(snapshot: StockSnapshot, watchlist: Watchlist?) {
-//        watchlistDataService.updateWatchlist(snapshot: snapshot, watchlist: watchlist)
+    func updateStockPrices(searchSymbols: String, stocks: FetchedResults<Stock>)
+    {
+        stockDataService.updateStockData(searchSymbols: searchSymbols, stocks: stocks)
     }
+    
+    
+    // For CoreData Watchlists..
+    
+//    func updateWatchlist(snapshot: StockSnapshot, watchlist: Watchlist?) {
+//        dataController.updateWatchlist(snapshot: snapshot, watchlist: watchlist)
+//    }
+//    
+//    func addWatchlist(name: String) {
+//        dataController.addWatchlist(name: name)
+//    }
+//    
+//    func deleteWatchlist(watchlist: Watchlist)
+//    {
+//        dataController.deleteWatchlist(watchlist: watchlist)
+//    }
     
     
     
