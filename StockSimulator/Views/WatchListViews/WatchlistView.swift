@@ -93,35 +93,9 @@ struct WatchlistView: View {
             searchString += s.wrappedSymbol+","
         }
         
-        vm.updateStockPrices(searchSymbols: searchString, stocks: stocks) // this may be working and may not. try tomorrow when market is live.
+        vm.updateStockPrices(searchSymbols: searchString, stocks: stocks)
         
-//        let apiCaller = APICaller.shared
-//        apiCaller.getQuoteData(searchSymbols: searchString) {
-//            connectionResult in
-//            switch connectionResult {
-//                case .success(let theStocks):
-//                    // link the stocks to the current stock prices, update the values,
-//                    for snapshot in theStocks
-//                    {
-//                        if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
-//                            stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
-//
-//                            print("updated values for \(stockCoreData.wrappedSymbol)")
-//                        }
-//                    }
-//                    try? moc.save()
-//                    
-//
-//                case .failure(let error):
-//                    print(error)
-//                    errorMessage = error
-//                    if stocks.count > 0 {
-//                        showingErrorAlert = true
-//                    }
-//                default:
-//                    print("ConnectionResult is not success or failure")
-//            }
-//        }
+
     }
     
     func delete(at offsets: IndexSet) {

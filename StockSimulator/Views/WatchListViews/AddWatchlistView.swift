@@ -11,7 +11,7 @@ struct AddWatchlistView: View {
     @State var name: String
     
     @Environment(\.managedObjectContext) var moc // CoreData
-//    @EnvironmentObject var vm : StocksViewModel
+    @EnvironmentObject var vm : StocksViewModel
 
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode

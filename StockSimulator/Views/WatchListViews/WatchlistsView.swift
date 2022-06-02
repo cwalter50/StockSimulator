@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WatchlistsView: View {
     @Environment(\.managedObjectContext) var moc // CoreData
+//    @EnvironmentObject var vm: StocksViewModel
     
     @Environment(\.editMode) private var editMode
     
@@ -65,7 +66,8 @@ struct WatchlistsView: View {
 struct WatchlistsView_Previews: PreviewProvider {
     static var previews: some View {
         WatchlistsView()
-           .environment(\.managedObjectContext, dev.dataController.container.viewContext)
+//            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
+//            .environmentObject(dev.stockVM)
 
         
     }
