@@ -93,15 +93,10 @@ struct StockSearchView: View {
         .padding()
     }
     
-    
-
-    
     func getStockData()
     {
         searchSymbol = searchSymbol.replacingOccurrences(of: " ", with: "")
-//        stockVM.getQuoteData(searchSymbols: searchSymbol)
         vm.loadStocks(searchSymbols: searchSymbol)
-        
     }
     
     func saveToWatchlistCoreData(snapshot: StockSnapshot)
@@ -112,14 +107,14 @@ struct StockSearchView: View {
         newStock.updateValuesFromStockSnapshot(snapshot: snapshot)
 
         // make relationship between stock and the watchlist
-        if let theWatchlist = watchlist
+        if let theWatchlist = watchlist, let theStocks = theWatchlist.stocks?.allObjects as? [Stock]
         {
-            newStock.addToWatchlists(theWatchlist)
-            theWatchlist.addToStocks(newStock)
-
+            let allSymbols = theStocks.map({ $0.wrappedSymbol })
+            if !allSymbols.contains(newStock.wrappedSymbol) {
+                newStock.addToWatchlists(theWatchlist)
+                theWatchlist.addToStocks(newStock)
+            }
             try? moc.save() // save to CoreData
-
-            print("watchlist has \(String(describing: theWatchlist.stocks?.count)) stocks")
         }
         presentationMode.wrappedValue.dismiss()
     }

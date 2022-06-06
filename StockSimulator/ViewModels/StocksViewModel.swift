@@ -15,6 +15,8 @@ class StocksViewModel: ObservableObject {
     
     @Published var watchlists: [Watchlist] = []
     
+    @Published var chartData: ChartData = ChartData()
+    
     private let stockDataService = StockDataService()
     
 //    @EnvironmentObject var dataController: DataController

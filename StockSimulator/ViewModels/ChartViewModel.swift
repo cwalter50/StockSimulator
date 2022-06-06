@@ -48,7 +48,6 @@ final class ChartViewModel: ObservableObject {
                     print("loading chart data was not a success or failure")
                     self.chartData = ChartData(emptyData: true)
             }
-        
         }
     }
     
