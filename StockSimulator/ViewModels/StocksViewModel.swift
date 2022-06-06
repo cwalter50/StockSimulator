@@ -15,7 +15,7 @@ class StocksViewModel: ObservableObject {
     
     @Published var watchlists: [Watchlist] = []
     
-    @Published var chartData: ChartData = ChartData()
+//    @Published var chartData: ChartData = ChartData()
     
     private let stockDataService = StockDataService()
     
@@ -39,6 +39,13 @@ class StocksViewModel: ObservableObject {
                 
             }
             .store(in: &cancellables)
+        
+//        stockDataService.$chartData
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] returnData in
+//                self?.chartData = returnData
+//            }
+//            .store(in: &cancellables)
 
 //        dataController.$savedWatchlists
 //            .receive(on: DispatchQueue.main)
@@ -48,6 +55,10 @@ class StocksViewModel: ObservableObject {
 //            }
 //            .store(in: &cancellables)
     }
+    
+//    func loadChartData(searchSymbol: String, range: String) {
+//        stockDataService.getChartData(searchSymbol: searchSymbol, range: range)
+//    }
     
     func loadStocks(searchSymbols: String)
     {

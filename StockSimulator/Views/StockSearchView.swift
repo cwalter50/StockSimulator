@@ -114,7 +114,10 @@ struct StockSearchView: View {
                 newStock.addToWatchlists(theWatchlist)
                 theWatchlist.addToStocks(newStock)
             }
-            try? moc.save() // save to CoreData
+
+            if moc.hasChanges {
+                try? moc.save() // save to CoreData
+            }
         }
         presentationMode.wrappedValue.dismiss()
     }

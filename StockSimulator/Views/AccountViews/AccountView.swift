@@ -175,6 +175,7 @@ struct AccountView_Previews: PreviewProvider {
 
         
         AccountView(account: dev.sampleAccount())
+            
 //        AccountView(account: Account(context: dev.dataController.container.viewContext))
 //        AccountView(account: Account())
 

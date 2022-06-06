@@ -14,7 +14,7 @@ class StockDataService: ObservableObject {
     
     @Published var stockSnapshots: [StockSnapshot] = []
     
-    @Published var chartData: ChartData = ChartData()
+    @Published var chartData: ChartData = ChartData(emptyData: true)
     
 
     @Environment(\.managedObjectContext) var moc

@@ -34,7 +34,6 @@ final class ChartViewModel: ObservableObject {
                 case .chartSuccess(let theChartData):
                     print("loaded data for \(symbol) in the range \(range)")
     //                print(theChartData)
-
                     DispatchQueue.main.async {
                         self.setData(from: theChartData)
                         

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		380958B727EE1CB000705D9F /* StockDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380958B627EE1CB000705D9F /* StockDetailView.swift */; };
+		38CD5C89284E7DE100E96954 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CD5C88284E7DE100E96954 /* Persistence.swift */; };
 		8368B3D527D05B30008AF135 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3D427D05B30008AF135 /* DataController.swift */; };
 		8368B3F527D2B936008AF135 /* StockSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F427D2B936008AF135 /* StockSnapshot.swift */; };
 		8368B3F727D2BB06008AF135 /* AddWatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */; };
@@ -23,7 +24,6 @@
 		83813CE527ED5461009344FE /* ChartMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CE427ED5461009344FE /* ChartMockData.swift */; };
 		83813CE727ED589E009344FE /* LineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CE627ED589E009344FE /* LineGraph.swift */; };
 		83813CEC27F27FEF009344FE /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CEB27F27FEF009344FE /* ChartViewModel.swift */; };
-		83813CEE27F28860009344FE /* ChartView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CED27F28860009344FE /* ChartView2.swift */; };
 		8386139F2835249000FFBC34 /* StocksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8386139E2835249000FFBC34 /* StocksViewModel.swift */; };
 		838613A128352B2600FFBC34 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613A028352B2600FFBC34 /* Double.swift */; };
 		838613A328352B5A00FFBC34 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613A228352B5A00FFBC34 /* Date.swift */; };
@@ -79,6 +79,7 @@
 
 /* Begin PBXFileReference section */
 		380958B627EE1CB000705D9F /* StockDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailView.swift; sourceTree = "<group>"; };
+		38CD5C88284E7DE100E96954 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		8368B3D427D05B30008AF135 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		8368B3F427D2B936008AF135 /* StockSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSnapshot.swift; sourceTree = "<group>"; };
 		8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchlistView.swift; sourceTree = "<group>"; };
@@ -94,7 +95,6 @@
 		83813CE427ED5461009344FE /* ChartMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartMockData.swift; sourceTree = "<group>"; };
 		83813CE627ED589E009344FE /* LineGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraph.swift; sourceTree = "<group>"; };
 		83813CEB27F27FEF009344FE /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
-		83813CED27F28860009344FE /* ChartView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView2.swift; sourceTree = "<group>"; };
 		8386139E2835249000FFBC34 /* StocksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksViewModel.swift; sourceTree = "<group>"; };
 		838613A028352B2600FFBC34 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		838613A228352B5A00FFBC34 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -206,7 +206,6 @@
 				83813CE627ED589E009344FE /* LineGraph.swift */,
 				83813CE027ED528C009344FE /* ChartView.swift */,
 				83E86FBA27FA4010000A454D /* ChartLoader.swift */,
-				83813CED27F28860009344FE /* ChartView2.swift */,
 			);
 			path = ChartViews;
 			sourceTree = "<group>";
@@ -281,6 +280,7 @@
 				836E864F281625EF006EB6D9 /* Utilities */,
 				83D3FD2427A5FEF800F3746B /* Assets.xcassets */,
 				83D3FD5527A60E7D00F3746B /* APICaller.swift */,
+				38CD5C88284E7DE100E96954 /* Persistence.swift */,
 				83D3FD2B27A5FEF800F3746B /* StockSimulator.xcdatamodeld */,
 				83D3FD2627A5FEF800F3746B /* Preview Content */,
 			);
@@ -475,9 +475,9 @@
 				838AD1A72808FBFD0035F0C5 /* Color.swift in Sources */,
 				8368B3F727D2BB06008AF135 /* AddWatchlistView.swift in Sources */,
 				380958B727EE1CB000705D9F /* StockDetailView.swift in Sources */,
+				38CD5C89284E7DE100E96954 /* Persistence.swift in Sources */,
 				838613A328352B5A00FFBC34 /* Date.swift in Sources */,
 				83813CBC27E7F72F009344FE /* Transaction+CoreDataClass.swift in Sources */,
-				83813CEE27F28860009344FE /* ChartView2.swift in Sources */,
 				8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */,
 				839E97EB27DD88DC0017C9AE /* Account+CoreDataProperties.swift in Sources */,
 				839CD1A1281A098A00DFC77B /* Stock+CoreDataClass.swift in Sources */,

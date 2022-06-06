@@ -24,6 +24,7 @@ class DeveloperPreview {
 
 //    let homeVM = HomeViewModel()
     let stockVM = StocksViewModel()
+    let chartVM = ChartViewModel()
     
     let dataController = DataController()
     
@@ -57,6 +58,20 @@ class DeveloperPreview {
         watchlist.addToStocks(stock2)
         
         return watchlist
+    }
+    
+    func sampleStock() -> Stock {
+        let context = dataController.container.viewContext
+        
+        let stock = Stock(context: context)
+        stock.updateValuesFromStockSnapshot(snapshot: StockSnapshot()) // this is sample Apple information
+//        stock.symbol = "TEST"
+//        stock.displayName = "ABC STOCK"
+//        stock.regularMarketPrice = 21.34
+//        stock.regularMarketChange = 1.05
+//        stock.regularMarketChangePercent = 0.12
+        
+        return stock
     }
     
 
