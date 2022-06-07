@@ -81,7 +81,12 @@ struct AccountsView: View {
 
 struct AccountsView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountsView()
+        
+        let context = dev.dataController.container.viewContext
+        return AccountsView()
+            .environment(\.managedObjectContext, context)
+        
+//        AccountsView()
 //            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
     }
 }

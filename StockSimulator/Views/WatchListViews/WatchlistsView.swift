@@ -64,9 +64,11 @@ struct WatchlistsView: View {
 
 struct WatchlistsView_Previews: PreviewProvider {
     static var previews: some View {
-        WatchlistsView()
+        let context = dev.dataController.container.viewContext
+        return WatchlistsView()
+            .environment(\.managedObjectContext, context)
 //            .environment(\.managedObjectContext, dev.dataController.container.viewContext)
-            .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+//            .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
 //            .environmentObject(dev.stockVM)
 
         
