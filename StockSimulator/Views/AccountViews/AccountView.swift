@@ -14,7 +14,6 @@ struct AccountView: View {
     var account: Account
     @FetchRequest var transactions: FetchedResults<Transaction>
     
-    
     init (account: Account)
     {
         self.account = account
@@ -51,6 +50,11 @@ struct AccountView: View {
                 Text("Assests")
                     .font(.headline)
                 Spacer()
+                Button(action: {
+                    loadCurrentStockInfo()
+                }, label: {
+                    Image(systemName: "arrow.clockwise")
+                })
                 Button(action: {
                     isSearchPresented.toggle()
                 }) {
@@ -103,33 +107,40 @@ struct AccountView: View {
         
     }
     
+//    func loadCurrentStockInfo()
+//    {
+//        for asset in account.assets {
+//            asset.updateValue()
+//        }
+//    }
+    
     func loadCurrentStockInfo()
     {
         print("load current Stock Info Called on account \(account.wrappedName)")
 //        account.assets = account.loadAccountAssets()
         // load the Stocks
         var stocks = [Stock]()
-        
+
         for t in transactions {
             if let theStock = t.stock {
                 if t.isClosed == false {
                     stocks.append(theStock)
                 }
-                
+
             }
         }
         print("found \(transactions.count) transactions")
-        
+
         var searchString = ""
         for s in stocks.unique()
         {
             searchString += s.wrappedSymbol+","
         }
-        
+
         let apiCaller = APICaller.shared
         apiCaller.getQuoteData(searchSymbols: searchString) {
             connectionResult in
-            
+
             switch connectionResult {
                 case .success(let theStocks):
                     // link the stocks to the current stock prices, update the values,
@@ -140,7 +151,6 @@ struct AccountView: View {
                             print("updated values for \(stockCoreData.wrappedSymbol) to \(stockCoreData.regularMarketPrice)")
                         }
                     }
-                
                     if moc.hasChanges {
                         try? moc.save()
                     }
@@ -150,8 +160,6 @@ struct AccountView: View {
                     if account.assets.count > 0 {
                         showingErrorAlert = true
                     }
-
-                
                 default:
                     print("connectionResult was not success or failure")
             }
@@ -172,12 +180,8 @@ struct AccountView: View {
 struct AccountView_Previews: PreviewProvider {
 
     static var previews: some View {
-
         
         AccountView(account: dev.sampleAccount())
-            
-//        AccountView(account: Account(context: dev.dataController.container.viewContext))
-//        AccountView(account: Account())
 
     }
 }

@@ -14,7 +14,6 @@ class Asset: Identifiable, ObservableObject
     @Published var id: UUID
     @Published var stock: Stock
     
-
     var totalShares: Double {
         
         var total = 0.0
@@ -67,6 +66,24 @@ class Asset: Identifiable, ObservableObject
         self.id = UUID()
         self.transactions = transactions
         self.stock = stock
+    }
+    
+    
+    func updateValue()
+    {
+        APICaller.shared.getQuoteData(searchSymbols: stock.wrappedSymbol, completion: { result in
+        
+            switch result {
+            case .success(let snapshots):
+                if let stockSnapshot = snapshots.first(where: { $0.symbol == self.stock.wrappedSymbol })
+                {
+                    self.stock.updateValuesFromStockSnapshot(snapshot: stockSnapshot)
+                }
+            default:
+                print("Error updating asset value")
+                
+            }
+        })
     }
     
     

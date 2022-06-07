@@ -11,12 +11,9 @@ final class AccountsViewModel: ObservableObject {
     
     @Environment(\.managedObjectContext) var moc
     
-    
 //    @Published var myAccounts: [Account]
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.created, ascending: false)], animation: Animation.default) var accounts: FetchedResults<Account>
-    
-    
     
     public init ()
     {
@@ -75,9 +72,7 @@ final class AccountsViewModel: ObservableObject {
             }
         }
         print("finished updating all stock prices")
-        completion(.success(Array(accounts) as? [Account] ?? [Account]()))
-            
-        
+        completion(.success(Array(accounts)))
     }
     
 }
