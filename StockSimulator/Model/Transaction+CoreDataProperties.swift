@@ -2,7 +2,7 @@
 //  Transaction+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 3/20/22.
+//  Created by Christopher Walter on 6/8/22.
 //
 //
 
@@ -25,7 +25,8 @@ extension Transaction {
     @NSManaged public var sellPrice: Double
     @NSManaged public var account: Account?
     @NSManaged public var stock: Stock?
-    
+    @NSManaged public var holding: Holding?
+
     // Cost basis is when we buy
     var costBasis: Double {
         return numShares * purchasePrice
@@ -65,8 +66,7 @@ extension Transaction {
         self.stock = transaction.stock
         self.account = transaction.account
     }
-
-
+    
 }
 
 extension Transaction : Identifiable {

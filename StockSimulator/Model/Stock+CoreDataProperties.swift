@@ -2,7 +2,7 @@
 //  Stock+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 4/27/22.
+//  Created by Christopher Walter on 6/8/22.
 //
 //
 
@@ -22,19 +22,20 @@ extension Stock {
     @NSManaged public var displayName: String?
     @NSManaged public var id: UUID?
     @NSManaged public var language: String?
+    @NSManaged public var longName: String?
     @NSManaged public var market: String?
     @NSManaged public var quoteType: String?
+    @NSManaged public var regularMarketChange: Double
+    @NSManaged public var regularMarketChangePercent: Double
     @NSManaged public var regularMarketDayHigh: Double
     @NSManaged public var regularMarketDayLow: Double
     @NSManaged public var regularMarketPrice: Double
+    @NSManaged public var shortName: String?
     @NSManaged public var symbol: String?
     @NSManaged public var timeStamp: Date?
-    @NSManaged public var regularMarketChange: Double
-    @NSManaged public var regularMarketChangePercent: Double
-    @NSManaged public var shortName: String?
-    @NSManaged public var longName: String?
     @NSManaged public var transactions: NSSet?
     @NSManaged public var watchlists: NSSet?
+    @NSManaged public var holdings: NSSet?
 
 }
 
@@ -135,6 +136,23 @@ extension Stock {
 
     @objc(removeWatchlists:)
     @NSManaged public func removeFromWatchlists(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for holdings
+extension Stock {
+
+    @objc(addHoldingsObject:)
+    @NSManaged public func addToHoldings(_ value: Holding)
+
+    @objc(removeHoldingsObject:)
+    @NSManaged public func removeFromHoldings(_ value: Holding)
+
+    @objc(addHoldings:)
+    @NSManaged public func addToHoldings(_ values: NSSet)
+
+    @objc(removeHoldings:)
+    @NSManaged public func removeFromHoldings(_ values: NSSet)
 
 }
 

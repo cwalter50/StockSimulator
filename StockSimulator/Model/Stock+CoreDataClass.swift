@@ -2,7 +2,7 @@
 //  Stock+CoreDataClass.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 4/27/22.
+//  Created by Christopher Walter on 6/8/22.
 //
 //
 

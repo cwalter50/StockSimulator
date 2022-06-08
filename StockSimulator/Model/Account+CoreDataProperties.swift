@@ -2,23 +2,28 @@
 //  Account+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 3/12/22.
+//  Created by Christopher Walter on 6/8/22.
 //
 //
 
 import Foundation
 import CoreData
 
+
 extension Account {
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Account> {
         return NSFetchRequest<Account>(entityName: "Account")
     }
+
     @NSManaged public var cash: Double
     @NSManaged public var created: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var name: String?
     @NSManaged public var startingValue: Double
     @NSManaged public var transactions: NSSet?
+    @NSManaged public var holdings: NSSet?
+
 }
 
 extension Account {
@@ -53,7 +58,6 @@ extension Account {
     
 }
 
-
 // MARK: Generated accessors for transactions
 extension Account {
 
@@ -71,6 +75,29 @@ extension Account {
 
 }
 
+// MARK: Generated accessors for holdings
+extension Account {
+
+    @objc(addHoldingsObject:)
+    @NSManaged public func addToHoldings(_ value: Holding)
+
+    @objc(removeHoldingsObject:)
+    @NSManaged public func removeFromHoldings(_ value: Holding)
+
+    @objc(addHoldings:)
+    @NSManaged public func addToHoldings(_ values: NSSet)
+
+    @objc(removeHoldings:)
+    @NSManaged public func removeFromHoldings(_ values: NSSet)
+
+}
+
 extension Account : Identifiable {
 
 }
+
+
+
+
+
+

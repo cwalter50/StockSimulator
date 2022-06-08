@@ -2,7 +2,7 @@
 //  Account+CoreDataClass.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 3/12/22.
+//  Created by Christopher Walter on 6/8/22.
 //
 //
 
@@ -12,61 +12,62 @@ import CoreData
 
 public class Account: NSManagedObject {
 
-//    @Published var assets: [Asset] = []
-    
-    var assets: [Asset] {
-        var theAssets = [Asset]()
-        if let theTransactionsSet = transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction]
-        {
-            for t in theTransactions {
-                // see if I already have asset in the assets
-                if let foundAsset = theAssets.first(where: {$0.stock.wrappedSymbol == t.stock?.wrappedSymbol}) {
-                    foundAsset.transactions.append(t)
-                }
-                else {
-                    // make a new asset and add it to theAssets
-                    if let theStock = t.stock {
-                        let newAsset = Asset(transactions: [t], stock: theStock)
-                        theAssets.append(newAsset)
+    //    @Published var assets: [Asset] = []
+        
+        var assets: [Asset] {
+            var theAssets = [Asset]()
+            if let theTransactionsSet = transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction]
+            {
+                for t in theTransactions {
+                    // see if I already have asset in the assets
+                    if let foundAsset = theAssets.first(where: {$0.stock.wrappedSymbol == t.stock?.wrappedSymbol}) {
+                        foundAsset.transactions.append(t)
+                    }
+                    else {
+                        // make a new asset and add it to theAssets
+                        if let theStock = t.stock {
+                            let newAsset = Asset(transactions: [t], stock: theStock)
+                            theAssets.append(newAsset)
+                        }
                     }
                 }
             }
+            return theAssets
         }
-        return theAssets
-    }
-    
-    
-    
-//    var assets: [Asset] {
-//        get {
-//            return loadAccountAssets()
-//        }
-//        set {
-////            self.assets = loadAccountAssets()
-//        }
-//    }
-    
-//    func loadAccountAssets() -> [Asset]
-//    {
-////        print("loading account assets")
-//        var theAssets = [Asset]()
-//        if let theTransactionsSet = transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction]
-//        {
-//            for t in theTransactions {
-//                // see if I already have asset in the assets
-//                if let foundAsset = theAssets.first(where: {$0.stock.wrappedSymbol == t.stock?.wrappedSymbol}) {
-//                    foundAsset.transactions.append(t)
-//                }
-//                else {
-//                    // make a new asset and add it to theAssets
-//                    if let theStock = t.stock {
-//                        let newAsset = Asset(transactions: [t], stock: theStock)
-//                        theAssets.append(newAsset)
-//                    }
-//                }
-//            }
-//        }
-//        return theAssets
-//    }
+        
+        
+        
+    //    var assets: [Asset] {
+    //        get {
+    //            return loadAccountAssets()
+    //        }
+    //        set {
+    ////            self.assets = loadAccountAssets()
+    //        }
+    //    }
+        
+    //    func loadAccountAssets() -> [Asset]
+    //    {
+    ////        print("loading account assets")
+    //        var theAssets = [Asset]()
+    //        if let theTransactionsSet = transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction]
+    //        {
+    //            for t in theTransactions {
+    //                // see if I already have asset in the assets
+    //                if let foundAsset = theAssets.first(where: {$0.stock.wrappedSymbol == t.stock?.wrappedSymbol}) {
+    //                    foundAsset.transactions.append(t)
+    //                }
+    //                else {
+    //                    // make a new asset and add it to theAssets
+    //                    if let theStock = t.stock {
+    //                        let newAsset = Asset(transactions: [t], stock: theStock)
+    //                        theAssets.append(newAsset)
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        return theAssets
+    //    }
+
     
 }
