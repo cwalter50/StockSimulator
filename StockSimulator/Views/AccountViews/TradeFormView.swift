@@ -37,71 +37,74 @@ struct TradeFormView: View {
     
     var body: some View
     {
-        
-        Group{
-            Section(header: Text("ACCOUNT INFO")) {
-                VStack(alignment: .leading) {
-                    Text(account.wrappedName)
-                        .font(.title)
-                        .fontWeight(.bold)
-                    HStack (alignment: .firstTextBaseline){
-                        Text("Available Cash: ")
-                        Spacer()
-                        Text(String(format: "$%.2f", account.cash))
-                    }
-                    .font(.headline)
-//                    .padding([.vertical])
-                }
-            }
-            Section(header: Text("STOCK INFO"))
-            {
-                StockBasicView(stockSnapshot: stockSnapshot)
-            }
-            Section(header: Text("TRADE INFO"))
-            {
-                Picker("Buy or Sell?", selection: $tradeType) {
-                    ForEach(tradeOptions, id: \.self) {
-                        Text($0)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                HStack(alignment: .firstTextBaseline) {
-                    Text("Shares: ")
-                        .font(.headline)
-                    TextField("Number of Shares",  text: $numShares)
-                        .keyboardType(.decimalPad)
-                        .multilineTextAlignment(.center)
-                        .onReceive(Just(numShares)) { newValue in
-                            let filtered = newValue.filter { "0123456789".contains($0) }
-                            if filtered != newValue {
-                                self.numShares = filtered
-                            }
+        VStack {
+            Group{
+                Section(header: Text("ACCOUNT INFO")) {
+                    VStack(alignment: .leading) {
+                        Text(account.wrappedName)
+                            .font(.title)
+                            .fontWeight(.bold)
+                        HStack (alignment: .firstTextBaseline){
+                            Text("Available Cash: ")
+                            Spacer()
+                            Text(String(format: "$%.2f", account.cash))
                         }
-                }
-                Text(tradeType == "BUY" ? "Cost Basis: " + calculateTradePrice(): "Total Proceeds: " +  calculateTradePrice())
-                    .font(.headline)
-                
-                Button(action: {
-                    executeTrade()
-//                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Text("Trade")
-                        .font(.title)
-                        .foregroundColor(Color.blue)
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
-                }
-            }
-            .alert(isPresented: $displayAlert) {
-                
-                Alert(title: Text(tradeStatus.rawValue), message: Text(alertMessage), dismissButton: Alert.Button.default(Text("OK")){
-                    // dismiss the page if the alert was a success...
-                    if tradeStatus == .success {
-                        presentationMode.wrappedValue.dismiss()
+                        .font(.headline)
+    //                    .padding([.vertical])
                     }
-                })
+                }
+                Section(header: Text("STOCK INFO"))
+                {
+                    StockBasicView(stockSnapshot: stockSnapshot)
+                }
+                Section(header: Text("TRADE INFO"))
+                {
+                    Picker("Buy or Sell?", selection: $tradeType) {
+                        ForEach(tradeOptions, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    HStack(alignment: .firstTextBaseline) {
+                        Text("Shares: ")
+                            .font(.headline)
+                        TextField("Number of Shares",  text: $numShares)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.center)
+                            .onReceive(Just(numShares)) { newValue in
+                                let filtered = newValue.filter { "0123456789".contains($0) }
+                                if filtered != newValue {
+                                    self.numShares = filtered
+                                }
+                            }
+                    }
+                    Text(tradeType == "BUY" ? "Cost Basis: " + calculateTradePrice(): "Total Proceeds: " +  calculateTradePrice())
+                        .font(.headline)
+                    
+                    Button(action: {
+                        executeTrade()
+    //                    presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("Trade")
+                            .font(.title)
+                            .foregroundColor(Color.blue)
+                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+                    }
+                }
+                .alert(isPresented: $displayAlert) {
+                    
+                    Alert(title: Text(tradeStatus.rawValue), message: Text(alertMessage), dismissButton: Alert.Button.default(Text("OK")){
+                        // dismiss the page if the alert was a success...
+                        if tradeStatus == .success {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    })
+                }
+                
             }
-            
         }
+        .padding()
+        
     }
 
     private func buyShares(numShares: Double)
@@ -123,11 +126,29 @@ struct TradeFormView: View {
             newTransaction.stock = newStock
             newTransaction.account = account
             
-            account.addToTransactions(newTransaction) // might not need this. I think the line above is the same thing...
+            account.addToTransactions(newTransaction)
             
             // decrease cash amount in account by purchase price
             account.cash -= newTransaction.costBasis
             
+            // create a Holding if one does not exist for that symbol
+            if let holdings = account.holdings?.allObjects as? [Holding] {
+                if let foundHolding = holdings.first(where: {$0.wrappedSymbol == newStock.wrappedSymbol}) {
+                    
+                    foundHolding.addToTransactions(newTransaction)
+                    foundHolding.account = account
+                }
+                else {
+                    let newHolding = Holding(context: moc)
+                    newHolding.id = UUID()
+                    newHolding.symbol = newStock.wrappedSymbol
+                    
+                    newHolding.addToTransactions(newTransaction)
+                    newHolding.account = account
+                    newHolding.stock = newStock
+                }
+            }
+
             if moc.hasChanges {
                 try? moc.save() // save to CoreData
                 print("transaction has been added to account")
@@ -290,6 +311,14 @@ struct TradeFormView: View {
 
 struct TradeFormView_Previews: PreviewProvider {
     static var previews: some View {
-        TradeFormView(account: Account(), stockSnapshot: StockSnapshot())
+//        let context = dev.dataController.container.viewContext
+//        return TradeFormView(account: dev.sampleAccount(), stockSnapshot: StockSnapshot())
+//            .environment(\.managedObjectContext, context)
+        TradeFormView(account: dev.sampleAccount(), stockSnapshot: StockSnapshot())
+                .environment(\.managedObjectContext, dev.dataController.container.viewContext)
+        
+       
+        
+        
     }
 }

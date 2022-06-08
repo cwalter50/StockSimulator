@@ -24,6 +24,12 @@ extension Holding {
 
 }
 
+extension Holding {
+    var wrappedSymbol: String {
+        symbol ?? "Unknown"
+    }
+}
+
 // MARK: Generated accessors for transactions
 extension Holding {
 

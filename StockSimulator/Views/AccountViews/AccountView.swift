@@ -14,10 +14,14 @@ struct AccountView: View {
     var account: Account
     @FetchRequest var transactions: FetchedResults<Transaction>
     
+    @FetchRequest var holdings: FetchedResults<Holding>
+    
     init (account: Account)
     {
         self.account = account
         _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
+        
+        _holdings = FetchRequest<Holding>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
         print("init on AccountView Called")
 //        loadCurrentStockInfo()
         
@@ -84,6 +88,11 @@ struct AccountView: View {
                             AssetRow(asset: asset)
                         }
                     }
+                }
+                
+                ForEach (holdings) {
+                    holding in
+                    Text("\(holding.wrappedSymbol)")
                 }
             }
             .listStyle(PlainListStyle())
