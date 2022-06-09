@@ -9,11 +9,15 @@ enum AccountsDataResult {
 
 final class AccountsViewModel: ObservableObject {
     
-    @Environment(\.managedObjectContext) var moc
+//    @Environment(\.managedObjectContext) var moc
     
 //    @Published var myAccounts: [Account]
     
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.created, ascending: false)], animation: Animation.default) var accounts: FetchedResults<Account>
+    
+    @Published var accounts: [Account] = []
+    
+    
+//    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.created, ascending: false)], animation: Animation.default) var accounts: FetchedResults<Account>
     
     public init ()
     {
@@ -56,7 +60,7 @@ final class AccountsViewModel: ObservableObject {
                                     print("updating \(t.stock?.wrappedSymbol ?? "error") for \(t.numShares)")
                                 }
                             }
-                        try? self.moc.save()
+//                        try? self.moc.save()
                             
 
                         case .failure(let error):

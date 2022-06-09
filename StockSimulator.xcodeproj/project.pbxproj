@@ -17,6 +17,8 @@
 		38E8B4F4285100150084843A /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F2285100150084843A /* Transaction+CoreDataProperties.swift */; };
 		38E8B4F7285100580084843A /* Stock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F5285100580084843A /* Stock+CoreDataClass.swift */; };
 		38E8B4F8285100580084843A /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F6285100580084843A /* Stock+CoreDataProperties.swift */; };
+		38E8B4FA285229020084843A /* HoldingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F9285229020084843A /* HoldingRow.swift */; };
+		38E8B4FC285264200084843A /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4FB285264200084843A /* AccountViewModel.swift */; };
 		8368B3D527D05B30008AF135 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3D427D05B30008AF135 /* DataController.swift */; };
 		8368B3F527D2B936008AF135 /* StockSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F427D2B936008AF135 /* StockSnapshot.swift */; };
 		8368B3F727D2BB06008AF135 /* AddWatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */; };
@@ -90,6 +92,8 @@
 		38E8B4F2285100150084843A /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		38E8B4F5285100580084843A /* Stock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataClass.swift"; sourceTree = "<group>"; };
 		38E8B4F6285100580084843A /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		38E8B4F9285229020084843A /* HoldingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldingRow.swift; sourceTree = "<group>"; };
+		38E8B4FB285264200084843A /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		8368B3D427D05B30008AF135 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		8368B3F427D2B936008AF135 /* StockSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSnapshot.swift; sourceTree = "<group>"; };
 		8368B3F627D2BB06008AF135 /* AddWatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchlistView.swift; sourceTree = "<group>"; };
@@ -199,6 +203,7 @@
 				83FA270C27BDF46D008DA2BC /* AddAccountView.swift */,
 				839E97F627E2B8450017C9AE /* AssetView.swift */,
 				839E97EC27DD9DC10017C9AE /* AssetRow.swift */,
+				38E8B4F9285229020084843A /* HoldingRow.swift */,
 				83F9F71827CAED9900C14D87 /* TradeFormView.swift */,
 			);
 			path = AccountViews;
@@ -247,6 +252,7 @@
 			children = (
 				83813CEB27F27FEF009344FE /* ChartViewModel.swift */,
 				839CD1ED282208FA00DFC77B /* AccountsViewModel.swift */,
+				38E8B4FB285264200084843A /* AccountViewModel.swift */,
 				8386139E2835249000FFBC34 /* StocksViewModel.swift */,
 			);
 			path = ViewModels;
@@ -472,6 +478,7 @@
 				8368B40627D2C57C008AF135 /* Watchlist+CoreDataClass.swift in Sources */,
 				83F9F71327CAAA4100C14D87 /* AccountRow.swift in Sources */,
 				38E8B4F3285100150084843A /* Transaction+CoreDataClass.swift in Sources */,
+				38E8B4FC285264200084843A /* AccountViewModel.swift in Sources */,
 				38E8B4F02850FF5C0084843A /* Account+CoreDataProperties.swift in Sources */,
 				839E97ED27DD9DC10017C9AE /* AssetRow.swift in Sources */,
 				38E8B4F8285100580084843A /* Stock+CoreDataProperties.swift in Sources */,
@@ -498,6 +505,7 @@
 				839CD19A281987E500DFC77B /* NetworkingManager.swift in Sources */,
 				838613A928352BED00FFBC34 /* PreviewProvider.swift in Sources */,
 				83E86FBB27FA4010000A454D /* ChartLoader.swift in Sources */,
+				38E8B4FA285229020084843A /* HoldingRow.swift in Sources */,
 				38E8B4F4285100150084843A /* Transaction+CoreDataProperties.swift in Sources */,
 				83FA270B27BDF424008DA2BC /* AccountsView.swift in Sources */,
 				83813CE727ED589E009344FE /* LineGraph.swift in Sources */,

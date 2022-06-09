@@ -22,6 +22,7 @@ class DataController: ObservableObject
                 print("Core Data failed to load: \(error.localizedDescription)")
             }
             self.getWatchlists()
+//            self.getAccounts()
         }
         
         print("init on DataController called")
@@ -85,6 +86,15 @@ class DataController: ObservableObject
     
     
     // MARK: Private
+    
+//    private func getAccounts() {
+//        let request = NSFetchRequest<Account>(entityName: "Account")
+//        do {
+//            accounts = try container.viewContext.fetch(request)
+//        } catch let error {
+//            print("Error fetching entities: \(error)")
+//        }
+//    }
     private func getWatchlists()
     {
         let request = NSFetchRequest<Watchlist>(entityName: "Watchlist")
