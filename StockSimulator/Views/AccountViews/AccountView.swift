@@ -13,7 +13,7 @@ struct AccountView: View {
     
     var account: Account
     
-    var vm: AccountViewModel
+    @ObservedObject var vm: AccountViewModel
     
     @FetchRequest var transactions: FetchedResults<Transaction>
     
@@ -89,9 +89,13 @@ struct AccountView: View {
                 ForEach (vm.assets) {
                     asset in
                     if asset.totalShares > 0 {
-                        NavigationLink(destination: AssetView(asset: asset, account: account)) {
-                            AssetRow(asset: asset)
+                        VStack{
+                            Text(String(format: "$%.2f", asset.stock.regularMarketPrice))
+                            NavigationLink(destination: AssetView(asset: asset, account: account)) {
+                                AssetRow(asset: asset)
+                            }
                         }
+                        
                     }
                 }
 //                ForEach (holdings) {
@@ -121,72 +125,13 @@ struct AccountView: View {
         
     }
     
-//    func loadCurrentStockInfo()
-//    {
-//        for asset in account.assets {
-//            asset.updateValue()
-//        }
-//    }
+
     
     func loadCurrentStockInfo()
     {
         
         vm.updateAssetValues()
-//        if let holdings = account.holdings?.allObjects as? [Holding]
-//        {
-//            for h in holdings
-//            {
-//                h.updateValue()
-//            }
-//        }
-//        print("load current Stock Info Called on account \(account.wrappedName)")
-////        account.assets = account.loadAccountAssets()
-//        // load the Stocks
-//        var stocks = [Stock]()
-//
-//        for t in transactions {
-//            if let theStock = t.stock {
-//                if t.isClosed == false {
-//                    stocks.append(theStock)
-//                }
-//
-//            }
-//        }
-//        print("found \(transactions.count) transactions")
-//
-//        var searchString = ""
-//        for s in stocks.unique()
-//        {
-//            searchString += s.wrappedSymbol+","
-//        }
-//
-//        let apiCaller = APICaller.shared
-//        apiCaller.getQuoteData(searchSymbols: searchString) {
-//            connectionResult in
-//
-//            switch connectionResult {
-//                case .success(let theStocks):
-//                    // link the stocks to the current stock prices, update the values,
-//                    for snapshot in theStocks
-//                    {
-//                        if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
-//                            stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
-//                            print("updated values for \(stockCoreData.wrappedSymbol) to \(stockCoreData.regularMarketPrice)")
-//                        }
-//                    }
-//                    if moc.hasChanges {
-//                        try? moc.save()
-//                    }
-//                case .failure(let error):
-//                    errorMessage = error
-//                    print(error)
-//                    if account.assets.count > 0 {
-//                        showingErrorAlert = true
-//                    }
-//                default:
-//                    print("connectionResult was not success or failure")
-//            }
-//        }
+
     }
     
     func deleteAccount()

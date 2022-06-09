@@ -39,46 +39,39 @@ final class AccountViewModel: ObservableObject {
         self.assets = theAssets
     }
     
+    
     func updateAssetValues()
     {
-        print("updating asset values in AccountViewModel")
-        var stocks : [Stock] = [Stock]()
         for asset in assets {
-            stocks.append(asset.stock)
-        }
-        var searchString = ""
-        for stock in stocks
-        {
-            searchString += stock.wrappedSymbol+","
-        }
+//            asset.updateValue()
+            let apiCaller = APICaller.shared
+            apiCaller.getQuoteData(searchSymbols: asset.stock.wrappedSymbol) {
+                connectionResult in
 
-        let apiCaller = APICaller.shared
-        apiCaller.getQuoteData(searchSymbols: searchString) {
-            connectionResult in
-
-            switch connectionResult {
-                case .success(let theStocks):
-                    // link the stocks to the current stock prices, update the values,
-                    for snapshot in theStocks
-                    {
-                        if let stockCoreData = stocks.first(where: {$0.symbol == snapshot.symbol}) {
-                            stockCoreData.updateValuesFromStockSnapshot(snapshot: snapshot)
-                            print("updated values for \(stockCoreData.wrappedSymbol) to \(stockCoreData.regularMarketPrice)")
+                switch connectionResult {
+                    case .success(let theStocks):
+                        // link the stocks to the current stock prices, update the values,
+                        for snapshot in theStocks
+                        {
+                            asset.stock.updateValuesFromStockSnapshot(snapshot: snapshot)
+                            print("updated values for \(asset.stock.wrappedSymbol) to \(asset.stock.regularMarketPrice)")
                         }
-                    }
-//                    try? self.dataController.container.viewContext.save()
-                    if self.moc.hasChanges {
-                        try? self.moc.save()
-                    }
-                case .failure(let error):
-//                    errorMessage = error
-                    print(error)
-//                    if account.assets.count > 0 {
-//                        showingErrorAlert = true
-//                    }
-                default:
-                    print("connectionResult was not success or failure")
+    //                    try? self.dataController.container.viewContext.save()
+                        if self.moc.hasChanges {
+                            try? self.moc.save()
+                        }
+                        
+                    case .failure(let error):
+    //                    errorMessage = error
+                        print(error)
+    //                    if account.assets.count > 0 {
+    //                        showingErrorAlert = true
+    //                    }
+                    default:
+                        print("connectionResult was not success or failure")
+                }
             }
         }
     }
+
 }
