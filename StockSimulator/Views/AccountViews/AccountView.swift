@@ -15,18 +15,17 @@ struct AccountView: View {
     
     @ObservedObject var vm: AccountViewModel
     
-    @FetchRequest var transactions: FetchedResults<Transaction>
-    
-    @FetchRequest var holdings: FetchedResults<Holding>
+//    @FetchRequest var transactions: FetchedResults<Transaction>
+
     
     init (account: Account)
     {
         self.account = account
         
         vm = AccountViewModel(account: account)
-        _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
-        
-        _holdings = FetchRequest<Holding>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
+//        _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
+//        
+
         print("init on AccountView Called")
 //        loadCurrentStockInfo()
         
@@ -89,20 +88,12 @@ struct AccountView: View {
                 ForEach (vm.assets) {
                     asset in
                     if asset.totalShares > 0 {
-                        VStack{
-                            Text(String(format: "$%.2f", asset.stock.regularMarketPrice))
-                            NavigationLink(destination: AssetView(asset: asset, account: account)) {
-                                AssetRow(asset: asset)
-                            }
+                        NavigationLink(destination: AssetView(asset: asset, account: account)) {
+                            AssetRow(asset: asset)
                         }
-                        
                     }
                 }
-//                ForEach (holdings) {
-//                    holding in
-//                    HoldingRow(holding: holding)
-////                    Text("\(holding.wrappedSymbol)")
-//                }
+
             }
             .listStyle(PlainListStyle())
         }
@@ -129,9 +120,7 @@ struct AccountView: View {
     
     func loadCurrentStockInfo()
     {
-        
         vm.updateAssetValues()
-
     }
     
     func deleteAccount()

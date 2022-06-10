@@ -62,16 +62,12 @@ struct AccountsView: View {
     }
     
     func loadData () {
-//        viewModel.loadAccountsValue { result in
-//            switch result {
-//            case .success(let theAccounts):
-//                print("1")
-//            case .failure(let hello):
-//                print(hello)
-//            }
-//            
-//            
-//        }
+        
+        for account in accounts {
+            let vm = AccountViewModel(account: account)
+            vm.updateAssetValues()
+        }
+
     }
     
     

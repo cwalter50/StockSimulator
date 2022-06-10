@@ -9,15 +9,12 @@
 /* Begin PBXBuildFile section */
 		380958B727EE1CB000705D9F /* StockDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380958B627EE1CB000705D9F /* StockDetailView.swift */; };
 		38CD5C89284E7DE100E96954 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CD5C88284E7DE100E96954 /* Persistence.swift */; };
-		38E8B4EB2850FEEB0084843A /* Holding+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4E92850FEEB0084843A /* Holding+CoreDataClass.swift */; };
-		38E8B4EC2850FEEB0084843A /* Holding+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4EA2850FEEB0084843A /* Holding+CoreDataProperties.swift */; };
 		38E8B4EF2850FF5C0084843A /* Account+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4ED2850FF5C0084843A /* Account+CoreDataClass.swift */; };
 		38E8B4F02850FF5C0084843A /* Account+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4EE2850FF5C0084843A /* Account+CoreDataProperties.swift */; };
 		38E8B4F3285100150084843A /* Transaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F1285100150084843A /* Transaction+CoreDataClass.swift */; };
 		38E8B4F4285100150084843A /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F2285100150084843A /* Transaction+CoreDataProperties.swift */; };
 		38E8B4F7285100580084843A /* Stock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F5285100580084843A /* Stock+CoreDataClass.swift */; };
 		38E8B4F8285100580084843A /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F6285100580084843A /* Stock+CoreDataProperties.swift */; };
-		38E8B4FA285229020084843A /* HoldingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4F9285229020084843A /* HoldingRow.swift */; };
 		38E8B4FC285264200084843A /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8B4FB285264200084843A /* AccountViewModel.swift */; };
 		8368B3D527D05B30008AF135 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3D427D05B30008AF135 /* DataController.swift */; };
 		8368B3F527D2B936008AF135 /* StockSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3F427D2B936008AF135 /* StockSnapshot.swift */; };
@@ -40,7 +37,6 @@
 		838613A928352BED00FFBC34 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613A828352BED00FFBC34 /* PreviewProvider.swift */; };
 		838AD1A72808FBFD0035F0C5 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838AD1A62808FBFD0035F0C5 /* Color.swift */; };
 		839CD19A281987E500DFC77B /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839CD199281987E500DFC77B /* NetworkingManager.swift */; };
-		839CD1EE282208FA00DFC77B /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839CD1ED282208FA00DFC77B /* AccountsViewModel.swift */; };
 		839E97ED27DD9DC10017C9AE /* AssetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97EC27DD9DC10017C9AE /* AssetRow.swift */; };
 		839E97F327DE77CA0017C9AE /* WatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97F227DE77CA0017C9AE /* WatchlistView.swift */; };
 		839E97F727E2B8450017C9AE /* AssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97F627E2B8450017C9AE /* AssetView.swift */; };
@@ -84,15 +80,12 @@
 /* Begin PBXFileReference section */
 		380958B627EE1CB000705D9F /* StockDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailView.swift; sourceTree = "<group>"; };
 		38CD5C88284E7DE100E96954 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		38E8B4E92850FEEB0084843A /* Holding+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Holding+CoreDataClass.swift"; sourceTree = "<group>"; };
-		38E8B4EA2850FEEB0084843A /* Holding+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Holding+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		38E8B4ED2850FF5C0084843A /* Account+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataClass.swift"; sourceTree = "<group>"; };
 		38E8B4EE2850FF5C0084843A /* Account+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		38E8B4F1285100150084843A /* Transaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataClass.swift"; sourceTree = "<group>"; };
 		38E8B4F2285100150084843A /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		38E8B4F5285100580084843A /* Stock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataClass.swift"; sourceTree = "<group>"; };
 		38E8B4F6285100580084843A /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		38E8B4F9285229020084843A /* HoldingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldingRow.swift; sourceTree = "<group>"; };
 		38E8B4FB285264200084843A /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		8368B3D427D05B30008AF135 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		8368B3F427D2B936008AF135 /* StockSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSnapshot.swift; sourceTree = "<group>"; };
@@ -115,7 +108,6 @@
 		838613A828352BED00FFBC34 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		838AD1A62808FBFD0035F0C5 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		839CD199281987E500DFC77B /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
-		839CD1ED282208FA00DFC77B /* AccountsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
 		839E97EC27DD9DC10017C9AE /* AssetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRow.swift; sourceTree = "<group>"; };
 		839E97F227DE77CA0017C9AE /* WatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistView.swift; sourceTree = "<group>"; };
 		839E97F627E2B8450017C9AE /* AssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetView.swift; sourceTree = "<group>"; };
@@ -203,7 +195,6 @@
 				83FA270C27BDF46D008DA2BC /* AddAccountView.swift */,
 				839E97F627E2B8450017C9AE /* AssetView.swift */,
 				839E97EC27DD9DC10017C9AE /* AssetRow.swift */,
-				38E8B4F9285229020084843A /* HoldingRow.swift */,
 				83F9F71827CAED9900C14D87 /* TradeFormView.swift */,
 			);
 			path = AccountViews;
@@ -251,7 +242,6 @@
 			isa = PBXGroup;
 			children = (
 				83813CEB27F27FEF009344FE /* ChartViewModel.swift */,
-				839CD1ED282208FA00DFC77B /* AccountsViewModel.swift */,
 				38E8B4FB285264200084843A /* AccountViewModel.swift */,
 				8386139E2835249000FFBC34 /* StocksViewModel.swift */,
 			);
@@ -326,8 +316,6 @@
 			isa = PBXGroup;
 			children = (
 				83813CE427ED5461009344FE /* ChartMockData.swift */,
-				38E8B4E92850FEEB0084843A /* Holding+CoreDataClass.swift */,
-				38E8B4EA2850FEEB0084843A /* Holding+CoreDataProperties.swift */,
 				38E8B4ED2850FF5C0084843A /* Account+CoreDataClass.swift */,
 				38E8B4EE2850FF5C0084843A /* Account+CoreDataProperties.swift */,
 				8368B40227D2C57C008AF135 /* Watchlist+CoreDataClass.swift */,
@@ -493,7 +481,6 @@
 				38CD5C89284E7DE100E96954 /* Persistence.swift in Sources */,
 				838613A328352B5A00FFBC34 /* Date.swift in Sources */,
 				8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */,
-				38E8B4EB2850FEEB0084843A /* Holding+CoreDataClass.swift in Sources */,
 				83FA270D27BDF46D008DA2BC /* AddAccountView.swift in Sources */,
 				83813CEC27F27FEF009344FE /* ChartViewModel.swift in Sources */,
 				8368B40727D2C57C008AF135 /* Watchlist+CoreDataProperties.swift in Sources */,
@@ -505,13 +492,11 @@
 				839CD19A281987E500DFC77B /* NetworkingManager.swift in Sources */,
 				838613A928352BED00FFBC34 /* PreviewProvider.swift in Sources */,
 				83E86FBB27FA4010000A454D /* ChartLoader.swift in Sources */,
-				38E8B4FA285229020084843A /* HoldingRow.swift in Sources */,
 				38E8B4F4285100150084843A /* Transaction+CoreDataProperties.swift in Sources */,
 				83FA270B27BDF424008DA2BC /* AccountsView.swift in Sources */,
 				83813CE727ED589E009344FE /* LineGraph.swift in Sources */,
 				83813CE527ED5461009344FE /* ChartMockData.swift in Sources */,
 				83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */,
-				38E8B4EC2850FEEB0084843A /* Holding+CoreDataProperties.swift in Sources */,
 				83FA26E727B85F38008DA2BC /* StockSearchView.swift in Sources */,
 				83F9F71727CAB04D00C14D87 /* AccountView.swift in Sources */,
 				8386139F2835249000FFBC34 /* StocksViewModel.swift in Sources */,
@@ -519,7 +504,6 @@
 				836E864E281625E8006EB6D9 /* StockDataService.swift in Sources */,
 				83D3FD5627A60E7D00F3746B /* APICaller.swift in Sources */,
 				38E8B4EF2850FF5C0084843A /* Account+CoreDataClass.swift in Sources */,
-				839CD1EE282208FA00DFC77B /* AccountsViewModel.swift in Sources */,
 				838613A128352B2600FFBC34 /* Double.swift in Sources */,
 				839E97F727E2B8450017C9AE /* AssetView.swift in Sources */,
 			);

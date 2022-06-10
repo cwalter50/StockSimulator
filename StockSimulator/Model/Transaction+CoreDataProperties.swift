@@ -25,7 +25,6 @@ extension Transaction {
     @NSManaged public var sellPrice: Double
     @NSManaged public var account: Account?
     @NSManaged public var stock: Stock?
-    @NSManaged public var holding: Holding?
 
     // Cost basis is when we buy
     var costBasis: Double {

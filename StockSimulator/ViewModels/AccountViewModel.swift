@@ -19,6 +19,11 @@ final class AccountViewModel: ObservableObject {
     public init(account: Account)
     {
         self.account = account
+        loadAssets()
+    }
+    
+    func loadAssets()
+    {
         var theAssets = [Asset]()
         if let theTransactionsSet = account.transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction]
         {
@@ -36,13 +41,16 @@ final class AccountViewModel: ObservableObject {
                 }
             }
         }
-        self.assets = theAssets
+        DispatchQueue.main.async{
+            self.assets = theAssets
+        }
     }
     
     
     func updateAssetValues()
     {
         for asset in assets {
+//            asset.updateValue()
 //            asset.updateValue()
             let apiCaller = APICaller.shared
             apiCaller.getQuoteData(searchSymbols: asset.stock.wrappedSymbol) {
@@ -61,6 +69,7 @@ final class AccountViewModel: ObservableObject {
                             try? self.moc.save()
                         }
                         
+                        self.loadAssets()
                     case .failure(let error):
     //                    errorMessage = error
                         print(error)

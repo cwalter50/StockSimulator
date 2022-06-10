@@ -78,12 +78,6 @@ extension Account {
 // MARK: Generated accessors for holdings
 extension Account {
 
-    @objc(addHoldingsObject:)
-    @NSManaged public func addToHoldings(_ value: Holding)
-
-    @objc(removeHoldingsObject:)
-    @NSManaged public func removeFromHoldings(_ value: Holding)
-
     @objc(addHoldings:)
     @NSManaged public func addToHoldings(_ values: NSSet)
 

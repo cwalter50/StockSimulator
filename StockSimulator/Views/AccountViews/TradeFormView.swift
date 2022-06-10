@@ -131,23 +131,8 @@ struct TradeFormView: View {
             // decrease cash amount in account by purchase price
             account.cash -= newTransaction.costBasis
             
-            // create a Holding if one does not exist for that symbol
-            if let holdings = account.holdings?.allObjects as? [Holding] {
-                if let foundHolding = holdings.first(where: {$0.wrappedSymbol == newStock.wrappedSymbol}) {
-                    
-                    foundHolding.addToTransactions(newTransaction)
-                    foundHolding.account = account
-                }
-                else {
-                    let newHolding = Holding(context: moc)
-                    newHolding.id = UUID()
-                    newHolding.symbol = newStock.wrappedSymbol
-                    
-                    newHolding.addToTransactions(newTransaction)
-                    newHolding.account = account
-                    newHolding.stock = newStock
-                }
-            }
+            
+            
 
             if moc.hasChanges {
                 try? moc.save() // save to CoreData
