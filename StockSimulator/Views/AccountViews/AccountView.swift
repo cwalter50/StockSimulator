@@ -17,27 +17,22 @@ struct AccountView: View {
     
 //    @FetchRequest var transactions: FetchedResults<Transaction>
 
-    
-    init (account: Account)
-    {
-        self.account = account
-        
-        vm = AccountViewModel(account: account)
-//        _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
-//        
-
-        print("init on AccountView Called")
-//        loadCurrentStockInfo()
-        
-    }
-    
-    
     @State var isSearchPresented = false
     @State var showingDeleteAlert = false
     
     // this should display an error on the api caller
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
+    
+    @State var showingDepositView = false
+    
+    
+    init (account: Account)
+    {
+        self.account = account
+        vm = AccountViewModel(account: account)
+//        _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
+    }
     
     
     var body: some View {
@@ -46,14 +41,35 @@ struct AccountView: View {
                 Text(account.wrappedName)
                     .font(.title)
                 Spacer()
+                Button(action: {
+                    showingDepositView.toggle()
+                }) {
+                    Text("Deposit $")
+                }
 //                Text(String(format: "$%.2f", account.calculateValue()))
 //                    .font(.headline)
+            }
+            .sheet(isPresented: $showingDepositView, onDismiss: {
+                loadCurrentStockInfo()
+            }){
+                DepositView(account: account)
             }
             .alert(isPresented: $showingDeleteAlert) {
                 Alert(title: Text("Delete \(account.name ?? "Account")?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete"), action: deleteAccount), secondaryButton: .cancel())
             }
-            Text(String(format: "Cash: $%.2f", account.cash))
-                .font(.headline)
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(String(format: "Account Value: $%.2f", account.currentValue))
+                        .font(.headline)
+                    Spacer()
+                    
+                }
+                Text(String(format: "Cash: $%.2f", account.cash))
+                    .font(.headline)
+                    
+            }
+            .padding([.top, .bottom])
+            Divider()
             HStack(alignment: .firstTextBaseline) {
                 Text("Assests")
                     .font(.headline)
@@ -111,12 +127,8 @@ struct AccountView: View {
             }
         }
         .onAppear(perform: loadCurrentStockInfo)
-
 //            .navigationBarHidden(true)
-        
     }
-    
-
     
     func loadCurrentStockInfo()
     {
@@ -127,8 +139,6 @@ struct AccountView: View {
     {
         print("deleteAccount called")
         moc.delete(account)
-
-            // uncomment this line if you want to make the deletion permanent
         try? moc.save()
 //        presentationMode.wrappedValue.dismiss()
     }
@@ -137,8 +147,6 @@ struct AccountView: View {
 struct AccountView_Previews: PreviewProvider {
 
     static var previews: some View {
-        
         AccountView(account: dev.sampleAccount())
-
     }
 }

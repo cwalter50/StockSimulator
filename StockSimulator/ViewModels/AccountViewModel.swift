@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+
 final class AccountViewModel: ObservableObject {
     
     @Published var assets: [Asset] = []
@@ -82,5 +83,4 @@ final class AccountViewModel: ObservableObject {
             }
         }
     }
-
 }

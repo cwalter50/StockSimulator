@@ -40,6 +40,7 @@
 		839E97ED27DD9DC10017C9AE /* AssetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97EC27DD9DC10017C9AE /* AssetRow.swift */; };
 		839E97F327DE77CA0017C9AE /* WatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97F227DE77CA0017C9AE /* WatchlistView.swift */; };
 		839E97F727E2B8450017C9AE /* AssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E97F627E2B8450017C9AE /* AssetView.swift */; };
+		83A6466D2856654400B659E2 /* DepositView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6466C2856654400B659E2 /* DepositView.swift */; };
 		83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */; };
 		83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D3FD2227A5FEF800F3746B /* ContentView.swift */; };
 		83D3FD2527A5FEF800F3746B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83D3FD2427A5FEF800F3746B /* Assets.xcassets */; };
@@ -111,6 +112,7 @@
 		839E97EC27DD9DC10017C9AE /* AssetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRow.swift; sourceTree = "<group>"; };
 		839E97F227DE77CA0017C9AE /* WatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistView.swift; sourceTree = "<group>"; };
 		839E97F627E2B8450017C9AE /* AssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetView.swift; sourceTree = "<group>"; };
+		83A6466C2856654400B659E2 /* DepositView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepositView.swift; sourceTree = "<group>"; };
 		83D3FD1D27A5FEF800F3746B /* StockSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D3FD2027A5FEF800F3746B /* StockSimulatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSimulatorApp.swift; sourceTree = "<group>"; };
 		83D3FD2227A5FEF800F3746B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			children = (
 				83FA270A27BDF424008DA2BC /* AccountsView.swift */,
 				83F9F71627CAB04D00C14D87 /* AccountView.swift */,
+				83A6466C2856654400B659E2 /* DepositView.swift */,
 				83F9F71227CAAA4100C14D87 /* AccountRow.swift */,
 				83FA270C27BDF46D008DA2BC /* AddAccountView.swift */,
 				839E97F627E2B8450017C9AE /* AssetView.swift */,
@@ -483,6 +486,7 @@
 				8368B3FD27D2BD90008AF135 /* WatchlistsView.swift in Sources */,
 				83FA270D27BDF46D008DA2BC /* AddAccountView.swift in Sources */,
 				83813CEC27F27FEF009344FE /* ChartViewModel.swift in Sources */,
+				83A6466D2856654400B659E2 /* DepositView.swift in Sources */,
 				8368B40727D2C57C008AF135 /* Watchlist+CoreDataProperties.swift in Sources */,
 				83F9F71527CAAB2600C14D87 /* Asset.swift in Sources */,
 				83FA26E427B82461008DA2BC /* StockRow.swift in Sources */,

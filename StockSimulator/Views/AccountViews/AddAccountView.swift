@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AddAccountView: View {
     
@@ -15,7 +16,6 @@ struct AddAccountView: View {
     
     @Environment(\.managedObjectContext) var moc // CoreData
 
-    
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
     
@@ -34,12 +34,17 @@ struct AddAccountView: View {
                     Text("Amount:")
                     TextField("Enter Cash Starting Amount", text: $startingAmount)
                         .keyboardType(.decimalPad)
-                }
+                        .multilineTextAlignment(.center)
+                        .onReceive(Just(startingAmount)) { newValue in
+                            let filtered = newValue.filter { "0123456789".contains($0) }
+                            if filtered != newValue {
+                                self.startingAmount = "$\(filtered)"
+                            }
+                        }
                 // add more items later like margin account, etc.
                 
             }
             Button(action: {
-                
 //                saveAccountsToUserDefaults()
                 // add the Account
                 let cash = Double(self.startingAmount) ?? 1000.00
@@ -49,11 +54,9 @@ struct AddAccountView: View {
                 newAccount.startingValue = cash
                 newAccount.cash = cash
                 newAccount.created = Date()
-
                 if moc.hasChanges {
                     try? moc.save()
                 }
-                
                 presentationMode.wrappedValue.dismiss()
                 
             }){
@@ -61,6 +64,7 @@ struct AddAccountView: View {
             }
             .disabled(name.isEmpty || startingAmount.isEmpty)
 
+        }
         }
     }
 
