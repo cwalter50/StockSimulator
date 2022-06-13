@@ -17,7 +17,8 @@ struct ContentView: View {
     var body: some View {
         TabView {
             VStack {
-                Text("Home Tab")
+//                Text("Home Tab")
+                HomeView()
             }
                 .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {

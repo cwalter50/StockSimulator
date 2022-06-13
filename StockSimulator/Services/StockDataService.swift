@@ -135,6 +135,33 @@ class StockDataService: ObservableObject {
         task.resume()
     }
     
+    func getMarketData() {
+        let urlString = Constants.marketSummaryURL
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) {
+            (data, response, error) in
+            guard let data = data else { return }
+            
+            guard let results = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { return }
+            
+            if let message = results["message"] as? String {
+                print(message)
+            }
+            
+            let decoder = JSONDecoder()
+            let response = try? decoder.decode(MarketSummaryResponse.self, from: data)
+            print(response)
+            
+        }
+        task.resume()
+    }
+    
     func getQuoteData(searchSymbols: String)
     {
         let urlString = Constants.quoteurlString + searchSymbols.uppercased()
@@ -216,6 +243,9 @@ class StockDataService: ObservableObject {
         static let charturlRange = "?range="
         static let charturlStringInterval = "&region=US&interval="
         static let charturlStringEnd = "&lang=en&events=div%2Csplit"
+        
+        
+        static let marketSummaryURL = "https://yfapi.net/v6/finance/quote/marketSummary?lang=en&region=US"
     }
 
 }
