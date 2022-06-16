@@ -334,8 +334,8 @@
 				38E8B4F2285100150084843A /* Transaction+CoreDataProperties.swift */,
 				8368B3F427D2B936008AF135 /* StockSnapshot.swift */,
 				83813CBE27EAA328009344FE /* ChartData.swift */,
-				83F9F71427CAAB2600C14D87 /* Asset.swift */,
 				383B41852857BD6D00586B2E /* MarketSummary.swift */,
+				83F9F71427CAAB2600C14D87 /* Asset.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

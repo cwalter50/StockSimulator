@@ -131,6 +131,8 @@ final class APICaller{
         task.resume()
     }
     
+    
+    // I used quickType.io to decode the data. It was having trouble with the ExchangeTimeZone Enum, so I changed that to String and it works great now.
     func getMarketData() {
         let urlString = Constants.marketSummaryURL
         guard let url = URL(string: urlString) else {
@@ -145,15 +147,21 @@ final class APICaller{
             guard let data = data else { return }
             
             guard let results = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { return }
-            print(results)
-            if let message = results["message"] as? String {
-                print(message)
+
+            // check for error message from API Call
+            if let message = results["message"] as? String, let hint = results["hint"] as? String {
+                print("Message Found: \(message), Hint: \(hint)")
+                return
             }
+
             
             guard let json = try? JSONSerialization.data(withJSONObject: results) else {return}
             let decoder = JSONDecoder()
-            let response = try? decoder.decode(MarketSummary.self, from: json)
-            print(response)
+            if let response = try? decoder.decode(CompleteMarketSummary.self, from: json) {
+                print(response)
+                let marketData = response.marketSummaryResponse.result
+                print(marketData)
+            }
             
         }
         task.resume()

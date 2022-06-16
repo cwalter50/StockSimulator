@@ -13,6 +13,8 @@ class StocksViewModel: ObservableObject {
     
     @Published var stockSnapshots: [StockSnapshot] = []
     
+    @Published var marketData: [MarketSummary] = []
+    
     @Published var watchlists: [Watchlist] = []
     
 //    @Published var chartData: ChartData = ChartData()
@@ -36,7 +38,13 @@ class StocksViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] returnStocks in
                 self?.stockSnapshots = returnStocks
-                
+            }
+            .store(in: &cancellables)
+        
+        stockDataService.$marketData
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] returnedData in
+                self?.marketData = returnedData
             }
             .store(in: &cancellables)
         
@@ -68,6 +76,11 @@ class StocksViewModel: ObservableObject {
     func updateStockPrices(searchSymbols: String, stocks: FetchedResults<Stock>)
     {
         stockDataService.updateStockData(searchSymbols: searchSymbols, stocks: stocks)
+    }
+    
+    func updateMarketData()
+    {
+        stockDataService.getMarketData()
     }
     
     

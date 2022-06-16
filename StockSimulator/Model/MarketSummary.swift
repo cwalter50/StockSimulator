@@ -15,22 +15,24 @@ import SwiftUI
 
 
 // MARK: - Welcome
-struct MarketSummary: Codable {
+struct CompleteMarketSummary: Codable {
     let marketSummaryResponse: MarketSummaryResponse
 }
 
 // MARK: - MarketSummaryResponse
 struct MarketSummaryResponse: Codable {
     let error: JSONNull?
-    let result: [Result]
+    let result: [MarketSummary]
 }
 
 // MARK: - Result
-struct Result: Codable {
+struct MarketSummary: Codable {
     let exchange: String
     let exchangeDataDelayedBy: Int
-    let exchangeTimezoneName: ExchangeTimezoneName
-    let exchangeTimezoneShortName: ExchangeTimezoneShortName
+    let exchangeTimezoneName: String?
+    let exchangeTimezoneShortName: String?
+//    let exchangeTimezoneName: ExchangeTimezoneName?
+//    let exchangeTimezoneShortName: ExchangeTimezoneShortName?
     let firstTradeDateMilliseconds: Int
     let fullExchangeName: String
     let gmtOffSetMilliseconds: Int
@@ -48,6 +50,38 @@ struct Result: Codable {
     let tradeable, triggerable: Bool
     let contractSymbol, headSymbol: Bool?
     let headSymbolAsString, currency, longName: String?
+//    var id = UUID().uuidString
+    
+    
+//    init(from decoder:Decoder) throws {
+//
+//
+//        let values = try decoder.container(keyedBy: CodingKeys.self)
+//        exchange = try values.decode(String.self, forKey: .quoteType)
+//
+//
+//
+//        quoteType = try values.decode(String.self, forKey: .quoteType)
+//
+//
+//
+//        shortName = try values.decode(String.self, forKey: .shortName)
+//        longName = try values.decode(String.self, forKey: .longName)
+//        currency = try values.decode(String.self, forKey: .currency)
+//        symbol = try values.decode(String.self, forKey: .symbol)
+//        language = try values.decode(String.self, forKey: .language)
+//        ask = try values.decode(Double.self, forKey: .ask)
+//        bid = try values.decode(Double.self, forKey: .bid)
+//        market = try values.decode(String.self, forKey: .market)
+//        regularMarketDayHigh = try values.decode(Double.self, forKey: .regularMarketDayHigh)
+//        regularMarketDayLow = try values.decode(Double.self, forKey: .regularMarketDayLow)
+//        regularMarketPrice = try values.decode(Double.self, forKey: .regularMarketPrice)
+//        regularMarketChange = try values.decode(Double.self, forKey: .regularMarketChange)
+//        regularMarketChangePercent = try values.decode(Double.self, forKey: .regularMarketChangePercent)
+//        id = UUID()
+//
+//    }
+
 }
 
 enum ExchangeTimezoneName: String, Codable {
@@ -78,27 +112,28 @@ struct RegularMarket: Codable {
 
 // MARK: - Encode/decode helpers
 
+class JSONNull: Codable{
 //class JSONNull: Codable, Hashable {
-//
-//    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
-//        return true
-//    }
-//
+
+    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+        return true
+    }
+
 //    public var hashValue: Int {
 //        return 0
 //    }
-//
-//    public init() {}
-//
-//    public required init(from decoder: Decoder) throws {
-//        let container = try decoder.singleValueContainer()
-//        if !container.decodeNil() {
-//            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
-//        }
-//    }
-//
-//    public func encode(to encoder: Encoder) throws {
-//        var container = encoder.singleValueContainer()
-//        try container.encodeNil()
-//    }
-//}
+
+    public init() {}
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if !container.decodeNil() {
+            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encodeNil()
+    }
+}

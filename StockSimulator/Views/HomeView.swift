@@ -8,15 +8,32 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+//    @EnvironmentObject var vm: StocksViewModel
+    @ObservedObject var vm = StocksViewModel()
+    
     var body: some View {
         VStack {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            Text("Hello")
             Button(action: {
-                APICaller.shared.getMarketData()
+//                APICaller.shared.getMarketData()
+                vm.updateMarketData()
+                print("SHould load market data")
             }) {
                 Text("GetMarketData")
             }
+            List{
+                ForEach(vm.marketData, id: \.symbol) {
+                    item in
+                    Text(item.fullExchangeName)
+                }
+            }
+
         }
+        .onAppear(perform: {
+            vm.updateMarketData()
+        })
+        
         
         
     }

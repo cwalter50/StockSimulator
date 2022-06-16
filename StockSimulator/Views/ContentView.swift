@@ -20,7 +20,7 @@ struct ContentView: View {
 //                Text("Home Tab")
                 HomeView()
             }
-                .font(.system(size: 30, weight: .bold, design: .rounded))
+//                .font(.system(size: 30, weight: .bold, design: .rounded))
                 .tabItem {
                     Image(systemName: "house.fill")
                     Text("Home")

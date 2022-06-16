@@ -16,6 +16,8 @@ class StockDataService: ObservableObject {
     
     @Published var chartData: ChartData = ChartData(emptyData: true)
     
+    @Published var marketData: [MarketSummary] = []
+    
 
     @Environment(\.managedObjectContext) var moc
     
@@ -135,6 +137,7 @@ class StockDataService: ObservableObject {
         task.resume()
     }
     
+    // I used quickType.io to decode the data. It was having trouble with the ExchangeTimeZone Enum, so I changed that to String and it works great now. More data than I need.
     func getMarketData() {
         let urlString = Constants.marketSummaryURL
         guard let url = URL(string: urlString) else {
@@ -149,14 +152,18 @@ class StockDataService: ObservableObject {
             guard let data = data else { return }
             
             guard let results = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { return }
-            
-            if let message = results["message"] as? String {
-                print(message)
+
+            // check for error message from API Call
+            if let message = results["message"] as? String, let hint = results["hint"] as? String {
+                print("Message Found: \(message), Hint: \(hint)")
+                return
             }
-            
+            guard let json = try? JSONSerialization.data(withJSONObject: results) else {return}
             let decoder = JSONDecoder()
-            let response = try? decoder.decode(MarketSummaryResponse.self, from: data)
-            print(response)
+            if let response = try? decoder.decode(CompleteMarketSummary.self, from: json) {
+                print(response)
+                self.marketData = response.marketSummaryResponse.result
+            }
             
         }
         task.resume()
