@@ -20,9 +20,13 @@ struct MarketSummaryRow: View {
                 
             }
             Spacer()
-            VStack {
+            VStack(alignment: .trailing) {
                 Text(marketSummary.regularMarketPrice.fmt)
-                Text(marketSummary.regularMarketChangePercent.fmt)
+                HStack {
+                    Image(systemName: marketSummary.regularMarketPrice.raw >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
+                    Text(marketSummary.regularMarketChangePercent.fmt)
+                }
+                
             }
             .font(.headline)
             .foregroundColor(marketSummary.regularMarketPrice.raw >= 0 ? Color.theme.green : Color.theme.red)
