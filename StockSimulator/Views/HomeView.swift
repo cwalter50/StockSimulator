@@ -24,8 +24,9 @@ struct HomeView: View {
             }
             List{
                 ForEach(vm.marketData, id: \.symbol) {
+//                ForEach(vm.marketData) {
                     item in
-                    Text(item.fullExchangeName)
+                    MarketSummaryRow(marketSummary: item)
                 }
             }
 

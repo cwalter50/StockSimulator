@@ -50,36 +50,118 @@ struct MarketSummary: Codable {
     let tradeable, triggerable: Bool
     let contractSymbol, headSymbol: Bool?
     let headSymbolAsString, currency, longName: String?
+//    var id = UUID()
+    
+    // this will be filled with Sample MarketData
+    //            "exchange": "SNP",
+    //            "exchangeDataDelayedBy": 0,
+    //            "exchangeTimezoneName": "America/New_York",
+    //            "exchangeTimezoneShortName": "EDT",
+    //            "firstTradeDateMilliseconds": -1325583000000,
+    //            "fullExchangeName": "SNP",
+    //            "gmtOffSetMilliseconds": -14400000,
+    //            "language": "en-US",
+    //            "market": "us_market",
+    //            "marketState": "POST",
+    //            "priceHint": 2,
+    //            "quoteSourceName": "Delayed Quote",
+    //            "quoteType": "INDEX",
+    //            "region": "US",
+    //            "regularMarketChange": {
+    //              "fmt": "67.12",
+    //              "raw": 67.11987
+    //            },
+    //            "regularMarketChangePercent": {
+    //              "fmt": "2.01%",
+    //              "raw": 2.0144987
+    //            },
+    //            "regularMarketPreviousClose": {
+    //              "fmt": "3,331.84",
+    //              "raw": 3331.84
+    //            },
+    //            "regularMarketPrice": {
+    //              "fmt": "3,398.96",
+    //              "raw": 3398.96
+    //            },
+    //            "regularMarketTime": {
+    //              "fmt": "5:12PM EDT",
+    //              "raw": 1599685935
+    //            },
+    //            "shortName": "S&P 500",
+    //            "sourceInterval": 15,
+    //            "symbol": "^GSPC",
+    //            "tradeable": false,
+    //            "triggerable": false
+    init()
+    {
+        exchange = "SNP"
+        exchangeDataDelayedBy = 0
+        exchangeTimezoneName = "America/New_York"
+        exchangeTimezoneShortName = "EDT"
+        firstTradeDateMilliseconds = -1325583000000
+        fullExchangeName = "SNP"
+        gmtOffSetMilliseconds = -14400000
+        language = Language.enUS
+        market = "us_market"
+        marketState = "POST"
+        priceHint = 2
+        quoteSourceName = "Delayed Quote"
+        quoteType = "INDEX"
+        region = Region.us
+        regularMarketChange = RegularMarket(fmt: "67.12", raw: 67.11987)
+        regularMarketChangePercent = RegularMarket(fmt: "2.01%", raw: 2.0144987)
+        regularMarketPreviousClose = RegularMarket(fmt: "3,331.84", raw: 3331.84)
+        regularMarketPrice = RegularMarket(fmt: "3,398.96", raw: 3398.96)
+        regularMarketTime = RegularMarket(fmt: "5:12PM EDT", raw: 1599685935)
+        shortName = "S&P 500"
+        sourceInterval = 15
+        symbol = "^GSPC"
+        tradeable = false
+        triggerable = false
+        contractSymbol = false
+        headSymbol = false
+        headSymbolAsString = ""
+        currency = ""
+        longName = ""
+//        id = UUID()
+    }
+    
+    
 //    var id = UUID().uuidString
     
     
 //    init(from decoder:Decoder) throws {
-//
-//
-//        let values = try decoder.container(keyedBy: CodingKeys.self)
-//        exchange = try values.decode(String.self, forKey: .quoteType)
-//
-//
-//
-//        quoteType = try values.decode(String.self, forKey: .quoteType)
-//
-//
-//
-//        shortName = try values.decode(String.self, forKey: .shortName)
-//        longName = try values.decode(String.self, forKey: .longName)
-//        currency = try values.decode(String.self, forKey: .currency)
-//        symbol = try values.decode(String.self, forKey: .symbol)
-//        language = try values.decode(String.self, forKey: .language)
-//        ask = try values.decode(Double.self, forKey: .ask)
-//        bid = try values.decode(Double.self, forKey: .bid)
-//        market = try values.decode(String.self, forKey: .market)
-//        regularMarketDayHigh = try values.decode(Double.self, forKey: .regularMarketDayHigh)
-//        regularMarketDayLow = try values.decode(Double.self, forKey: .regularMarketDayLow)
-//        regularMarketPrice = try values.decode(Double.self, forKey: .regularMarketPrice)
-//        regularMarketChange = try values.decode(Double.self, forKey: .regularMarketChange)
-//        regularMarketChangePercent = try values.decode(Double.self, forKey: .regularMarketChangePercent)
 //        id = UUID()
-//
+//            let values = try decoder.container(keyedBy: CodingKeys.self)
+//            exchange = try values.decode(String.self, forKey: .exchange)
+//            exchangeDataDelayedBy = try values.decode(Int.self, forKey: .exchangeDataDelayedBy)
+//            exchangeTimezoneName = try? values.decode(String.self, forKey: .exchangeTimezoneName)
+//            exchangeTimezoneShortName = try? values.decode(String.self, forKey: .exchangeTimezoneShortName)
+//            firstTradeDateMilliseconds = try values.decode(Int.self, forKey: .firstTradeDateMilliseconds)
+//            fullExchangeName = try values.decode(String.self, forKey: .fullExchangeName)
+//            gmtOffSetMilliseconds = try values.decode(Int.self, forKey: .gmtOffSetMilliseconds)
+//            language = try values.decode(Language.self, forKey: .language)
+//            market = try values.decode(String.self, forKey: .market)
+//            marketState = try values.decode(String.self, forKey: .marketState)
+//            priceHint = try values.decode(Int.self, forKey: .priceHint)
+//            quoteSourceName = try? values.decode(String.self, forKey: .quoteSourceName)
+//            quoteType = try values.decode(String.self, forKey: .quoteType)
+//            region = try values.decode(Region.self, forKey: .region)
+//            regularMarketChange = try values.decode(RegularMarket.self, forKey: .regularMarketChange)
+//            regularMarketChangePercent = try values.decode(RegularMarket.self, forKey: .regularMarketChangePercent)
+//            regularMarketPreviousClose = try values.decode(RegularMarket.self, forKey: .regularMarketPreviousClose)
+//            regularMarketPrice = try values.decode(RegularMarket.self, forKey: .regularMarketPrice)
+//            regularMarketTime = try values.decode(RegularMarket.self, forKey: .regularMarketTime)
+//            shortName = try? values.decode(String.self, forKey: .shortName)
+//            sourceInterval = try values.decode(Int.self, forKey: .sourceInterval)
+//            symbol = try values.decode(String.self, forKey: .symbol)
+//            tradeable = try values.decode(Bool.self, forKey: .tradeable)
+//            triggerable = try values.decode(Bool.self, forKey: .triggerable)
+//            contractSymbol = try? values.decode(Bool.self, forKey: .contractSymbol)
+//            headSymbol = try? values.decode(Bool.self, forKey: .headSymbol)
+//            headSymbolAsString = try? values.decode(String.self, forKey: .headSymbolAsString)
+//            currency = try? values.decode(String.self, forKey: .currency)
+//            longName = try? values.decode(String.self, forKey: .longName)
 //    }
 
 }
