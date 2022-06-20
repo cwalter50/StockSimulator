@@ -13,30 +13,34 @@ struct HomeView: View {
     @ObservedObject var vm = StocksViewModel()
     
     var body: some View {
-        VStack {
-            Text("Hello")
-            Button(action: {
-//                APICaller.shared.getMarketData()
-                vm.updateMarketData()
-                print("SHould load market data")
-            }) {
-                Text("GetMarketData")
+        NavigationView {
+            VStack {
+                List{
+                    ForEach(vm.marketData, id: \.symbol) {
+    //                ForEach(vm.marketData) {
+                        item in
+                        NavigationLink(destination: MarketSummaryView(marketSummary: item)) {
+                            MarketSummaryRow(marketSummary: item)
+                        }
+                    }
+                }
+
             }
-            List{
-                ForEach(vm.marketData, id: \.symbol) {
-//                ForEach(vm.marketData) {
-                    item in
-                    MarketSummaryRow(marketSummary: item)
+            .onAppear(perform: {
+                vm.updateMarketData()
+            })
+            .navigationTitle(Text("Market Data"))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        vm.updateMarketData()
+                        print("Should load market data")
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                    }
                 }
             }
-
         }
-        .onAppear(perform: {
-            vm.updateMarketData()
-        })
-        
-        
-        
     }
 }
 

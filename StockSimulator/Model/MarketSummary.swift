@@ -52,6 +52,15 @@ struct MarketSummary: Codable {
     let headSymbolAsString, currency, longName: String?
 //    var id = UUID()
     
+    var wrappedName: String {
+        if let name = shortName
+        {
+            return name
+        } else {
+            return fullExchangeName
+        }
+    }
+    
     // this will be filled with Sample MarketData
     //            "exchange": "SNP",
     //            "exchangeDataDelayedBy": 0,

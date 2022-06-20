@@ -13,23 +13,30 @@ struct MarketSummaryRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(marketSummary.fullExchangeName)
-                    .font(.title)
+                Text(marketSummary.wrappedName)
+                    .font(.title3)
+                    .fontWeight(.bold)
                 Text(marketSummary.symbol)
                     .font(.headline)
                 
             }
             Spacer()
+            VStack(alignment: .leading) {
+                Text(marketSummary.market)
+                Text(marketSummary.quoteType)
+            }
+            .font(.headline)
+            Spacer()
             VStack(alignment: .trailing) {
                 Text(marketSummary.regularMarketPrice.fmt)
                 HStack {
-                    Image(systemName: marketSummary.regularMarketPrice.raw >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
+                    Image(systemName: marketSummary.regularMarketChange.raw >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
                     Text(marketSummary.regularMarketChangePercent.fmt)
                 }
                 
             }
             .font(.headline)
-            .foregroundColor(marketSummary.regularMarketPrice.raw >= 0 ? Color.theme.green : Color.theme.red)
+            .foregroundColor(marketSummary.regularMarketChange.raw >= 0 ? Color.theme.green : Color.theme.red)
         }
     }
 }

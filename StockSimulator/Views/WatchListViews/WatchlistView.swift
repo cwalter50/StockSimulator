@@ -92,9 +92,6 @@ struct WatchlistView: View {
         {
             searchString += s.wrappedSymbol+","
         }
-        
-        
-        
 //        vm.updateStockPrices(searchSymbols: searchString, stocks: stocks)
         
         let apiCaller = APICaller.shared
