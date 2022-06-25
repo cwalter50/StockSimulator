@@ -17,9 +17,34 @@ struct MarketSummaryView: View {
     
     var body: some View {
         VStack {
-            MarketSummaryRow(marketSummary: marketSummary)
+            HStack(alignment: .top){
+                VStack(alignment: .leading) {
+                    Text("Symbol: \(marketSummary.symbol)")
+                    Text("Market Time: \(marketSummary.regularMarketTime.fmt)")
+                    Text("Previous Close: \(marketSummary.regularMarketPreviousClose.fmt)")
+                    Text("Market: \(marketSummary.market)")
+                    Text("Quote Type: \(marketSummary.quoteType)")
+                    
+                }
+                .font(.body)
+                Spacer()
+                VStack {
+                    Text("\(marketSummary.regularMarketPrice.fmt)")
+                    HStack {
+                        Image(systemName: marketSummary.regularMarketChange.raw >= 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
+                        Text("\(marketSummary.regularMarketChangePercent.fmt)")
+                    }
+                    
+                }
+                .font(.headline)
+                .foregroundColor(marketSummary.regularMarketChange.raw >= 0 ? Color.theme.green : Color.theme.red)
+            }
+            .padding()
+
+  
             ChartView(stockSnapshot: stockSnapshot)
         }
+        .navigationTitle(marketSummary.wrappedName)
         .onAppear(perform: loadStockSnapshot)
         
     }
@@ -33,6 +58,9 @@ struct MarketSummaryView: View {
 
 struct MarketSummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        MarketSummaryView(marketSummary: MarketSummary())
+        NavigationView {
+            MarketSummaryView(marketSummary: MarketSummary())
+        }
+
     }
 }

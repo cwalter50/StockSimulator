@@ -18,14 +18,15 @@ struct MarketSummaryRow: View {
                     .fontWeight(.bold)
                 Text(marketSummary.symbol)
                     .font(.headline)
-                
+                Text(marketSummary.regularMarketTime.fmt)
+
             }
             Spacer()
             VStack(alignment: .leading) {
                 Text(marketSummary.market)
                 Text(marketSummary.quoteType)
             }
-            .font(.headline)
+            .font(.body)
             Spacer()
             VStack(alignment: .trailing) {
                 Text(marketSummary.regularMarketPrice.fmt)
@@ -43,6 +44,14 @@ struct MarketSummaryRow: View {
 
 struct MarketSummaryRow_Previews: PreviewProvider {
     static var previews: some View {
+     
         MarketSummaryRow(marketSummary: MarketSummary())
+                .preferredColorScheme(.dark)
+                .previewLayout(.sizeThatFits)
+        MarketSummaryRow(marketSummary: MarketSummary())
+            .preferredColorScheme(.light)
+            .previewLayout(.sizeThatFits)
+            
     }
 }
+
