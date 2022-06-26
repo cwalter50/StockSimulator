@@ -117,6 +117,7 @@ final class APICaller{
                 if let message = results["message"] as? String {
                     completion(.failure(message))
                 }
+//                print(results)
                 let chartData = ChartData(results: results)
 //                print(chartData)
                 print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")

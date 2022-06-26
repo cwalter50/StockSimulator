@@ -21,9 +21,6 @@ extension Array where Element == Double {
         }
     }
     
-    
-
-    
 }
 
 

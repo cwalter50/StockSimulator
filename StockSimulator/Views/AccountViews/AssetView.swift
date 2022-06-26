@@ -22,7 +22,8 @@ struct AssetView: View {
         List {
             Section {
                 StockBasicView(stockSnapshot: StockSnapshot(stock: asset.stock))
-                ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
+                ChartView(symbol: asset.stock.wrappedSymbol)
+//                ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
                     .frame(height: 300)
             }
             

@@ -22,10 +22,33 @@ struct ChartView: View {
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
     
+//    @State var symbol : String = ""
 //    var timeRanges = ["1d","5d","1mo", "3mo","6mo","ytd","1y","2y","5y","10y","max"]
     var timeRanges = ["1d","5d","1mo","6mo","ytd","1y","max"]
 
-    var stockSnapshot: StockSnapshot
+    
+    init(symbol: String)
+    {
+        // have to convert symbol into a new form. the when the symbol is ^DJI -> %5EDJI. I do not know why, but I need to convert it. also CL=F -> CL%3DF
+        if symbol.contains("^") {
+            let result = symbol.replacingOccurrences(of: "^", with: "%5E")
+            self.symbol = result
+        }
+        else if symbol.contains("=") {
+            let result = symbol.replacingOccurrences(of: "=", with: "%3D")
+            self.symbol = result
+        }
+        else {
+            self.symbol = symbol
+        }
+        
+        
+        
+//        loadData()
+    }
+//    var stockSnapshot: StockSnapshot
+    
+    var symbol: String
     
     
     var body: some View {
@@ -64,7 +87,8 @@ struct ChartView: View {
 //        viewModel.chartData = ChartData(emptyData: true)
         animateChart = false
         trimValue = 0
-        viewModel.loadData(symbol: stockSnapshot.symbol, range: selectedTimeInterval) {
+//        viewModel.loadData(symbol: stockSnapshot.symbol, range: selectedTimeInterval) {
+        viewModel.loadData(symbol: symbol, range: selectedTimeInterval) {
             chartDataResult in
             switch chartDataResult {
             case .success(_):
@@ -83,7 +107,9 @@ struct ChartView: View {
 
 struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
-        ChartView(stockSnapshot: StockSnapshot())
+//        ChartView(stockSnapshot: StockSnapshot())
+        
+        ChartView(symbol: "AAPL")
             .frame(width: 350, height: 300)
     }
 }
@@ -119,7 +145,7 @@ extension ChartView {
     }
     
     private var linegraph: some View {
-        LineGraph(dataPoints: viewModel.chartData.close.normalized)
+        LineGraph(dataPoints: viewModel.chartData.wrappedClose.normalized)
         
 //                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
             .trim(to: animateChart ? 1 : trimValue)

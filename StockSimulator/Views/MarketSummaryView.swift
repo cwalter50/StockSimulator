@@ -11,8 +11,6 @@ struct MarketSummaryView: View {
     
     var marketSummary: MarketSummary
     
-    @State var stockSnapshot: StockSnapshot = StockSnapshot()
-    
     @ObservedObject var vm = StocksViewModel()
     
     var body: some View {
@@ -40,20 +38,19 @@ struct MarketSummaryView: View {
                 .foregroundColor(marketSummary.regularMarketChange.raw >= 0 ? Color.theme.green : Color.theme.red)
             }
             .padding()
-
-  
-            ChartView(stockSnapshot: stockSnapshot)
+//            ChartView(stockSnapshot: stockSnapshot)
+            
+            ChartView(symbol: marketSummary.symbol)
         }
         .navigationTitle(marketSummary.wrappedName)
-        .onAppear(perform: loadStockSnapshot)
+//        .onAppear(perform: loadStockSnapshot)
+        .onAppear(perform: {
+//            print(marketSummary)
+        })
         
     }
     
-    func loadStockSnapshot()
-    {
-        vm.loadStocks(searchSymbols: marketSummary.symbol)
-        
-    }
+
 }
 
 struct MarketSummaryView_Previews: PreviewProvider {

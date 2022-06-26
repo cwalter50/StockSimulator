@@ -21,8 +21,8 @@ struct StockDetailView: View {
     var body: some View {
         VStack {
             StockBasicView(stockSnapshot: StockSnapshot(stock: stock))
-//            ChartView()
-            ChartView(stockSnapshot: StockSnapshot(stock: stock))
+//            ChartView(stockSnapshot: StockSnapshot(stock: stock))
+            ChartView(symbol: stock.wrappedSymbol)
                 .frame(height: 300)
             Spacer()
         }.padding()

@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 extension Double {
     
     var priceFormatted:String{

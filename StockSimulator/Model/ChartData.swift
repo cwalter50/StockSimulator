@@ -72,13 +72,79 @@ struct MetaData: Codable {
 
 struct ChartData: Codable {
     
-    var adjclose: [Double]
-    var close: [Double]
-    var high: [Double]
-    var low: [Double]
-    var open: [Double]
-    var volume: [Int]
+    var adjclose: [Double?]
+    var close: [Double?] // sometimes null comes through with the data
+    var high: [Double?]
+    var low: [Double?]
+    var open: [Double?]
+    var volume: [Int?]
     var timestamp: [Int]
+    
+    var wrappedClose: [Double] {
+        var result = [Double]()
+        for i in close {
+            if let val = i
+            {
+                result.append(val)
+            }
+        }
+        return result
+    }
+    
+    var wrappedadjclose: [Double] {
+        var result = [Double]()
+        for i in adjclose {
+            if let val = i
+            {
+                result.append(val)
+            }
+        }
+        return result
+    }
+    
+    var wrappedhigh: [Double] {
+        var result = [Double]()
+        for i in high {
+            if let val = i
+            {
+                result.append(val)
+            }
+        }
+        return result
+    }
+    
+    var wrappedlow: [Double] {
+        var result = [Double]()
+        for i in low {
+            if let val = i
+            {
+                result.append(val)
+            }
+        }
+        return result
+    }
+    
+    var wrappedopen: [Double] {
+        var result = [Double]()
+        for i in open {
+            if let val = i
+            {
+                result.append(val)
+            }
+        }
+        return result
+    }
+    
+    var wrappedvolume: [Int] {
+        var result = [Int]()
+        for i in volume {
+            if let val = i
+            {
+                result.append(val)
+            }
+        }
+        return result
+    }
     
     var metaData: MetaData?
     
@@ -283,17 +349,19 @@ struct ChartData: Codable {
 //                print(timestamp)
                 if let indicators = result[0]["indicators"] as? [String: Any], let quote = indicators["quote"] as? [[String: Any]], let adjClose2 = indicators["adjclose"] as? [[String: Any]] {
                     
+//                    print(quote)
                     if quote.count > 0
                     {
-                        self.close = quote[0]["close"] as? [Double] ?? [Double]()
+//                        print("quote[0] is \(quote[0])")
+                        self.close = quote[0]["close"] as? [Double?] ?? [1,nil,2]
 //                        print(close)
-                        self.open = quote[0]["open"] as? [Double] ?? [Double]()
+                        self.open = quote[0]["open"] as? [Double?] ?? [Double]()
 //                        print(open)
-                        self.low = quote[0]["low"] as? [Double] ?? [Double]()
+                        self.low = quote[0]["low"] as? [Double?] ?? [Double]()
 //                        print(low)
-                        self.high = quote[0]["high"] as? [Double] ?? [Double]()
+                        self.high = quote[0]["high"] as? [Double?] ?? [Double]()
 //                        print(high)
-                        self.volume = quote[0]["volume"] as? [Int] ?? [Int]()
+                        self.volume = quote[0]["volume"] as? [Int?] ?? [Int]()
 //                        print(volume)
                     }
                     
@@ -308,10 +376,6 @@ struct ChartData: Codable {
                     do {
                         let json = try JSONSerialization.data(withJSONObject: meta)
                         metaData = try JSONDecoder().decode(MetaData.self, from: json)
-    
-//                        print(metaData)
-    
-    
                     } catch {
                         print(error)
                     }
@@ -342,26 +406,4 @@ struct CurrentTradingPeriod: Codable {
         var timezone: String
     }
 }
-
-//struct ChartParent: Codable {
-//    var chartResponse: ChartResponse
-//}
-//
-//struct ChartResponse: Codable {
-//    var error: ChartError?
-//    var result: ChartResult?
-//}
-//
-//struct ChartError: Codable {
-//    var lang: String?
-//    var description: String?
-//    var message: String?
-//    var code: Int
-//}
-//
-//struct ChartResult: Codable {
-//    var chartIndicators: ChartIndicators?
-//    var chartMeta: ChartMeta?
-//}
-
 
