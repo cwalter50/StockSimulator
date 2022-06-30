@@ -132,6 +132,45 @@ final class APICaller{
         task.resume()
     }
     
+    func getChartData2(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
+    {
+    let urlString = "https://yfapi.net/v8/finance/chart/aapl?range=max&region=US&interval=1mo&lang=en&events=div%2Csplit"
+        
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
+            guard let data = data else { return }
+
+            do {
+                guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
+                    print("error in getting JSON")
+                    return
+                }
+//                print(results)
+                if let message = results["message"] as? String {
+                    completion(.failure(message))
+                }
+//                print(results)
+                let chartData = ChartData(results: results)
+//                print(chartData)
+                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
+                
+                completion(.chartSuccess(chartData))
+            } catch {
+                print("Cannot Decode JSON Response")
+                completion(.failure(error.localizedDescription))
+                return
+            }
+        }
+        task.resume()
+    }
+    
     
     // I used quickType.io to decode the data. It was having trouble with the ExchangeTimeZone Enum, so I changed that to String and it works great now.
     func getMarketData() {

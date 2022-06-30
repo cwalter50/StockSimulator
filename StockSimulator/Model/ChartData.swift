@@ -8,11 +8,29 @@
 import Foundation
 
 
+// MARK: - Events
+struct Events: Codable {
+    let dividends: [String: Dividend]?
+    let splits: [String: Split]?
+}
+
+// MARK: - Dividend
+struct Dividend: Codable {
+    let amount: Double
+    let date: Int
+}
+
+// MARK: - Split
+struct Split: Codable {
+    let date, numerator, denominator: Int
+    let splitRatio: String
+}
+
+
 
 struct MetaData: Codable {
     var chartPreviousClose: Double
     var currency: String
-    
     var dataGranularity: String
     var exchangeName: String
     var exchangeTimezoneName: String
@@ -29,8 +47,6 @@ struct MetaData: Codable {
     
     var currentTradingPeriod: CurrentTradingPeriod?
     
-
-    
 //    var post: CurrentTradingPeriod?
 //    var pre: CurrentTradingPeriod?
 //    var regular: CurrentTradingPeriod?
@@ -39,7 +55,6 @@ struct MetaData: Codable {
     {
         chartPreviousClose = 164.85
         currency = "USD"
-        
         dataGranularity = "1d"
         exchangeName = "NY"
         exchangeTimezoneName = "GMT"
@@ -79,6 +94,7 @@ struct ChartData: Codable {
     var open: [Double?]
     var volume: [Int?]
     var timestamp: [Int]
+    var events: Events?
     
     var wrappedClose: [Double] {
         var result = [Double]()
@@ -347,6 +363,18 @@ struct ChartData: Codable {
 //                print(result[0])
                 self.timestamp = result[0]["timestamp"] as? [Int] ?? [Int]()
 //                print(timestamp)
+                
+                if let theEvents = result[0]["events"] as? [String:Any] {
+//                    print(theEvents)
+                    do {
+                        let json = try JSONSerialization.data(withJSONObject: theEvents)
+                        events = try JSONDecoder().decode(Events.self, from: json)
+                        print("Found events for Stock")
+                        print(events)
+                    } catch {
+                        print(error)
+                    }
+                }
                 if let indicators = result[0]["indicators"] as? [String: Any], let quote = indicators["quote"] as? [[String: Any]], let adjClose2 = indicators["adjclose"] as? [[String: Any]] {
                     
 //                    print(quote)

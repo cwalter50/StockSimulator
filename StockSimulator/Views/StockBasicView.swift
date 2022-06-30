@@ -72,10 +72,6 @@ struct StockBasicView: View {
             }
         }
     }
-    
-    
-    
-    
 }
 
 

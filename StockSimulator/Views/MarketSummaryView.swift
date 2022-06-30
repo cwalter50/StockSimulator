@@ -14,7 +14,23 @@ struct MarketSummaryView: View {
     @ObservedObject var vm = StocksViewModel()
     
     var body: some View {
+        List {
+            Section(header: Text("Summary")) {
+                HStack {
+                    Text("Symbol:")
+                    Spacer()
+                    Text(marketSummary.symbol)
+                        .foregroundColor(Color.theme.secondaryText)
+                }
+            }
+        }
         VStack {
+            HStack {
+                Text("Symbol:")
+                Spacer()
+                Text(marketSummary.symbol)
+                    .foregroundColor(Color.theme.secondaryText)
+            }
             HStack(alignment: .top){
                 VStack(alignment: .leading) {
                     Text("Symbol: \(marketSummary.symbol)")

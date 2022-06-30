@@ -57,6 +57,10 @@ class Asset: Identifiable, ObservableObject
         }
     }
     
+    var amountChange24h: Double {
+        return stock.regularMarketChange * totalShares
+    }
+    
     var amountChange: Double {
         return totalValue - costBasis
     }

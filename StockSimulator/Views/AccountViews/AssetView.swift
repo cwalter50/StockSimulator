@@ -26,7 +26,6 @@ struct AssetView: View {
 //                ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
                     .frame(height: 300)
             }
-            
             yourSharesSection
             .font(.body)
             
@@ -67,8 +66,8 @@ extension AssetView {
             HStack {
                 Text("Day Gain/Loss:")
                 Spacer()
-                Text("ToDo: Figure out")
-                    .foregroundColor(Color.theme.secondaryText)
+                Text(String(format: "$%.2f", asset.amountChange24h))
+                    .foregroundColor(asset.amountChange24h >= 0 ? Color.theme.green : Color.theme.red)
             }
             HStack {
                 Text("Quantity:")
