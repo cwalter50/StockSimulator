@@ -161,6 +161,19 @@ final class APICaller{
 //                print(chartData)
                 print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
                 
+                if let events = chartData.events, let dividends = events.dividends {
+                    for val in dividends {
+                        print("val DIvidend date = \(val.value.date), formatted = \(val.value.dateFormated)")
+                    }
+                }
+                
+                if let events = chartData.events, let splits = events.splits {
+                    for val in splits {
+                        print("val Split date = \(val.value.date), formatted = \(val.value.dateFormated)")
+                    }
+                }
+
+                
                 completion(.chartSuccess(chartData))
             } catch {
                 print("Cannot Decode JSON Response")
