@@ -81,7 +81,7 @@ final class ChartViewModel: ObservableObject {
     }
     
     private func getMaxY() -> Double {
-        var max = -100000.0
+        var max = -10000000.0
         for i in chartData.close {
             if let val = i {
                 if val > max {
@@ -92,7 +92,7 @@ final class ChartViewModel: ObservableObject {
         return max
     }
     private func getMinY() -> Double {
-        var min = 10000000.0
+        var min = 100000000.0
         for i in chartData.close {
             if let val = i {
                 if val < min {

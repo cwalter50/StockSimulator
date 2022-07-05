@@ -40,8 +40,9 @@ struct AccountRow: View {
     func updateAccountValue()
     {
         var stockSymbols = [String]()
-        if let theTransactionsSet = self.account.transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction] {
-            for t in theTransactions {
+        if let theHoldingsSet = self.account.holdings, let theHoldings = Array(theHoldingsSet) as? [Holding] {
+//        if let theTransactionsSet = self.account.transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction] {
+            for t in theHoldings {
                 if let theStock = t.stock {
                     if !stockSymbols.contains(theStock.wrappedSymbol) {
                         stockSymbols.append(theStock.wrappedSymbol)
@@ -64,10 +65,11 @@ struct AccountRow: View {
                         // link the stocks to the current stock prices, update the values,
                         for snapshot in theStocks
                         {
-                            let matchingTransactions = theTransactions.filter({ t in
-                                return t.stock?.wrappedSymbol == snapshot.symbol
-                            })
-                            for t in matchingTransactions {
+                            let matchingHoldings = theHoldings.filter( { $0.wrappedSymbol == snapshot.symbol })
+//                            let matchingTransactions = theTransactions.filter({ t in
+//                                return t.stock?.wrappedSymbol == snapshot.symbol
+//                            })
+                            for t in matchingHoldings {
                                 t.stock?.updateValuesFromStockSnapshot(snapshot: snapshot)
                             }
                         }

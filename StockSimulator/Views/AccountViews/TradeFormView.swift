@@ -39,11 +39,16 @@ struct TradeFormView: View {
     // will allow us to dismiss
     @Environment(\.presentationMode) var presentationMode
     
+    @FetchRequest var holdings: FetchedResults<Holding> // holdings need load in init, because FetchRequest requires a predicate with the variable account
+    
     init(account: Account, stockSnapshot: StockSnapshot)
     {
         self.account = account
         self.stockSnapshot = stockSnapshot
         vm = AccountViewModel(account: account)
+        
+        
+        self._holdings = FetchRequest(entity: Holding.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Holding.id, ascending: true)], predicate: NSPredicate(format: "account == %@", self.account), animation: Animation.default)
     }
     
     var body: some View
@@ -139,19 +144,29 @@ struct TradeFormView: View {
             if canAffordTrade()
             {
                 let newTransaction = Transaction(context: moc)
-                newTransaction.account = account
-                newTransaction.id = UUID()
-                newTransaction.buyDate = Date()
-                newTransaction.purchasePrice = stockSnapshot.regularMarketPrice
-                newTransaction.numShares = numShares
-                newTransaction.isClosed = false
+                newTransaction.updateValuesFromBuy(account: account, purchasePrice: stockSnapshot.regularMarketPrice, numShares: numShares)
                 
                 let newStock = Stock(context: moc)
                 newStock.updateValuesFromStockSnapshot(snapshot: stockSnapshot)
                 
                 newTransaction.stock = newStock
-                newTransaction.account = account
                 
+                // make a new holding or add shares to previous holding
+                if let foundHolding = holdings.first(where: { $0.symbol == newStock.symbol }) {
+                    foundHolding.numShares += numShares
+                    foundHolding.addToTransactions(newTransaction)
+                }
+                else {
+                    let newHolding = Holding(context: moc)
+                    newHolding.numShares = numShares
+                    newHolding.id = UUID()
+                    newHolding.account = account
+                    newHolding.stock = newStock
+                    newHolding.symbol = newStock.symbol
+                    newHolding.created = Date()
+                    newHolding.addToTransactions(newTransaction)
+                }
+                    
                 account.addToTransactions(newTransaction)
                 
                 // decrease cash amount in account by purchase price
@@ -159,7 +174,8 @@ struct TradeFormView: View {
                 
                 if moc.hasChanges {
                     try? moc.save() // save to CoreData
-                    print("transaction has been added to account")
+                    print("transaction and holding has been added to account")
+                    
                 }
                 
                 alertMessage = "Successfully bought \(numShares) shares of \(stockSnapshot.symbol)"

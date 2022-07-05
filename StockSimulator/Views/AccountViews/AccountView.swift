@@ -26,14 +26,15 @@ struct AccountView: View {
     
     @State var showingDepositView = false
     
-    
+    @FetchRequest var holdings: FetchedResults<Holding> // holdings need load in init, because FetchRequest requires a predicate with the variable account
+
     init (account: Account)
     {
         self.account = account
         vm = AccountViewModel(account: account)
-//        _transactions = FetchRequest<Transaction>(sortDescriptors: [], predicate: NSPredicate(format: "account == %@", account))
+        
+        self._holdings = FetchRequest(entity: Holding.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Holding.id, ascending: true)], predicate: NSPredicate(format: "account == %@", self.account), animation: Animation.default)
     }
-    
     
     var body: some View {
         VStack(alignment: .center){
@@ -101,6 +102,15 @@ struct AccountView: View {
                     Spacer()
                     Text("Total G/L")
                 }
+                ForEach(holdings) { holding in
+                    if holding.numShares > 0 {
+                        NavigationLink(destination: HoldingView(holding: holding, account: account)) {
+                            HoldingRow(holding: holding)
+                        }
+                    }
+                    
+                    
+                }
                 ForEach (vm.assets) {
                     asset in
                     if asset.totalShares > 0 {
@@ -109,7 +119,6 @@ struct AccountView: View {
                         }
                     }
                 }
-
             }
             .listStyle(PlainListStyle())
         }
@@ -117,8 +126,6 @@ struct AccountView: View {
 //        .navigationViewStyle(StackNavigationViewStyle())
         .navigationTitle("Account Overview")
         .navigationViewStyle(StackNavigationViewStyle())
-
-
         .toolbar {
             Button {
                 showingDeleteAlert = true
@@ -140,7 +147,6 @@ struct AccountView: View {
         print("deleteAccount called")
         moc.delete(account)
         try? moc.save()
-//        presentationMode.wrappedValue.dismiss()
     }
 }
 

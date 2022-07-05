@@ -8,31 +8,6 @@
 import Foundation
 
 
-// MARK: - Events
-struct Events: Codable {
-    let dividends: [String: Dividend]?
-    let splits: [String: Split]?
-}
-
-// MARK: - Dividend
-struct Dividend: Codable {
-    let amount: Double
-    let date: Int
-    
-    var dateFormated: String {
-        return Date(timeIntervalSince1970: TimeInterval(date)).asShortDateString()
-    }
-}
-
-// MARK: - Split
-struct Split: Codable {
-    let date, numerator, denominator: Int
-    let splitRatio: String
-    
-    var dateFormated: String {
-        return Date(timeIntervalSince1970: TimeInterval(date)).asShortDateString()
-    }
-}
 
 
 
@@ -426,6 +401,33 @@ struct ChartData: Codable {
         }
 
     }
+    
+    // MARK: - Events
+    struct Events: Codable {
+        let dividends: [String: Dividend]?
+        let splits: [String: Split]?
+    }
+
+    // MARK: - Dividend
+    struct Dividend: Codable {
+        let amount: Double
+        let date: Int
+        
+        var dateFormated: String {
+            return Date(timeIntervalSince1970: TimeInterval(date)).asShortDateString()
+        }
+    }
+
+    // MARK: - Split
+    struct Split: Codable {
+        let date, numerator, denominator: Int
+        let splitRatio: String
+        
+        var dateFormated: String {
+            return Date(timeIntervalSince1970: TimeInterval(date)).asShortDateString()
+        }
+    }
+
 }
 
 

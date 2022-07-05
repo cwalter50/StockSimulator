@@ -2,7 +2,7 @@
 //  Account+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 6/8/22.
+//  Created by Christopher Walter on 7/5/22.
 //
 //
 
@@ -58,6 +58,7 @@ extension Account {
     
 }
 
+
 // MARK: Generated accessors for transactions
 extension Account {
 
@@ -78,6 +79,12 @@ extension Account {
 // MARK: Generated accessors for holdings
 extension Account {
 
+    @objc(addHoldingsObject:)
+    @NSManaged public func addToHoldings(_ value: Holding)
+
+    @objc(removeHoldingsObject:)
+    @NSManaged public func removeFromHoldings(_ value: Holding)
+
     @objc(addHoldings:)
     @NSManaged public func addToHoldings(_ values: NSSet)
 
@@ -89,9 +96,3 @@ extension Account {
 extension Account : Identifiable {
 
 }
-
-
-
-
-
-
