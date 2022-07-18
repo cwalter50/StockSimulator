@@ -18,7 +18,7 @@ struct HomeView: View {
                 Button(action: {
                     loadChartData(symbol: "AAPL", range: "max")
                 }) {
-                    Text("Test Chart Data")
+                    Text("Test Chart Data With Dividends and Splits")
                 }
                 List{
                     ForEach(vm.marketData, id: \.symbol) {
@@ -53,7 +53,7 @@ struct HomeView: View {
     func loadChartData(symbol: String, range: String)
     {
         let apiCaller = APICaller.shared
-        apiCaller.getChartData2(searchSymbol: symbol, range: range) {
+        apiCaller.getChartDataWithSplitsAndDividends(searchSymbol: symbol, range: range) {
             connectionResult in
 
             switch connectionResult {

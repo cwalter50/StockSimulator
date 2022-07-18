@@ -18,7 +18,7 @@ final class AccountViewModel: ObservableObject {
     @Environment(\.managedObjectContext) var moc // CoreData
     
 //    var dataService: AccountDataService
-    var account: Account
+    @Published var account: Account
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -98,5 +98,21 @@ final class AccountViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func updateSplitsAndDividends() {
+        for asset in account.assets {
+            APICaller.shared.getChartDataWithSplitsAndDividends(searchSymbol: asset.stock.wrappedSymbol, range: "max") { connectionResult in
+                switch connectionResult {
+                case .success(let array):
+                    print("We should never get this: \(array)")
+                case .chartSuccess(let chartData):
+                    self.account.addSplitsAndDividendsToTransactions(chartData: chartData, context: self.moc)
+                case .failure(let string):
+                    print("Error loading dividends and splits for \(string)")
+                }
+            }
+        }
+
     }
 }

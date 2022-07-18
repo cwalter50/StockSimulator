@@ -39,6 +39,8 @@ struct AccountRow: View {
     
     func updateAccountValue()
     {
+        
+        vm.updateAssetValues()
         var stockSymbols = [String]()
         if let theTransactionsSet = self.account.transactions, let theTransactions = Array(theTransactionsSet) as? [Transaction] {
             for t in theTransactions {

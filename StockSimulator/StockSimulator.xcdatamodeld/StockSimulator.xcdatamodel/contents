@@ -11,17 +11,19 @@
     <entity name="Dividend" representedClassName=".Dividend" syncable="YES">
         <attribute name="amount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="appliedToHolding" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="dateOfRecord" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="stockPriceAtDate" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Transaction" inverseName="dividends" inverseEntity="Transaction"/>
     </entity>
     <entity name="Split" representedClassName=".Split" syncable="YES">
         <attribute name="appliedToHolding" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="denominator" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="dateOfRecord" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="denominator" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="numerator" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="numerator" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="splitRatio" optional="YES" attributeType="String"/>
         <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Transaction" inverseName="splits" inverseEntity="Transaction"/>
     </entity>
@@ -49,6 +51,7 @@
     <entity name="Transaction" representedClassName=".Transaction" syncable="YES">
         <attribute name="buyDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="costBasis" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="eventType" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isClosed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="numShares" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -58,7 +61,7 @@
         <attribute name="totalProceeds" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="transactions" inverseEntity="Account"/>
         <relationship name="dividends" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Dividend" inverseName="transaction" inverseEntity="Dividend"/>
-        <relationship name="splits" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Split" inverseName="transaction" inverseEntity="Split"/>
+        <relationship name="splits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Split" inverseName="transaction" inverseEntity="Split"/>
         <relationship name="stock" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stock" inverseName="transactions" inverseEntity="Stock"/>
     </entity>
     <entity name="Watchlist" representedClassName=".Watchlist" syncable="YES">
@@ -69,10 +72,10 @@
     </entity>
     <elements>
         <element name="Account" positionX="-83.875" positionY="-196.49609375" width="128" height="133"/>
-        <element name="Dividend" positionX="-492.4375" positionY="-195.40234375" width="128" height="133"/>
-        <element name="Split" positionX="-490.5625" positionY="10.38671875" width="128" height="148"/>
+        <element name="Dividend" positionX="-492.4375" positionY="-195.40234375" width="128" height="148"/>
+        <element name="Split" positionX="-490.5625" positionY="10.38671875" width="128" height="163"/>
         <element name="Stock" positionX="10.81640625" positionY="55.765625" width="128" height="328"/>
-        <element name="Transaction" positionX="-273.6015625" positionY="-178.7109375" width="128" height="238"/>
-        <element name="Watchlist" positionX="374.875" positionY="72.6484375" width="128" height="103"/>
+        <element name="Transaction" positionX="-273.6015625" positionY="-178.7109375" width="128" height="253"/>
+        <element name="Watchlist" positionX="278.01171875" positionY="-68.328125" width="128" height="103"/>
     </elements>
 </model>

@@ -17,9 +17,10 @@ extension Dividend {
     }
 
     @NSManaged public var amount: Double
-    @NSManaged public var date: Date?
-    @NSManaged public var id: UUID?
     @NSManaged public var appliedToHolding: Bool
+    @NSManaged public var date: Int32
+    @NSManaged public var dateOfRecord: Int32
+    @NSManaged public var id: UUID?
     @NSManaged public var stockPriceAtDate: Double
     @NSManaged public var transaction: Transaction?
 

@@ -132,6 +132,7 @@ struct AccountView: View {
     func loadCurrentStockInfo()
     {
         vm.updateAssetValues()
+        vm.updateSplitsAndDividends()
     }
     
     func deleteAccount()

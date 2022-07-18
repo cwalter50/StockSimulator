@@ -133,9 +133,10 @@ final class APICaller{
         task.resume()
     }
     
-    func getChartData2(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
+    func getChartDataWithSplitsAndDividends(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
     {
-    let urlString = "https://yfapi.net/v8/finance/chart/aapl?range=max&region=US&interval=1mo&lang=en&events=div%2Csplit"
+//    let urlString = "https://yfapi.net/v8/finance/chart/aapl?range=max&region=US&interval=1mo&lang=en&events=div%2Csplit"
+        let urlString = "https://yfapi.net/v8/finance/chart/\(searchSymbol)?range=max&region=US&interval=1mo&lang=en&events=div%2Csplit"
         
         guard let url = URL(string: urlString) else {
             return
@@ -160,21 +161,21 @@ final class APICaller{
 //                print(results)
                 let chartData = ChartData(results: results)
 //                print(chartData)
-                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
-                
-                if let events = chartData.events, let dividends = events.dividends {
-                    for val in dividends {
-                        print("val DIvidend date = \(val.value.date), formatted = \(val.value.dateFormated)")
-                    }
-                }
-                
-                if let events = chartData.events, let splits = events.splits {
-                    for val in splits {
-                        print("val Split date = \(val.value.date), formatted = \(val.value.dateFormated)")
-                    }
-                }
-
-                
+//                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
+//
+//                if let events = chartData.events, let dividends = events.dividends {
+//                    for val in dividends {
+//                        print("val Dividend date = \(val.value.date), formatted = \(val.value.dateFormated)")
+//                    }
+//                }
+//
+//                if let events = chartData.events, let splits = events.splits {
+//                    for val in splits {
+//                        print("val Split date = \(val.value.date), formatted = \(val.value.dateFormated)")
+//                    }
+//                }
+//
+//
                 completion(.chartSuccess(chartData))
             } catch {
                 print("Cannot Decode JSON Response")
@@ -212,9 +213,9 @@ final class APICaller{
             guard let json = try? JSONSerialization.data(withJSONObject: results) else {return}
             let decoder = JSONDecoder()
             if let response = try? decoder.decode(CompleteMarketSummary.self, from: json) {
-                print(response)
+//                print(response)
                 let marketData = response.marketSummaryResponse.result
-                print(marketData)
+//                print(marketData)
             }
             
         }
