@@ -35,7 +35,6 @@ extension Stock {
     @NSManaged public var timeStamp: Date?
     @NSManaged public var transactions: NSSet?
     @NSManaged public var watchlists: NSSet?
-    @NSManaged public var holdings: NSSet?
 
 }
 
@@ -139,22 +138,6 @@ extension Stock {
 
 }
 
-// MARK: Generated accessors for holdings
-extension Stock {
-
-    @objc(addHoldingsObject:)
-    @NSManaged public func addToHoldings(_ value: Holding)
-
-    @objc(removeHoldingsObject:)
-    @NSManaged public func removeFromHoldings(_ value: Holding)
-
-    @objc(addHoldings:)
-    @NSManaged public func addToHoldings(_ values: NSSet)
-
-    @objc(removeHoldings:)
-    @NSManaged public func removeFromHoldings(_ values: NSSet)
-
-}
 
 extension Stock : Identifiable {
 

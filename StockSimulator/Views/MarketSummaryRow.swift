@@ -14,10 +14,10 @@ struct MarketSummaryRow: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(marketSummary.wrappedName)
-                    .font(.title3)
+                    .font(.headline)
                     .fontWeight(.bold)
                 Text(marketSummary.symbol)
-                    .font(.headline)
+                    .font(.subheadline)
                 Text(marketSummary.regularMarketTime.fmt)
 
             }
@@ -36,7 +36,7 @@ struct MarketSummaryRow: View {
                 }
                 
             }
-            .font(.headline)
+            .font(.subheadline)
             .foregroundColor(marketSummary.regularMarketChange.raw >= 0 ? Color.theme.green : Color.theme.red)
         }
     }

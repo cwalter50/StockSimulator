@@ -107,7 +107,9 @@ class StockDataService: ObservableObject {
 //                    print(json)
                     let decoder = JSONDecoder()
                     let quoteSnapshot = try decoder.decode(QuoteSnapshot.self, from: json)
+//                    print("Found QuoteSnapshot")
 //                    print(quoteSnapshot)
+                    
                     self.stockSnapshots = quoteSnapshot.quoteResponse.result
 //                    print("Found these stocks: \(self.stockSnapshots)")
                     

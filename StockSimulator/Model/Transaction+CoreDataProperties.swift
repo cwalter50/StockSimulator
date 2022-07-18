@@ -2,7 +2,7 @@
 //  Transaction+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 7/5/22.
+//  Created by Christopher Walter on 7/18/22.
 //
 //
 
@@ -17,18 +17,19 @@ extension Transaction {
     }
 
     @NSManaged public var buyDate: Date?
+    @NSManaged public var costBasis: Double
     @NSManaged public var id: UUID?
     @NSManaged public var isClosed: Bool
     @NSManaged public var numShares: Double
     @NSManaged public var purchasePrice: Double
     @NSManaged public var sellDate: Date?
     @NSManaged public var sellPrice: Double
-    @NSManaged public var costBasis: Double
     @NSManaged public var totalProceeds: Double
     @NSManaged public var account: Account?
     @NSManaged public var stock: Stock?
-    @NSManaged public var holding: Holding?
-    
+    @NSManaged public var dividends: NSSet?
+    @NSManaged public var splits: Split?
+
     //    // Cost basis is when we buy
     //    var costBasis: Double {
     //        return numShares * purchasePrice
@@ -79,6 +80,22 @@ extension Transaction {
             self.costBasis = purchasePrice * numShares
     //        self.totalProceeds = 0 // this should happen by default
         }
+}
+
+// MARK: Generated accessors for dividends
+extension Transaction {
+
+    @objc(addDividendsObject:)
+    @NSManaged public func addToDividends(_ value: Dividend)
+
+    @objc(removeDividendsObject:)
+    @NSManaged public func removeFromDividends(_ value: Dividend)
+
+    @objc(addDividends:)
+    @NSManaged public func addToDividends(_ values: NSSet)
+
+    @objc(removeDividends:)
+    @NSManaged public func removeFromDividends(_ values: NSSet)
 
 }
 

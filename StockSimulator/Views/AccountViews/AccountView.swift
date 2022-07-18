@@ -14,6 +14,7 @@ struct AccountView: View {
     var account: Account
     
     @ObservedObject var vm: AccountViewModel
+//    @StateObject var vm: AccountViewModel
     
 //    @FetchRequest var transactions: FetchedResults<Transaction>
 
@@ -25,15 +26,15 @@ struct AccountView: View {
     @State private var errorMessage = ""
     
     @State var showingDepositView = false
-    
-    @FetchRequest var holdings: FetchedResults<Holding> // holdings need load in init, because FetchRequest requires a predicate with the variable account
 
     init (account: Account)
     {
         self.account = account
+
         vm = AccountViewModel(account: account)
+//        _vm = StateObject(wrappedValue: AccountViewModel(account: account))
         
-        self._holdings = FetchRequest(entity: Holding.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Holding.id, ascending: true)], predicate: NSPredicate(format: "account == %@", self.account), animation: Animation.default)
+
     }
     
     var body: some View {
@@ -72,7 +73,7 @@ struct AccountView: View {
             .padding([.top, .bottom])
             Divider()
             HStack(alignment: .firstTextBaseline) {
-                Text("Assests")
+                Text("Holdings")
                     .font(.headline)
                 Spacer()
                 Button(action: {
@@ -102,15 +103,6 @@ struct AccountView: View {
                     Spacer()
                     Text("Total G/L")
                 }
-                ForEach(holdings) { holding in
-                    if holding.numShares > 0 {
-                        NavigationLink(destination: HoldingView(holding: holding, account: account)) {
-                            HoldingRow(holding: holding)
-                        }
-                    }
-                    
-                    
-                }
                 ForEach (vm.assets) {
                     asset in
                     if asset.totalShares > 0 {
@@ -122,7 +114,7 @@ struct AccountView: View {
             }
             .listStyle(PlainListStyle())
         }
-        .padding(20)
+        .padding(10)
 //        .navigationViewStyle(StackNavigationViewStyle())
         .navigationTitle("Account Overview")
         .navigationViewStyle(StackNavigationViewStyle())

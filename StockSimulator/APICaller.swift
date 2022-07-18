@@ -66,6 +66,7 @@ final class APICaller{
 //                    print(json)
                     let decoder = JSONDecoder()
                     let quoteSnapshot = try decoder.decode(QuoteSnapshot.self, from: json)
+//                    print("found QuoteSnapshot")
 //                    print(quoteSnapshot)
 
                     completion(.success(quoteSnapshot.quoteResponse.result))

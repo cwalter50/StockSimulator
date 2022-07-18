@@ -44,6 +44,7 @@ struct ContentView: View {
                     Image(systemName: "person.crop.circle")
                     Text("Profile")
                 }
+                .font(.body)
         }
         
     }

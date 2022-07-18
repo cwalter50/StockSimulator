@@ -22,7 +22,6 @@ extension Account {
     @NSManaged public var name: String?
     @NSManaged public var startingValue: Double
     @NSManaged public var transactions: NSSet?
-    @NSManaged public var holdings: NSSet?
 
 }
 
@@ -76,22 +75,6 @@ extension Account {
 
 }
 
-// MARK: Generated accessors for holdings
-extension Account {
-
-    @objc(addHoldingsObject:)
-    @NSManaged public func addToHoldings(_ value: Holding)
-
-    @objc(removeHoldingsObject:)
-    @NSManaged public func removeFromHoldings(_ value: Holding)
-
-    @objc(addHoldings:)
-    @NSManaged public func addToHoldings(_ values: NSSet)
-
-    @objc(removeHoldings:)
-    @NSManaged public func removeFromHoldings(_ values: NSSet)
-
-}
 
 extension Account : Identifiable {
 

@@ -7,7 +7,8 @@
 
 import Foundation
 import SwiftUI
-
+import CoreData
+import Combine
 
 final class AccountViewModel: ObservableObject {
     
@@ -15,12 +16,27 @@ final class AccountViewModel: ObservableObject {
     
 //    @EnvironmentObject var dataController: DataController
     @Environment(\.managedObjectContext) var moc // CoreData
+    
+//    var dataService: AccountDataService
     var account: Account
+    
+    private var cancellables = Set<AnyCancellable>()
     
     public init(account: Account)
     {
         self.account = account
+//        self.dataService = AccountDataService(account: account)
         loadAssets()
+        addSubscribers()
+    }
+    
+    func addSubscribers() {
+//        dataService.$holdings
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] returnHoldings in
+//                self?.holdings = returnHoldings
+//            }
+//            .store(in: &cancellables)
     }
     
     func loadAssets()

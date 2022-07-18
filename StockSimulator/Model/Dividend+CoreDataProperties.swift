@@ -2,7 +2,7 @@
 //  Dividend+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 7/5/22.
+//  Created by Christopher Walter on 7/18/22.
 //
 //
 
@@ -16,11 +16,12 @@ extension Dividend {
         return NSFetchRequest<Dividend>(entityName: "Dividend")
     }
 
+    @NSManaged public var amount: Double
     @NSManaged public var date: Date?
     @NSManaged public var id: UUID?
-    @NSManaged public var amount: Double
-    @NSManaged public var sppliedToHolding: Bool
-    @NSManaged public var holding: Holding?
+    @NSManaged public var appliedToHolding: Bool
+    @NSManaged public var stockPriceAtDate: Double
+    @NSManaged public var transaction: Transaction?
 
 }
 

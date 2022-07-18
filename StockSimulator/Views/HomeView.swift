@@ -9,8 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     
-//    @EnvironmentObject var vm: StocksViewModel
-    @ObservedObject var vm = StocksViewModel()
+    @EnvironmentObject var vm: StocksViewModel
+//    @ObservedObject var vm = StocksViewModel()
     
     var body: some View {
         NavigationView {

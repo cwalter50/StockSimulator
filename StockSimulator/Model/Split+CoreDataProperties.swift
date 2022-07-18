@@ -2,7 +2,7 @@
 //  Split+CoreDataProperties.swift
 //  StockSimulator
 //
-//  Created by Christopher Walter on 7/5/22.
+//  Created by Christopher Walter on 7/18/22.
 //
 //
 
@@ -16,13 +16,13 @@ extension Split {
         return NSFetchRequest<Split>(entityName: "Split")
     }
 
+    @NSManaged public var appliedToHolding: Bool
+    @NSManaged public var date: Date?
+    @NSManaged public var denominator: Int16
     @NSManaged public var id: UUID?
     @NSManaged public var numerator: Int16
-    @NSManaged public var denominator: Int16
-    @NSManaged public var date: Date?
     @NSManaged public var splitRatio: String?
-    @NSManaged public var appliedToHolding: Bool
-    @NSManaged public var holding: Holding?
+    @NSManaged public var transaction: Transaction?
 
 }
 
