@@ -11,15 +11,15 @@ import SwiftUI
 struct StockSimulatorApp: App {
 //    let persistenceController = PersistenceController.shared
 
-    @StateObject private var dataController: DataController
+    @StateObject private var dataController: DataController = DataController()
 //    @StateObject private var vm: AccountViewModel
     @StateObject private var stockVM = StocksViewModel()
     
-    init(){
-        let dataController = DataController()
-        _dataController = StateObject(wrappedValue: dataController) // core Data from 100 days SwiftUI Project 11
-//        _vm = StateObject(wrappedValue: AccountViewModel(account: Account(context: dataController.container.viewContext)))
-    }
+//    init(){
+//        let dataController = DataController()
+//        _dataController = StateObject(wrappedValue: dataController) // core Data from 100 days SwiftUI Project 11
+////        _vm = StateObject(wrappedValue: AccountViewModel(account: Account(context: dataController.container.viewContext)))
+//    }
     
     var body: some Scene {
         WindowGroup {

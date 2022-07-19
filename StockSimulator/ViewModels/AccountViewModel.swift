@@ -100,8 +100,54 @@ final class AccountViewModel: ObservableObject {
         }
     }
     
+    func testSampleSplit() {
+
+        for t in account.transactions?.allObjects as! [Transaction] {
+            if t.isClosed == false {
+                let data = ChartMockData.sampleSplitNow
+                let testSplit = Split(context: moc)
+                if let events = data.events, let thesplits = events.splits {
+                    for thesplit in thesplits {
+                        testSplit.updateSplitValuesFromChartDataSplit(split: thesplit.value, dateOfRecord: thesplit.key)
+                        print("Attempting to add split \(testSplit.splitRatio) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
+//                        t.addToSplits(<#T##value: Split##Split#>)
+                        t.addToSplits(testSplit)
+                        t.applySplit(split: testSplit, context: moc)
+//                        if (t.splits?.allObjects as! [Split]).contains(where: {$0.id == testSplit.id }) {
+//                            let splitRatio = Double(testSplit.numerator) / Double(testSplit.denominator)
+//                            t.numShares *= splitRatio
+//                            t.purchasePrice /= splitRatio
+//                            testSplit.appliedToHolding = true
+//                        }
+                        // do not save!!! this is only a test
+    //                        try? moc.save()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func testSampleDividend() {
+        for asset in assets {
+            for t in asset.transactions {
+                let data = ChartMockData.sampleDividendNow
+                let testDividend = Dividend(context: moc)
+                if let events = data.events, let thedividends = events.dividends {
+                    for theDividend in thedividends {
+                        testDividend.updateDividendValuesFromChartDataDividend(dividend: theDividend.value, dateOfRecord: theDividend.key, stockPriceAtDate: asset.stock.regularMarketPrice)
+                        t.addToDividends(testDividend)
+                        t.applyDividend(dividend: testDividend, context: moc)
+                        print("Added Dividend \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
+                    }
+                }
+            }
+        }
+    }
+    
     func updateSplitsAndDividends() {
-        for asset in account.assets {
+        for asset in assets {
             APICaller.shared.getChartDataWithSplitsAndDividends(searchSymbol: asset.stock.wrappedSymbol, range: "max") { connectionResult in
                 switch connectionResult {
                 case .success(let array):

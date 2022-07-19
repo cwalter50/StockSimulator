@@ -8,9 +8,6 @@
 import Foundation
 
 
-
-
-
 struct MetaData: Codable {
     var chartPreviousClose: Double
     var currency: String

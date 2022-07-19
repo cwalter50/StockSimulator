@@ -39,6 +39,22 @@ struct AccountView: View {
     
     var body: some View {
         VStack(alignment: .center){
+            
+            NavigationLink(destination: TransactionsView(account: account)) {
+                Text("See Transactions")
+            }
+            Button {
+                testSampleSplit()
+            } label: {
+                Text("Test Sample Split")
+            }
+            
+            Button {
+                testSampleDividend()
+            } label: {
+                Text("Test Sample Dividend")
+            }
+
             HStack(alignment: .firstTextBaseline){
                 Text(account.wrappedName)
                     .font(.title)
@@ -129,6 +145,31 @@ struct AccountView: View {
 //            .navigationBarHidden(true)
     }
     
+    
+    func testSampleSplit()
+    {
+        vm.testSampleSplit()
+        
+    }
+    
+    func testSampleDividend()
+    {
+        for asset in vm.assets {
+            for t in asset.transactions {
+                let data = ChartMockData.sampleDividendNow
+                let testDividend = Dividend(context: moc)
+                if let events = data.events, let thedividends = events.dividends {
+                    for theDividend in thedividends {
+                        testDividend.updateDividendValuesFromChartDataDividend(dividend: theDividend.value, dateOfRecord: theDividend.key, stockPriceAtDate: asset.stock.regularMarketPrice)
+                        t.addToDividends(testDividend)
+                        t.applyDividend(dividend: testDividend, context: moc)
+                        
+                        print("Added Dividend \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
+                    }
+                }
+            }
+        }
+    }
     func loadCurrentStockInfo()
     {
         vm.updateAssetValues()

@@ -96,7 +96,7 @@ extension Transaction {
         let theSplits = splits?.allObjects as! [Split]
         return theSplits.contains {$0.date == split.date}
     }
-    // MARK: Chiecks if the split date is within the transactions window of holding the asset.
+    // MARK: Checks if the split date is within the transactions window of holding the asset.
     func splitIsInValidTimeFrame(split: ChartData.Split) -> Bool
     {
         
@@ -107,18 +107,59 @@ extension Transaction {
         else { // this means that the transaction hasn't closed yet
               return splitDate >= wrappedBuyDate
         }
-        
     }
     // MARK: This will apply a split to the transaction
     func applySplit(split: Split, context: NSManagedObjectContext)
     {
-        if (self.splits?.allObjects as! [Split]).contains(where: {$0.id == split.id }) {
+        if (self.splits?.allObjects as! [Split]).contains(where: {$0.id == split.id }) && split.appliedToHolding == false {
             let splitRatio = Double(split.numerator) / Double(split.denominator)
             self.numShares *= splitRatio
             self.purchasePrice /= splitRatio
             split.appliedToHolding = true
         }
         
+        try? context.save()
+    }
+    
+    // MARK: Checks if the dividends already in the transactions contains the ChartData.dividend
+    func splitsDividend(dividend: ChartData.Dividend) -> Bool
+    {
+        let theDividends = dividends?.allObjects as! [Dividend]
+        return theDividends.contains {$0.date == dividend.date}
+    }
+    // MARK: Checks if the dividend date is within the transactions window of holding the asset.
+    func dividendIsInValidTimeFrame(dividend: ChartData.Dividend) -> Bool
+    {
+        
+        let dividendDate = Date(timeIntervalSince1970: Double(dividend.date))
+        if let theSellDate = sellDate {
+            return dividendDate > wrappedBuyDate && dividendDate < theSellDate
+        }
+        else { // this means that the transaction hasn't closed yet
+              return dividendDate >= wrappedBuyDate
+        }
+    }
+    
+    // MARK: This will apply a dividend to the transaction and make a new transaction of the dividend
+    func applyDividend(dividend: Dividend, context: NSManagedObjectContext)
+    {
+        if (self.dividends?.allObjects as! [Dividend]).contains(where: {$0.id == dividend.id }) && dividend.appliedToHolding == false {
+            dividend.appliedToHolding = true
+            
+            // make a new transaction and purchase the number of shares you can buy for the dividend...
+            let newCash = dividend.amount * self.numShares
+            let newShares = newCash / dividend.stockPriceAtDate
+            if let account = account {
+                let newTransaction = Transaction(context: context)
+                newTransaction.updateValuesFromBuy(account: account, purchasePrice: dividend.stockPriceAtDate, numShares: newShares)
+                newTransaction.eventType = "DIVIDEND"
+                newTransaction.stock = self.stock
+                account.addToTransactions(newTransaction)
+            }
+            else {
+                print("Cannot find account to add dividend to the transaction")
+            }
+        }
         try? context.save()
     }
 

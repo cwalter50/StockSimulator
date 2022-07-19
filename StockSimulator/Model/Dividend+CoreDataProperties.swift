@@ -23,6 +23,20 @@ extension Dividend {
     @NSManaged public var id: UUID?
     @NSManaged public var stockPriceAtDate: Double
     @NSManaged public var transaction: Transaction?
+    
+    var wrappedDate: Date {
+        return Date(timeIntervalSince1970: Double(date))
+    }
+    
+    func updateDividendValuesFromChartDataDividend(dividend: ChartData.Dividend, dateOfRecord: String, stockPriceAtDate: Double) {
+
+        self.amount = dividend.amount
+        self.appliedToHolding = false
+        self.date = Int32(dividend.date)
+        self.dateOfRecord = Int32(dateOfRecord) ?? Int32(dividend.date)
+        self.id = UUID()
+        self.stockPriceAtDate = stockPriceAtDate
+    }
 
 }
 

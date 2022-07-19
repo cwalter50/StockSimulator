@@ -18,7 +18,6 @@ enum TradeStatus: String
 struct TradeFormView: View {
     
     @Environment(\.managedObjectContext) var moc // CoreData
-    
     var account: Account
     var stockSnapshot: StockSnapshot
     
