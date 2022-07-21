@@ -173,6 +173,6 @@ struct AccountView: View {
 struct AccountView_Previews: PreviewProvider {
 
     static var previews: some View {
-        AccountView(account: dev.sampleAccount())
+        AccountView(account: dev.sampleAccount)
     }
 }

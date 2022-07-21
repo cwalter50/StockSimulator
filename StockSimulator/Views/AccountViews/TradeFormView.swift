@@ -312,7 +312,7 @@ struct TradeFormView_Previews: PreviewProvider {
 //        let context = dev.dataController.container.viewContext
 //        return TradeFormView(account: dev.sampleAccount(), stockSnapshot: StockSnapshot())
 //            .environment(\.managedObjectContext, context)
-        TradeFormView(account: dev.sampleAccount(), stockSnapshot: StockSnapshot())
+        TradeFormView(account: dev.sampleAccount, stockSnapshot: StockSnapshot())
                 .environment(\.managedObjectContext, dev.dataController.container.viewContext)
     }
 }

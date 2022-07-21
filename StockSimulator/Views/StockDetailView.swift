@@ -33,6 +33,6 @@ struct StockDetailView: View {
 
 struct StockDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        StockDetailView(stock: dev.sampleStock())
+        StockDetailView(stock: dev.sampleStock)
     }
 }

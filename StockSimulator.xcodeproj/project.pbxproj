@@ -17,6 +17,7 @@
 		8332651A2874C21F00E7FA8C /* Stock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833265182874C21F00E7FA8C /* Stock+CoreDataClass.swift */; };
 		8332651B2874C21F00E7FA8C /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833265192874C21F00E7FA8C /* Stock+CoreDataProperties.swift */; };
 		833859EA288755F3002AF992 /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833859E9288755F3002AF992 /* TransactionsView.swift */; };
+		833859EC2889855C002AF992 /* TransactionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833859EB2889855C002AF992 /* TransactionRow.swift */; };
 		8339E2DF2885EACE006C3F63 /* Transaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8339E2DD2885EACE006C3F63 /* Transaction+CoreDataClass.swift */; };
 		8339E2E02885EACE006C3F63 /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8339E2DE2885EACE006C3F63 /* Transaction+CoreDataProperties.swift */; };
 		8368B3D527D05B30008AF135 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3D427D05B30008AF135 /* DataController.swift */; };
@@ -98,6 +99,7 @@
 		833265182874C21F00E7FA8C /* Stock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataClass.swift"; sourceTree = "<group>"; };
 		833265192874C21F00E7FA8C /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		833859E9288755F3002AF992 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; };
+		833859EB2889855C002AF992 /* TransactionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRow.swift; sourceTree = "<group>"; };
 		8339E2DD2885EACE006C3F63 /* Transaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8339E2DE2885EACE006C3F63 /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8368B3D427D05B30008AF135 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				839E97F627E2B8450017C9AE /* AssetView.swift */,
 				839E97EC27DD9DC10017C9AE /* AssetRow.swift */,
 				833859E9288755F3002AF992 /* TransactionsView.swift */,
+				833859EB2889855C002AF992 /* TransactionRow.swift */,
 				83F9F71827CAED9900C14D87 /* TradeFormView.swift */,
 			);
 			path = AccountViews;
@@ -517,6 +520,7 @@
 				83FA270D27BDF46D008DA2BC /* AddAccountView.swift in Sources */,
 				83A64691285FA0F100B659E2 /* MarketSummaryRow.swift in Sources */,
 				838F679C2886045C005E3BA0 /* Split+CoreDataClass.swift in Sources */,
+				833859EC2889855C002AF992 /* TransactionRow.swift in Sources */,
 				83813CEC27F27FEF009344FE /* ChartViewModel.swift in Sources */,
 				83A6466D2856654400B659E2 /* DepositView.swift in Sources */,
 				8368B40727D2C57C008AF135 /* Watchlist+CoreDataProperties.swift in Sources */,

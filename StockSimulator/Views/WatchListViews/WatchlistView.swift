@@ -142,7 +142,7 @@ struct WatchlistView_Previews: PreviewProvider {
         //Test data
 
         
-        return WatchlistView(watchlist: dev.sampleWatchlist())
+        return WatchlistView(watchlist: dev.sampleWatchlist)
             .environment(\.managedObjectContext, context)
 //            .environmentObject(dev.stockVM)
         

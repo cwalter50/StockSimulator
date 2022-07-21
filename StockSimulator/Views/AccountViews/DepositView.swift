@@ -112,6 +112,6 @@ struct DepositView: View
 
 struct DepositView_Previews: PreviewProvider {
     static var previews: some View {
-        DepositView(account: dev.sampleAccount())
+        DepositView(account: dev.sampleAccount)
     }
 }

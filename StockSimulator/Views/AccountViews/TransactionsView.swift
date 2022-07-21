@@ -19,15 +19,14 @@ struct TransactionsView: View {
     init(account: Account) {
         self.account = account
         
-        self._transactions = FetchRequest(entity: Transaction.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Transaction.buyDate, ascending: true)], predicate: NSPredicate(format: "(ANY account == %@)", self.account), animation: Animation.default)
+        self._transactions = FetchRequest(entity: Transaction.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Transaction.buyDate, ascending: false)], predicate: NSPredicate(format: "(ANY account == %@)", self.account), animation: Animation.default)
     }
     
     var body: some View {
         VStack {
             List {
                 ForEach(transactions) { t in
-                    Text(t.toString)
-//                    Text("\(t.eventType ?? "UnKnown"): \(t.numShares) of \(t.stock?.wrappedSymbol ?? "UnKnown")")
+                    TransactionRow(transaction: t)
                 }
             }
         }
@@ -36,7 +35,7 @@ struct TransactionsView: View {
 
 struct TransactionsView_Previews: PreviewProvider {
     static var previews: some View {
-        let account = dev.sampleAccount()
+        let account = dev.sampleAccount
         TransactionsView(account: account)
     }
 }
