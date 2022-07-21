@@ -148,7 +148,7 @@ struct AccountView: View {
     
     func testSampleSplit()
     {
-        vm.testSampleSplit()
+        vm.testSampleSplit(context: moc)
     }
     
     func testSampleDividend()

@@ -83,7 +83,7 @@ struct TradeFormView: View {
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.center)
                             .onReceive(Just(numShares)) { newValue in
-                                let filtered = newValue.filter { "0123456789".contains($0) }
+                                let filtered = newValue.filter { "0123456789.".contains($0) }
                                 if filtered != newValue {
                                     self.numShares = filtered
                                 }

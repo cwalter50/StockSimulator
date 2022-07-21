@@ -104,8 +104,49 @@ extension Transaction {
         self.eventType = "BUY"
 //        self.totalProceeds = 0 // this should happen by default
     }
-    
-    
+
+}
+
+// MARK: Generated accessors for dividends
+extension Transaction {
+
+    @objc(addDividendsObject:)
+    @NSManaged public func addToDividends(_ value: Dividend)
+
+    @objc(removeDividendsObject:)
+    @NSManaged public func removeFromDividends(_ value: Dividend)
+
+    @objc(addDividends:)
+    @NSManaged public func addToDividends(_ values: NSSet)
+
+    @objc(removeDividends:)
+    @NSManaged public func removeFromDividends(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for splits
+extension Transaction {
+
+    @objc(addSplitsObject:)
+    @NSManaged public func addToSplits(_ value: Split)
+
+    @objc(removeSplitsObject:)
+    @NSManaged public func removeFromSplits(_ value: Split)
+
+    @objc(addSplits:)
+    @NSManaged public func addToSplits(_ values: NSSet)
+
+    @objc(removeSplits:)
+    @NSManaged public func removeFromSplits(_ values: NSSet)
+
+}
+
+extension Transaction : Identifiable {
+
+}
+
+// MARK: Dividends and Splits methods
+extension Transaction {
     // MARK: This will check if Dividend from ChartData is valid before adding it to the transaction's list of dividends and applying it. Be careful of making sure that the Dividend time frame is after the buy date and != to. This could cause recursion, because if you pay a dividend on a date and you check for = to then you will apply the dividend over and over again to the dividend's transaction.
     func addAndApplyDividendIfValid(dividend: ChartData.Dividend, dateOfRecord: String, stockPriceAtDividend: Double?, context: NSManagedObjectContext)
     {
@@ -127,7 +168,6 @@ extension Transaction {
     // MARK: This will apply a dividend to the transaction and make a new transaction of the dividend
     private func applyDividend(dividend: Dividend, chartDividend: ChartData.Dividend, context: NSManagedObjectContext)
     {
-        
         if dividend.appliedToHolding == false{
             dividend.appliedToHolding = true
             
@@ -168,12 +208,12 @@ extension Transaction {
     }
     // MARK: Checks if the dividend date is within the transactions window of holding the asset.
     private func isDividendInValidTimeFrame(dividend: ChartData.Dividend, dateOfRecord: String) -> Bool {
-            let dividendDate = Date(timeIntervalSince1970: Double(dateOfRecord) ?? Double(dividend.date))
+        let dividendDate = Date(timeIntervalSince1970: Double(dateOfRecord) ?? Double(dividend.date))
         if let theSellDate = sellDate {
             return dividendDate > wrappedBuyDate && dividendDate < theSellDate
         }
         else { // this means that the transaction hasn't closed yet
-              return dividendDate >= wrappedBuyDate
+              return dividendDate > wrappedBuyDate
         }
     }
     // MARK: Checks if the dividends already in the transactions contains the ChartData.dividend
@@ -182,76 +222,53 @@ extension Transaction {
         let theDividends = dividends?.allObjects as! [Dividend]
         return theDividends.contains {$0.date == dividend.date} // dates are stored as Int32's
     }
+    
+    // MARK:  check if split is valid to be applied to Transaction. It is valid if the split has not already been added to the transaction, and the split record date is within the time frame of the buy date and sell date
+    private func isSplitValid(split: ChartData.Split, dateOfRecord: String) -> Bool
+    {
+        return isSplitInValidTimeFrame(split: split) && !isSplitAlreadyAddedToTransaction(split: split)
+    }
+    
     // MARK: Checks if the splits already the transactions contains the ChartData.split
-    func splitsContain(split: ChartData.Split) -> Bool
+    func isSplitAlreadyAddedToTransaction(split: ChartData.Split) -> Bool
     {
         let theSplits = splits?.allObjects as! [Split]
         return theSplits.contains {$0.date == split.date}
     }
     // MARK: Checks if the split date is within the transactions window of holding the asset.
-    func splitIsInValidTimeFrame(split: ChartData.Split) -> Bool
+    func isSplitInValidTimeFrame(split: ChartData.Split) -> Bool
     {
-        
         let splitDate = Date(timeIntervalSince1970: Double(split.date))
         if let theSellDate = sellDate {
-            return splitDate >= wrappedBuyDate && splitDate <= theSellDate
+            return splitDate > wrappedBuyDate && splitDate < theSellDate
         }
         else { // this means that the transaction hasn't closed yet
-              return splitDate >= wrappedBuyDate
+              return splitDate > wrappedBuyDate
         }
     }
-    // MARK: This will apply a split to the transaction
-    func applySplit(split: Split, context: NSManagedObjectContext)
+    // MARK: This will check if Split from ChartData is valid before adding it to the transaction's list of splits and applying it.
+    func addAndApplySplitIfValid(split: ChartData.Split, dateOfRecord: String, context: NSManagedObjectContext)
     {
-        if (self.splits?.allObjects as! [Split]).contains(where: {$0.id == split.id }) && split.appliedToHolding == false {
-            let splitRatio = Double(split.numerator) / Double(split.denominator)
-            self.numShares *= splitRatio
-            self.purchasePrice /= splitRatio
-            split.appliedToHolding = true
+        if isSplitValid(split: split, dateOfRecord: dateOfRecord) {
+            // make a new Split Object and add it to transaction
+            let s = Split(context: context)
+            s.updateSplitValuesFromChartDataSplit(split: split, dateOfRecord: dateOfRecord)
+            s.transaction = self
+            self.addToSplits(s) // this and previous line may be redundant
+            
+            // change values on transaction
+            if s.appliedToHolding == false {
+                let splitRatio = Double(split.numerator) / Double(split.denominator)
+                self.numShares *= splitRatio
+                self.purchasePrice /= splitRatio
+                s.appliedToHolding = true
+            }
+            if context.hasChanges {
+                try? context.save()
+            }
         }
-        
-        try? context.save()
+        else {
+//            print("Split is not valid to be added to transaction")
+        }
     }
-
-    
-    
-
-}
-
-// MARK: Generated accessors for dividends
-extension Transaction {
-
-    @objc(addDividendsObject:)
-    @NSManaged public func addToDividends(_ value: Dividend)
-
-    @objc(removeDividendsObject:)
-    @NSManaged public func removeFromDividends(_ value: Dividend)
-
-    @objc(addDividends:)
-    @NSManaged public func addToDividends(_ values: NSSet)
-
-    @objc(removeDividends:)
-    @NSManaged public func removeFromDividends(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for splits
-extension Transaction {
-
-    @objc(addSplitsObject:)
-    @NSManaged public func addToSplits(_ value: Split)
-
-    @objc(removeSplitsObject:)
-    @NSManaged public func removeFromSplits(_ value: Split)
-
-    @objc(addSplits:)
-    @NSManaged public func addToSplits(_ values: NSSet)
-
-    @objc(removeSplits:)
-    @NSManaged public func removeFromSplits(_ values: NSSet)
-
-}
-
-extension Transaction : Identifiable {
-
 }

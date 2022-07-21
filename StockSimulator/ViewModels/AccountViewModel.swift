@@ -108,6 +108,7 @@ final class AccountViewModel: ObservableObject {
                     print("We should never get this: \(array)")
                 case .chartSuccess(let chartData):
                     self.updateDividendsToTransactions(chartData: chartData, context: context)
+                    self.updateSplitsToTransactions(chartData: chartData, context: context)
                 case .failure(let string):
                     print("Error loading dividends and splits for \(string)")
                 }
@@ -130,34 +131,33 @@ final class AccountViewModel: ObservableObject {
         }
     }
     
-    
-    func testSampleSplit() {
-
-        for t in account.transactions?.allObjects as! [Transaction] {
-            if t.isClosed == false {
-                let data = ChartMockData.sampleSplitNow
-                let testSplit = Split(context: moc)
-                if let events = data.events, let thesplits = events.splits {
-                    for thesplit in thesplits {
-                        testSplit.updateSplitValuesFromChartDataSplit(split: thesplit.value, dateOfRecord: thesplit.key)
-                        print("Attempting to add split \(testSplit.splitRatio) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
-//                        t.addToSplits(<#T##value: Split##Split#>)
-                        t.addToSplits(testSplit)
-                        t.applySplit(split: testSplit, context: moc)
-//                        if (t.splits?.allObjects as! [Split]).contains(where: {$0.id == testSplit.id }) {
-//                            let splitRatio = Double(testSplit.numerator) / Double(testSplit.denominator)
-//                            t.numShares *= splitRatio
-//                            t.purchasePrice /= splitRatio
-//                            testSplit.appliedToHolding = true
-//                        }
-                        // do not save!!! this is only a test
-    //                        try? moc.save()
+    func updateSplitsToTransactions(chartData: ChartData, context: NSManagedObjectContext)
+    {
+        for asset in assets {
+            for t in asset.transactions {
+                if let events = chartData.events, let thesplits = events.splits {
+//                    print("found \(thesplits.count) splits")
+                    for s in thesplits {
+                        t.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, context: context)
                     }
                 }
             }
-            
         }
-        
+    }
+    
+    
+    func testSampleSplit(context: NSManagedObjectContext) {
+        for asset in assets {
+            for t in asset.transactions {
+                let data = ChartMockData.sampleSplitNow
+                if let events = data.events, let thesplits = events.splits {
+                    for s in thesplits {
+                        t.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, context:context)
+//                        print("Added Split \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
+                    }
+                }
+            }
+        }
     }
     
     func testSampleDividend(context: NSManagedObjectContext) {
