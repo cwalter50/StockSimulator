@@ -74,6 +74,8 @@ extension Transaction {
         self.sellDate = Date()
         self.isClosed = true
         self.sellPrice = sellPrice
+        self.totalProceeds = self.numShares * sellPrice
+        self.eventType = "\(wrappedEventType)/SELL"
     }
     
     func copyTransaction(from transaction: Transaction)
@@ -151,6 +153,9 @@ extension Transaction {
     func addAndApplyDividendIfValid(dividend: ChartData.Dividend, dateOfRecord: String, stockPriceAtDividend: Double?, context: NSManagedObjectContext)
     {
         if isDividendValid(dividend: dividend, dateOfRecord: dateOfRecord) {
+            print("Found a valid dividend: ")
+            print(dividend)
+            print("Date of Record: \(dateOfRecord)")
             // make a new Dividend Object
             let d = Dividend(context: context)
             let price = stockPriceAtDividend ?? (stock?.regularMarketPrice ?? purchasePrice)
@@ -182,7 +187,9 @@ extension Transaction {
                 newTransaction.addToDividends(dividend)
                 newTransaction.stock = self.stock
                 account.addToTransactions(newTransaction)
-                print("Dividend paid added transaction \(newTransaction)")
+                print("Dividend paid added transaction to \(newTransaction.stock?.symbol) \(newTransaction)")
+                print(chartDividend)
+                print(chartDividend.dateFormated)
             }
             else {
                 print("Cannot find account to add dividend to the transaction")
@@ -208,7 +215,8 @@ extension Transaction {
     }
     // MARK: Checks if the dividend date is within the transactions window of holding the asset.
     private func isDividendInValidTimeFrame(dividend: ChartData.Dividend, dateOfRecord: String) -> Bool {
-        let dividendDate = Date(timeIntervalSince1970: Double(dateOfRecord) ?? Double(dividend.date))
+//        let dividendDate = Date(timeIntervalSince1970: Double(dateOfRecord) ?? Double(dividend.date))
+        let dividendDate = Date(timeIntervalSince1970: Double(dividend.date))
         if let theSellDate = sellDate {
             return dividendDate > wrappedBuyDate && dividendDate < theSellDate
         }

@@ -10,6 +10,13 @@ import SwiftUI
 import CoreData
 import Combine
 
+enum TradeStatus {
+    case buySuccess(title: String, message: String)
+    case sellSuccess(title: String, message: String)
+    case sellAllSuccess(title: String, message: String)
+    case error(title: String, message: String)
+}
+
 final class AccountViewModel: ObservableObject {
     
     @Published var assets: [Asset] = []
@@ -107,8 +114,18 @@ final class AccountViewModel: ObservableObject {
                 case .success(let array):
                     print("We should never get this: \(array)")
                 case .chartSuccess(let chartData):
-                    self.updateDividendsToTransactions(chartData: chartData, context: context)
-                    self.updateSplitsToTransactions(chartData: chartData, context: context)
+//                    if asset.stock.symbol == "F" {
+//                        if let events = chartData.events, let dividends = events.dividends {
+//                            for d in dividends {
+//                                let dateDouble = Double(d.key) ?? 0.0
+//                                let dateOfRecord = Date(timeIntervalSince1970: dateDouble)
+//                                print("dateOfrecord: \(dateOfRecord.asShortDateString()) payDate: \(d.value.dateFormated)")
+//                            }
+//                        }
+//                    }
+
+                    self.updateDividendsToTransactions(chartData: chartData, asset: asset, context: context)
+                    self.updateSplitsToTransactions(chartData: chartData, asset: asset, context: context)
                 case .failure(let string):
                     print("Error loading dividends and splits for \(string)")
                 }
@@ -116,30 +133,27 @@ final class AccountViewModel: ObservableObject {
         }
     }
     
-    func updateDividendsToTransactions(chartData: ChartData, context: NSManagedObjectContext)
+    func updateDividendsToTransactions(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
     {
-        for asset in assets {
-            for t in asset.transactions {
-                if let events = chartData.events, let thedividends = events.dividends {
-                    print("found \(thedividends.count) dividends")
-                    for d in thedividends {
-                        let price = chartData.priceAtOpenOnDate(date: d.value.date) ?? asset.stock.regularMarketPrice
-                        t.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: price, context: context)
-                    }
+        for t in asset.transactions {
+            if let events = chartData.events, let thedividends = events.dividends {
+                print("found \(thedividends.count) dividends")
+                for d in thedividends {
+                    let price = chartData.priceAtOpenOnDate(date: d.value.date) ?? asset.stock.regularMarketPrice
+                    t.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: price, context: context)
                 }
             }
         }
     }
     
-    func updateSplitsToTransactions(chartData: ChartData, context: NSManagedObjectContext)
+    func updateSplitsToTransactions(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
     {
-        for asset in assets {
-            for t in asset.transactions {
-                if let events = chartData.events, let thesplits = events.splits {
+  
+        for t in asset.transactions {
+            if let events = chartData.events, let thesplits = events.splits {
 //                    print("found \(thesplits.count) splits")
-                    for s in thesplits {
-                        t.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, context: context)
-                    }
+                for s in thesplits {
+                    t.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, context: context)
                 }
             }
         }
@@ -171,6 +185,153 @@ final class AccountViewModel: ObservableObject {
                     }
                 }
             }
+        }
+    }
+    
+    func buyShares(numShares: Double, stockSnapshot: StockSnapshot, context: NSManagedObjectContext, completion: @escaping (TradeStatus) -> Void)
+    {
+        // check if you can afford the trade first...
+        if canAffordTrade(numShares: numShares, stockSnapshot: stockSnapshot)
+        {
+            let newTransaction = Transaction(context: context)
+            newTransaction.updateValuesFromBuy(account: self.account, purchasePrice: stockSnapshot.regularMarketPrice, numShares: numShares)
+            
+            let newStock = Stock(context: context)
+            newStock.updateValuesFromStockSnapshot(snapshot: stockSnapshot)
+            
+            newTransaction.stock = newStock
+                
+            account.addToTransactions(newTransaction)
+            // decrease cash amount in account by purchase price
+            account.cash -= newTransaction.costBasis
+            
+            if context.hasChanges {
+                try? context.save() // save to CoreData
+                print("transaction and holding has been added to account")
+                
+            }
+            completion(.buySuccess(title: "Success", message: "Successfully bought \(numShares) shares of \(stockSnapshot.symbol)"))
+
+        }
+        else {
+            completion(.error(title: "Error", message: "You do not have enough cash to make the transaction"))
+            
+        }
+    }
+    
+    func sellShares(numShares: Double, stockSnapshot: StockSnapshot, context: NSManagedObjectContext, completion: @escaping(TradeStatus) -> Void) {
+        // see if you own the asset first
+        if let theTransactionsSet = account.transactions, let transactions = Array(theTransactionsSet) as? [Transaction] {
+            let filtered = transactions.filter({$0.stock?.symbol == stockSnapshot.symbol && $0.isClosed == false})
+            
+            // you own asset, so, start to sell
+            if filtered.count > 0 {
+                if let foundStock = transactions[0].stock {
+                    let foundAsset = Asset(transactions: filtered, stock: foundStock)
+                    
+                    if numShares == foundAsset.totalShares { // sell everything and close all transactions
+                        for t in filtered {
+                            t.closeTransaction(sellPrice: stockSnapshot.regularMarketPrice)
+                            
+                            account.cash += t.totalProceeds
+                            print("sold \(t.numShares) of \(foundStock.wrappedDisplayName)")
+                        }
+                        if context.hasChanges {
+                            try? context.save()
+                            print("Finished selling \(foundStock.wrappedSymbol): \(numShares) total shares sold. and saved to CoreData")
+                        }
+                        completion(.sellSuccess(title: "Success", message: "Successfully sold \(numShares) shares of \(stockSnapshot.symbol)"))
+                        
+                    }
+                    else if numShares < foundAsset.totalShares { // we can sell the shares.
+                        // figure out how to sell asset. Use FILO. Right now just selling in any order
+                        var numSold = 0.0
+        
+                        for t in filtered.sorted(by: {$0.wrappedBuyDate > $1.wrappedBuyDate}) {
+                            if numSold + t.numShares <= numShares {
+                                // close this transaction. we can sell it all
+                                t.closeTransaction(sellPrice: foundStock.regularMarketPrice)
+                                numSold += t.numShares
+                                account.cash += t.totalProceeds
+                                print("sold \(t.numShares) of \(foundStock.wrappedDisplayName)")
+                                if numSold == numShares
+                                {
+                                    break // need to break loop so that it doesnt finish the loop with filtered
+                                }
+                                
+                            }
+                            else if numSold + t.numShares > numShares {
+                                // split transaction into 2. 1 that has the number of shares we are trying to sell and 1 thats a new one with the remaining shares that arent sold. delete the original transaction
+                                let newTransactionOpen = Transaction(context: context)
+                                newTransactionOpen.copyTransaction(from: t)
+                                
+                                let newTranactionClose = Transaction(context: context)
+                                newTranactionClose.copyTransaction(from: t)
+                                
+                                newTranactionClose.numShares = numShares - numSold
+                                
+                                newTranactionClose.closeTransaction(sellPrice: stockSnapshot.regularMarketPrice)
+                                
+                                newTransactionOpen.numShares -= newTranactionClose.numShares
+
+                                account.addToTransactions(newTranactionClose)
+                                account.addToTransactions(newTransactionOpen)
+                                
+                                account.removeFromTransactions(t)
+                                
+                                numSold = numShares // we just sold them all
+                                account.cash += newTranactionClose.totalProceeds
+                                print("sold \(newTranactionClose.numShares) of \(foundStock.wrappedDisplayName)")
+                                break // break the loop, because we sold the amount specified
+                            }
+                        }
+                        if context.hasChanges {
+                            try? context.save()
+                            print("Finished selling \(foundStock.wrappedSymbol): \(numShares) total shares sold. and saved to CoreData")
+                        }
+                        completion(.sellSuccess(title: "Success", message: "Successfully sold \(numShares) shares of \(stockSnapshot.symbol)"))
+                    }
+                    else {
+                        // numSharesNum > than the number of shares that you own
+                        completion(.error(title: "Error", message: "Cannot sell: You do not own \(numShares) shares of \(stockSnapshot.symbol)"))
+                    }
+                }
+                else {
+                    completion(.error(title: "Error", message: "Cannot sell: You do not own \(numShares) shares of \(stockSnapshot.symbol)"))
+                }
+                
+            }
+            else {
+                completion(.error(title: "Error", message: "Cannot sell: You do not own \(numShares) shares of \(stockSnapshot.symbol)"))
+            }
+        }
+        else {
+            completion(.error(title: "Error", message: "Cannot sell: You do not own \(numShares) shares of \(stockSnapshot.symbol)"))
+        }
+    }
+    
+    func canAffordTrade(numShares: Double, stockSnapshot: StockSnapshot) -> Bool
+    {
+        return account.cash > stockSnapshot.regularMarketPrice * numShares
+    }
+    
+    func sellAllShares(stockSnapshot: StockSnapshot, context: NSManagedObjectContext, completion: @escaping(TradeStatus) -> Void)
+    {
+        if let theTransactionsSet = account.transactions, let transactions = Array(theTransactionsSet) as? [Transaction] {
+            // filter transactions that are open and have the same symbol.
+            let filtered = transactions.filter({$0.stock?.symbol == stockSnapshot.symbol && $0.isClosed == false})
+            
+            var sharesSold = 0.0
+            for t in filtered {
+                t.closeTransaction(sellPrice: stockSnapshot.regularMarketPrice)
+                account.cash += t.totalProceeds
+                sharesSold += t.numShares
+                print("sold \(t.numShares) of \(stockSnapshot.symbol)")
+            }
+            completion(.sellAllSuccess(title: "Success", message: "Sold all shares (\(sharesSold.asDecimalWith6Decimals())) of \(stockSnapshot.symbol)"))
+        }
+        else {
+            completion(.error(title: "Error", message: "Failed to sell shares of \(stockSnapshot.symbol)"))
         }
     }
     
