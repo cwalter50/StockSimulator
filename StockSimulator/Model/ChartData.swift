@@ -142,6 +142,17 @@ struct ChartData: Codable {
         return result
     }
     
+    // this is a helper function for 
+    func priceAtOpenOnDate(date: Int) -> Double?
+    {
+        if let location = timestamp.firstIndex(of: date) {
+            return open[location]
+        }
+        else {
+            return nil
+        }
+    }
+    
     var metaData: MetaData?
     
     var errorMessage: String?

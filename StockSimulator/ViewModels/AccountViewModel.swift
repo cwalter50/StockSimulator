@@ -100,6 +100,37 @@ final class AccountViewModel: ObservableObject {
         }
     }
     
+    func updateSplitsAndDividends(context: NSManagedObjectContext) {
+        for asset in assets {
+            APICaller.shared.getChartDataWithSplitsAndDividends(searchSymbol: asset.stock.wrappedSymbol, range: "max") { connectionResult in
+                switch connectionResult {
+                case .success(let array):
+                    print("We should never get this: \(array)")
+                case .chartSuccess(let chartData):
+                    self.updateDividendsToTransactions(chartData: chartData, context: context)
+                case .failure(let string):
+                    print("Error loading dividends and splits for \(string)")
+                }
+            }
+        }
+    }
+    
+    func updateDividendsToTransactions(chartData: ChartData, context: NSManagedObjectContext)
+    {
+        for asset in assets {
+            for t in asset.transactions {
+                if let events = chartData.events, let thedividends = events.dividends {
+                    print("found \(thedividends.count) dividends")
+                    for d in thedividends {
+                        let price = chartData.priceAtOpenOnDate(date: d.value.date) ?? asset.stock.regularMarketPrice
+                        t.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: price, context: context)
+                    }
+                }
+            }
+        }
+    }
+    
+    
     func testSampleSplit() {
 
         for t in account.transactions?.allObjects as! [Transaction] {
@@ -129,36 +160,19 @@ final class AccountViewModel: ObservableObject {
         
     }
     
-    func testSampleDividend() {
+    func testSampleDividend(context: NSManagedObjectContext) {
         for asset in assets {
             for t in asset.transactions {
                 let data = ChartMockData.sampleDividendNow
-                let testDividend = Dividend(context: moc)
                 if let events = data.events, let thedividends = events.dividends {
-                    for theDividend in thedividends {
-                        testDividend.updateDividendValuesFromChartDataDividend(dividend: theDividend.value, dateOfRecord: theDividend.key, stockPriceAtDate: asset.stock.regularMarketPrice)
-                        t.addToDividends(testDividend)
-                        t.applyDividend(dividend: testDividend, context: moc)
-                        print("Added Dividend \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
+                    for d in thedividends {
+                        t.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: asset.stock.regularMarketPrice, context: context)
+//                        print("Added Dividend \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
                     }
                 }
             }
         }
     }
     
-    func updateSplitsAndDividends() {
-        for asset in assets {
-            APICaller.shared.getChartDataWithSplitsAndDividends(searchSymbol: asset.stock.wrappedSymbol, range: "max") { connectionResult in
-                switch connectionResult {
-                case .success(let array):
-                    print("We should never get this: \(array)")
-                case .chartSuccess(let chartData):
-                    self.account.addSplitsAndDividendsToTransactions(chartData: chartData, context: self.moc)
-                case .failure(let string):
-                    print("Error loading dividends and splits for \(string)")
-                }
-            }
-        }
 
-    }
 }

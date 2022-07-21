@@ -26,7 +26,8 @@ struct TransactionsView: View {
         VStack {
             List {
                 ForEach(transactions) { t in
-                    Text("\(t.eventType ?? "UnKnown"): \(t.numShares) of \(t.stock?.wrappedSymbol ?? "UnKnown")")
+                    Text(t.toString)
+//                    Text("\(t.eventType ?? "UnKnown"): \(t.numShares) of \(t.stock?.wrappedSymbol ?? "UnKnown")")
                 }
             }
         }

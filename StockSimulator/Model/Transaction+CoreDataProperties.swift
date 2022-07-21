@@ -25,7 +25,7 @@ extension Transaction {
     @NSManaged public var sellDate: Date?
     @NSManaged public var sellPrice: Double
     @NSManaged public var totalProceeds: Double
-    @NSManaged public var eventType: String? // This will be used to determine, if we have a dividend payment, splits, etc.
+    @NSManaged public var eventType: String? // This will be used to determine, if we have a dividend payment, splits, etc. // might not need because each transaction has a buy and a sell. Also when you apply a dividend, you are applying
     @NSManaged public var account: Account?
     @NSManaged public var stock: Stock?
     @NSManaged public var dividends: NSSet?
@@ -40,6 +40,20 @@ extension Transaction {
     //    var totalProceeds: Double {
     //        return numShares * sellPrice
     //    }
+    
+    // might not need eventtype.
+    var wrappedEventType: String {
+        return eventType ?? "UnKnown"
+    }
+    
+    var toString: String {
+        var result = "\(wrappedEventType): \(numShares) of \(stock?.wrappedSymbol ?? "UnKnown") at price $\(purchasePrice) on date \(buyDate?.asShortDateString() ?? Date().asShortDateString())"
+        
+        if let sellDate = sellDate {
+            result += "\nSold on date \(sellDate) at price $\(sellPrice)"
+        }
+        return result
+    }
     
     var wrappedBuyDate: Date {
         return self.buyDate ?? Date()
@@ -90,6 +104,84 @@ extension Transaction {
         self.eventType = "BUY"
 //        self.totalProceeds = 0 // this should happen by default
     }
+    
+    
+    // MARK: This will check if Dividend from ChartData is valid before adding it to the transaction's list of dividends and applying it. Be careful of making sure that the Dividend time frame is after the buy date and != to. This could cause recursion, because if you pay a dividend on a date and you check for = to then you will apply the dividend over and over again to the dividend's transaction.
+    func addAndApplyDividendIfValid(dividend: ChartData.Dividend, dateOfRecord: String, stockPriceAtDividend: Double?, context: NSManagedObjectContext)
+    {
+        if isDividendValid(dividend: dividend, dateOfRecord: dateOfRecord) {
+            // make a new Dividend Object
+            let d = Dividend(context: context)
+            let price = stockPriceAtDividend ?? (stock?.regularMarketPrice ?? purchasePrice)
+            d.updateDividendValuesFromChartDataDividend(dividend: dividend, dateOfRecord: dateOfRecord, stockPriceAtDate: price)
+            self.addToDividends(d)
+            
+            // this will create a newTransaction
+            self.applyDividend(dividend: d, chartDividend: dividend, context: context)
+        }
+        else {
+//            print("Dividend \(dividend) is not valid to add to transaction." )
+        }
+    }
+    
+    // MARK: This will apply a dividend to the transaction and make a new transaction of the dividend
+    private func applyDividend(dividend: Dividend, chartDividend: ChartData.Dividend, context: NSManagedObjectContext)
+    {
+        
+        if dividend.appliedToHolding == false{
+            dividend.appliedToHolding = true
+            
+            // make a new transaction and purchase the number of shares you can buy for the dividend...
+            let newCash = dividend.amount * self.numShares
+            let newShares = newCash / dividend.stockPriceAtDate
+            if let account = account {
+                let newTransaction = Transaction(context: context)
+                newTransaction.updateValuesFromBuy(account: account, purchasePrice: dividend.stockPriceAtDate, numShares: newShares)
+                newTransaction.eventType = "DIVIDEND"
+                // add this dividend to the newTransaction's Dividends, so that it will not make duplicates
+                newTransaction.addToDividends(dividend)
+                newTransaction.stock = self.stock
+                account.addToTransactions(newTransaction)
+                print("Dividend paid added transaction \(newTransaction)")
+            }
+            else {
+                print("Cannot find account to add dividend to the transaction")
+            }
+            // save the changed data
+            if context.hasChanges {
+                try? context.save()
+                
+            }
+        }
+        else {
+            print("Cannot apply Dividend to Transaction")
+        }
+        
+    }
+    
+    
+    // MARK:  check if dividend is valid to be applied to Transaction. It is valid if the dividend has not already been added to the transaction, and the dividend record date is within the time frame of the buy date and sell date
+    private func isDividendValid(dividend: ChartData.Dividend, dateOfRecord: String) -> Bool
+    {
+            return isDividendInValidTimeFrame(dividend: dividend, dateOfRecord: dateOfRecord) && !isDividendAlreadyAddedToTransaction(dividend: dividend)
+        
+    }
+    // MARK: Checks if the dividend date is within the transactions window of holding the asset.
+    private func isDividendInValidTimeFrame(dividend: ChartData.Dividend, dateOfRecord: String) -> Bool {
+            let dividendDate = Date(timeIntervalSince1970: Double(dateOfRecord) ?? Double(dividend.date))
+        if let theSellDate = sellDate {
+            return dividendDate > wrappedBuyDate && dividendDate < theSellDate
+        }
+        else { // this means that the transaction hasn't closed yet
+              return dividendDate >= wrappedBuyDate
+        }
+    }
+    // MARK: Checks if the dividends already in the transactions contains the ChartData.dividend
+    private func isDividendAlreadyAddedToTransaction(dividend: ChartData.Dividend) -> Bool
+    {
+        let theDividends = dividends?.allObjects as! [Dividend]
+        return theDividends.contains {$0.date == dividend.date} // dates are stored as Int32's
+    }
     // MARK: Checks if the splits already the transactions contains the ChartData.split
     func splitsContain(split: ChartData.Split) -> Bool
     {
@@ -120,48 +212,9 @@ extension Transaction {
         
         try? context.save()
     }
+
     
-    // MARK: Checks if the dividends already in the transactions contains the ChartData.dividend
-    func splitsDividend(dividend: ChartData.Dividend) -> Bool
-    {
-        let theDividends = dividends?.allObjects as! [Dividend]
-        return theDividends.contains {$0.date == dividend.date}
-    }
-    // MARK: Checks if the dividend date is within the transactions window of holding the asset.
-    func dividendIsInValidTimeFrame(dividend: ChartData.Dividend) -> Bool
-    {
-        
-        let dividendDate = Date(timeIntervalSince1970: Double(dividend.date))
-        if let theSellDate = sellDate {
-            return dividendDate > wrappedBuyDate && dividendDate < theSellDate
-        }
-        else { // this means that the transaction hasn't closed yet
-              return dividendDate >= wrappedBuyDate
-        }
-    }
     
-    // MARK: This will apply a dividend to the transaction and make a new transaction of the dividend
-    func applyDividend(dividend: Dividend, context: NSManagedObjectContext)
-    {
-        if (self.dividends?.allObjects as! [Dividend]).contains(where: {$0.id == dividend.id }) && dividend.appliedToHolding == false {
-            dividend.appliedToHolding = true
-            
-            // make a new transaction and purchase the number of shares you can buy for the dividend...
-            let newCash = dividend.amount * self.numShares
-            let newShares = newCash / dividend.stockPriceAtDate
-            if let account = account {
-                let newTransaction = Transaction(context: context)
-                newTransaction.updateValuesFromBuy(account: account, purchasePrice: dividend.stockPriceAtDate, numShares: newShares)
-                newTransaction.eventType = "DIVIDEND"
-                newTransaction.stock = self.stock
-                account.addToTransactions(newTransaction)
-            }
-            else {
-                print("Cannot find account to add dividend to the transaction")
-            }
-        }
-        try? context.save()
-    }
 
 }
 

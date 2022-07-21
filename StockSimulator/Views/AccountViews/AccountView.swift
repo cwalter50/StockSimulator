@@ -149,31 +149,17 @@ struct AccountView: View {
     func testSampleSplit()
     {
         vm.testSampleSplit()
-        
     }
     
     func testSampleDividend()
     {
-        for asset in vm.assets {
-            for t in asset.transactions {
-                let data = ChartMockData.sampleDividendNow
-                let testDividend = Dividend(context: moc)
-                if let events = data.events, let thedividends = events.dividends {
-                    for theDividend in thedividends {
-                        testDividend.updateDividendValuesFromChartDataDividend(dividend: theDividend.value, dateOfRecord: theDividend.key, stockPriceAtDate: asset.stock.regularMarketPrice)
-                        t.addToDividends(testDividend)
-                        t.applyDividend(dividend: testDividend, context: moc)
-                        
-                        print("Added Dividend \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
-                    }
-                }
-            }
-        }
+        vm.testSampleDividend(context: moc)
+
     }
     func loadCurrentStockInfo()
     {
         vm.updateAssetValues()
-        vm.updateSplitsAndDividends()
+        vm.updateSplitsAndDividends(context: moc)
     }
     
     func deleteAccount()
