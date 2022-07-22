@@ -76,60 +76,66 @@ final class AccountViewModel: ObservableObject {
         for asset in assets {
 //            asset.updateValue()
 //            asset.updateValue()
-            let apiCaller = APICaller.shared
-            apiCaller.getQuoteData(searchSymbols: asset.stock.wrappedSymbol) {
-                connectionResult in
+            if !asset.isClosed {
+                let apiCaller = APICaller.shared
+                apiCaller.getQuoteData(searchSymbols: asset.stock.wrappedSymbol) {
+                    connectionResult in
 
-                switch connectionResult {
-                    case .success(let theStocks):
-                        // link the stocks to the current stock prices, update the values,
-                        for snapshot in theStocks
-                        {
-                            asset.stock.updateValuesFromStockSnapshot(snapshot: snapshot)
-                            print("updated values for \(asset.stock.wrappedSymbol) to \(asset.stock.regularMarketPrice)")
-                        }
-    //                    try? self.dataController.container.viewContext.save()
-                        if self.moc.hasChanges {
-                            try? self.moc.save()
-                        }
-                        
-                        self.loadAssets()
-                    case .failure(let error):
-    //                    errorMessage = error
-                        print(error)
-    //                    if account.assets.count > 0 {
-    //                        showingErrorAlert = true
-    //                    }
-                    default:
-                        print("connectionResult was not success or failure")
+                    switch connectionResult {
+                        case .success(let theStocks):
+                            // link the stocks to the current stock prices, update the values,
+                            for snapshot in theStocks
+                            {
+                                asset.stock.updateValuesFromStockSnapshot(snapshot: snapshot)
+                                print("updated values for \(asset.stock.wrappedSymbol) to \(asset.stock.regularMarketPrice)")
+                            }
+        //                    try? self.dataController.container.viewContext.save()
+                            if self.moc.hasChanges {
+                                try? self.moc.save()
+                            }
+                            
+                            self.loadAssets()
+                        case .failure(let error):
+        //                    errorMessage = error
+                            print(error)
+        //                    if account.assets.count > 0 {
+        //                        showingErrorAlert = true
+        //                    }
+                        default:
+                            print("connectionResult was not success or failure")
+                    }
                 }
             }
+            
         }
     }
     
     func updateSplitsAndDividends(context: NSManagedObjectContext) {
         for asset in assets {
-            APICaller.shared.getChartDataWithSplitsAndDividends(searchSymbol: asset.stock.wrappedSymbol, range: "max") { connectionResult in
-                switch connectionResult {
-                case .success(let array):
-                    print("We should never get this: \(array)")
-                case .chartSuccess(let chartData):
-//                    if asset.stock.symbol == "F" {
-//                        if let events = chartData.events, let dividends = events.dividends {
-//                            for d in dividends {
-//                                let dateDouble = Double(d.key) ?? 0.0
-//                                let dateOfRecord = Date(timeIntervalSince1970: dateDouble)
-//                                print("dateOfrecord: \(dateOfRecord.asShortDateString()) payDate: \(d.value.dateFormated)")
-//                            }
-//                        }
-//                    }
+            if asset.isClosed == false {
+                APICaller.shared.getChartDataWithSplitsAndDividends(searchSymbol: asset.stock.wrappedSymbol, range: "max") { connectionResult in
+                    switch connectionResult {
+                    case .success(let array):
+                        print("We should never get this: \(array)")
+                    case .chartSuccess(let chartData):
+    //                    if asset.stock.symbol == "F" {
+    //                        if let events = chartData.events, let dividends = events.dividends {
+    //                            for d in dividends {
+    //                                let dateDouble = Double(d.key) ?? 0.0
+    //                                let dateOfRecord = Date(timeIntervalSince1970: dateDouble)
+    //                                print("dateOfrecord: \(dateOfRecord.asShortDateString()) payDate: \(d.value.dateFormated)")
+    //                            }
+    //                        }
+    //                    }
 
-                    self.updateDividendsToTransactions(chartData: chartData, asset: asset, context: context)
-                    self.updateSplitsToTransactions(chartData: chartData, asset: asset, context: context)
-                case .failure(let string):
-                    print("Error loading dividends and splits for \(string)")
+                        self.updateDividendsToTransactions(chartData: chartData, asset: asset, context: context)
+                        self.updateSplitsToTransactions(chartData: chartData, asset: asset, context: context)
+                    case .failure(let string):
+                        print("Error loading dividends and splits for \(string)")
+                    }
                 }
             }
+            
         }
     }
     
@@ -137,7 +143,7 @@ final class AccountViewModel: ObservableObject {
     {
         for t in asset.transactions {
             if let events = chartData.events, let thedividends = events.dividends {
-                print("found \(thedividends.count) dividends")
+//                print("found \(thedividends.count) dividends")
                 for d in thedividends {
                     let price = chartData.priceAtOpenOnDate(date: d.value.date) ?? asset.stock.regularMarketPrice
                     t.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: price, context: context)

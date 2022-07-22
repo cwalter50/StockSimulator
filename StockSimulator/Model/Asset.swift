@@ -26,6 +26,15 @@ class Asset: Identifiable, ObservableObject
         return total
     }
     
+    var isClosed: Bool {
+        for t in transactions {
+            if t.isClosed == false {
+                return false
+            }
+        }
+        return true
+    }
+    
     var averagePurchasePrice: Double {
         
         var sum = 0.0
@@ -48,7 +57,7 @@ class Asset: Identifiable, ObservableObject
     
     var percentChange: Double {
         
-        if totalValue >= costBasis
+        if totalValue > costBasis
         {
             return 100 * (totalValue / costBasis - 1)
         }

@@ -17,6 +17,8 @@ struct AccountsView: View {
 
     @State var isAddAccountPresented = false
     
+    @State var showDetailView: Bool = false
+    @State var selectedAccount: Account? = nil
     
     var body: some View {
         NavigationView {
@@ -24,9 +26,14 @@ struct AccountsView: View {
                 ForEach(accounts) {
 //                ForEach(viewModel.accounts) {
                     account in
-                    NavigationLink(destination: AccountView(account: account)) {
-                        AccountRow(account: account)
-                    }
+                    AccountRow(account: account)
+                        .onTapGesture {
+                            selectedAccount = account
+                            showDetailView.toggle()
+                        }
+//                    NavigationLink(destination: AccountView(account: account)) {
+//                        AccountRow(account: account)
+//                    }
                 }
             }
             .navigationViewStyle(StackNavigationViewStyle())
@@ -55,9 +62,20 @@ struct AccountsView: View {
             }
             .navigationTitle("Accounts")
             .onAppear(perform: loadData)
+            .background {
+                if let ac = selectedAccount {
+                    NavigationLink(destination: AccountView(account: ac), isActive: $showDetailView) {
+                        EmptyView()
+                    }
+                }
+                else {
+                    EmptyView()
+                }
+            }
+            
 
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationViewStyle(.stack)
         
     }
     

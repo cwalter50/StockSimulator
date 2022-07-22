@@ -13,25 +13,29 @@ struct HomeView: View {
 //    @ObservedObject var vm = StocksViewModel()
     
 
+    // needed to move navigationLink to background and not on the individual rows. When its on a row, it loads the data, before I need it. I prefer lazy loading, and only load the data when it is needed
+    @State var selectedMarketSummary: MarketSummary? = nil
+    @State var showDetailView = false
     
     var body: some View {
         NavigationView {
             VStack {
                 List{
                     ForEach(vm.marketData, id: \.symbol) {
-    //                ForEach(vm.marketData) {
                         item in
-                        NavigationLink(destination: MarketSummaryView(marketSummary: item)) {
-                            MarketSummaryRow(marketSummary: item)
-                        }
+                        MarketSummaryRow(marketSummary: item)
+                            .onTapGesture {
+                                selectedMarketSummary = item
+                                showDetailView.toggle()
+                            }
                     }
                 }
-
             }
             .onAppear(perform: {
                 vm.updateMarketData()
             })
             .navigationTitle(Text("Market Data"))
+
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -42,7 +46,18 @@ struct HomeView: View {
                     }
                 }
             }
+            .background {
+                if let ms = selectedMarketSummary {
+                    NavigationLink(destination: MarketSummaryView(marketSummary: ms), isActive: $showDetailView) {
+                        EmptyView()
+                    }
+                }
+                else {
+                    EmptyView()
+                }
+            }
         }
+        .navigationViewStyle(.stack)
     }
 }
 

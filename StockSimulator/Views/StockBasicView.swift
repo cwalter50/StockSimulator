@@ -9,7 +9,6 @@ import SwiftUI
 
 struct StockBasicView: View {
     
-
     @State var stockSnapshot: StockSnapshot
     
     var body: some View {

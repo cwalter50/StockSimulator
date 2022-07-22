@@ -35,6 +35,10 @@ struct AccountRow: View {
             }
         }
         .onAppear(perform: updateAccountValue)
+        .background {
+            Color.theme.background
+                .opacity(0.001)
+        }
     }
     
     func updateAccountValue()

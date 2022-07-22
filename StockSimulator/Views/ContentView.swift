@@ -12,7 +12,7 @@ struct ContentView: View {
     
     @Environment(\.managedObjectContext) var moc
     
-    @State var accounts: [Account]
+//    @State var accounts: [Account]
     
     var body: some View {
         TabView {
@@ -52,7 +52,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(accounts: [])
+        ContentView()
             .environment(\.managedObjectContext, dev.dataController.container.viewContext)
 
 

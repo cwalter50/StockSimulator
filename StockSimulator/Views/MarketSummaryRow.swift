@@ -39,6 +39,10 @@ struct MarketSummaryRow: View {
             .font(.subheadline)
             .foregroundColor(marketSummary.regularMarketChange.raw >= 0 ? Color.theme.green : Color.theme.red)
         }
+        .background(
+            Color.theme.background.opacity(0.001)
+        )
+        
     }
 }
 

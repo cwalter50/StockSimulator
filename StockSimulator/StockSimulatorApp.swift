@@ -23,7 +23,7 @@ struct StockSimulatorApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(accounts: [])
+            ContentView()
                 .environment(\.managedObjectContext, dataController.container.viewContext)
                 .environmentObject(stockVM)
 //                .environmentObject(dataController)

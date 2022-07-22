@@ -10,22 +10,22 @@ import SwiftUI
 
 struct ChartView: View {
 
-    @ObservedObject var viewModel = ChartViewModel()
+    
+    @ObservedObject var vm = ChartViewModel()
     
     @State private var animateChart = false
     @State private var showLoader = false
-    
     @State private var trimValue: CGFloat = 0
-    
-    @State private var selectedTimeInterval = "1mo"
     
     @State private var showingErrorAlert = false
     @State private var errorMessage = ""
     
+    @State private var selectedTimeInterval = "1mo"
 //    @State var symbol : String = ""
 //    var timeRanges = ["1d","5d","1mo", "3mo","6mo","ytd","1y","2y","5y","10y","max"]
     var timeRanges = ["1d","5d","1mo","6mo","ytd","1y","max"]
 
+    var symbol: String
     
     init(symbol: String)
     {
@@ -41,15 +41,8 @@ struct ChartView: View {
         else {
             self.symbol = symbol
         }
-        
-        
-        
-//        loadData()
+        loadData()
     }
-//    var stockSnapshot: StockSnapshot
-    
-    var symbol: String
-    
     
     var body: some View {
         GeometryReader { gr in
@@ -88,7 +81,7 @@ struct ChartView: View {
         animateChart = false
         trimValue = 0
 //        viewModel.loadData(symbol: stockSnapshot.symbol, range: selectedTimeInterval) {
-        viewModel.loadData(symbol: symbol, range: selectedTimeInterval) {
+        vm.loadData(symbol: symbol, range: selectedTimeInterval) {
             chartDataResult in
             switch chartDataResult {
             case .success(_):
@@ -145,23 +138,23 @@ extension ChartView {
     }
     
     private var linegraph: some View {
-        LineGraph(dataPoints: viewModel.chartData.wrappedClose.normalized)
+        LineGraph(dataPoints: vm.chartData.wrappedClose.normalized)
         
 //                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
             .trim(to: animateChart ? 1 : trimValue)
 //                        .stroke(lineColor)
-            .stroke(viewModel.lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-            .shadow(color: viewModel.lineColor, radius: 10, x: 0, y: 10)
-            .shadow(color: viewModel.lineColor.opacity(0.5), radius: 10, x: 0, y: 10)
-            .shadow(color: viewModel.lineColor.opacity(0.2), radius: 10, x: 0, y: 10)
-            .shadow(color: viewModel.lineColor.opacity(0.1), radius: 10, x: 0, y: 10)
+            .stroke(vm.lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            .shadow(color: vm.lineColor, radius: 10, x: 0, y: 10)
+            .shadow(color: vm.lineColor.opacity(0.5), radius: 10, x: 0, y: 10)
+            .shadow(color: vm.lineColor.opacity(0.2), radius: 10, x: 0, y: 10)
+            .shadow(color: vm.lineColor.opacity(0.1), radius: 10, x: 0, y: 10)
     }
     
     private var chartDateLabels: some View {
         HStack {
-            Text(viewModel.startingDate.asShortDateString())
+            Text(vm.startingDate.asShortDateString())
             Spacer()
-            Text(viewModel.endingDate.asShortDateString())
+            Text(vm.endingDate.asShortDateString())
         }
     }
     
@@ -169,15 +162,15 @@ extension ChartView {
     
     private var chartYAxis: some View {
         VStack {
-            Text("\(viewModel.maxY.formattedWithAbbreviations())")
+            Text("\(vm.maxY.formattedWithAbbreviations())")
             Spacer()
-            Text("\(viewModel.q3.formattedWithAbbreviations())")
+            Text("\(vm.q3.formattedWithAbbreviations())")
             Spacer()
-            Text("\(viewModel.medY.formattedWithAbbreviations())")
+            Text("\(vm.medY.formattedWithAbbreviations())")
             Spacer()
-            Text("\(viewModel.q1.formattedWithAbbreviations())")
+            Text("\(vm.q1.formattedWithAbbreviations())")
             Spacer()
-            Text("\(viewModel.minY.formattedWithAbbreviations())")
+            Text("\(vm.minY.formattedWithAbbreviations())")
         }
     }
     

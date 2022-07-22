@@ -14,6 +14,7 @@ enum ChartDataResult {
 }
 
 final class ChartViewModel: ObservableObject {
+//    @Published var chartData: ChartData
     @Published var chartData: ChartData = ChartData(emptyData: true) // this contains close, adjclose, volume, high, low, etc
     @Published var maxY: Double = 0.0
     @Published var minY: Double = 0.0
@@ -36,17 +37,14 @@ final class ChartViewModel: ObservableObject {
     //                print(theChartData)
                     DispatchQueue.main.async {
                         self.setData(from: theChartData)
-                        
                     }
                     completion(.success(theChartData))
                 case .failure(let errorMessage):
                     print("failure loading chart data")
-                DispatchQueue.main.async {
-                    self.chartData = ChartData(emptyData: true)
-                    completion(.failure(errorMessage))
-                }
-                    
-                    
+                    DispatchQueue.main.async {
+                        self.chartData = ChartData(emptyData: true)
+                        completion(.failure(errorMessage))
+                    }
                 default:
                     print("loading chart data was not a success or failure")
                     self.chartData = ChartData(emptyData: true)

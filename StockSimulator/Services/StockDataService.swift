@@ -14,7 +14,7 @@ class StockDataService: ObservableObject {
     
     @Published var stockSnapshots: [StockSnapshot] = []
     
-    @Published var chartData: ChartData = ChartData(emptyData: true)
+//    @Published var chartData: ChartData = ChartData(emptyData: true)
     
     @Published var marketData: [MarketSummary] = []
     
@@ -26,57 +26,57 @@ class StockDataService: ObservableObject {
 //        getQuoteData(searchSymbols: "")
     }
     
-    func getChartData(searchSymbol: String, range: String)
-    {
-        let interval = "1d"
-
-//        if range == "1d" || range == "5d"
-//        {
-//            interval = "15m"
-//        }
-//        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2 + interval + Constants.charturlStringPt3) else {
+//    func getChartData(searchSymbol: String, range: String)
+//    {
+//        let interval = "1d"
+//
+////        if range == "1d" || range == "5d"
+////        {
+////            interval = "15m"
+////        }
+////        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2 + interval + Constants.charturlStringPt3) else {
+////            return
+////        }
+//        
+////    https://yfapi.net/v8/finance/chart/AAPL?range=5d&region=US&interval=15m&lang=en&events=div%2Csplit
+//        let urlString = "https://yfapi.net/v8/finance/chart/\(searchSymbol.uppercased())?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit"
+//        guard let url = URL(string: urlString) else {
 //            return
 //        }
-        
-//    https://yfapi.net/v8/finance/chart/AAPL?range=5d&region=US&interval=15m&lang=en&events=div%2Csplit
-        let urlString = "https://yfapi.net/v8/finance/chart/\(searchSymbol.uppercased())?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit"
-        guard let url = URL(string: urlString) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
-        request.httpMethod = "GET"
-        
-        let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
-            guard let data = data else { return }
-
-            do {
-                guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
-                    print("error in getting JSON")
-                    return
-                }
-//                print(results)
-                if let message = results["message"] as? String {
-                    print(message)
-//                    completion(.failure(message))
-                }
-                let chartData = ChartData(results: results)
-                self.chartData = chartData
-//                print(chartData)
-                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
-                
-//                completion(.chartSuccess(chartData))
-                
-            } catch {
-                print("Cannot Decode JSON Response")
-//                completion(.failure(error.localizedDescription))
-                print(error)
-                return
-            }
-        }
-        task.resume()
-    }
+//        
+//        var request = URLRequest(url: url)
+//        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+//        request.httpMethod = "GET"
+//        
+//        let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
+//            guard let data = data else { return }
+//
+//            do {
+//                guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
+//                    print("error in getting JSON")
+//                    return
+//                }
+////                print(results)
+//                if let message = results["message"] as? String {
+//                    print(message)
+////                    completion(.failure(message))
+//                }
+//                let chartData = ChartData(results: results)
+//                self.chartData = chartData
+////                print(chartData)
+//                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
+//                
+////                completion(.chartSuccess(chartData))
+//                
+//            } catch {
+//                print("Cannot Decode JSON Response")
+////                completion(.failure(error.localizedDescription))
+//                print(error)
+//                return
+//            }
+//        }
+//        task.resume()
+//    }
 
     func updateStockData(searchSymbols: String, stocks: FetchedResults<Stock>)
     {

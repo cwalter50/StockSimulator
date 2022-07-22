@@ -26,6 +26,9 @@ struct AccountView: View {
     @State private var errorMessage = ""
     
     @State var showingDepositView = false
+    
+    @State var showDetailView = false
+    @State var selectedAsset: Asset? = nil
 
     init (account: Account)
     {
@@ -122,13 +125,27 @@ struct AccountView: View {
                 ForEach (vm.assets) {
                     asset in
                     if asset.totalShares > 0 {
-                        NavigationLink(destination: AssetView(asset: asset, account: account)) {
-                            AssetRow(asset: asset)
-                        }
+                        AssetRow(asset: asset)
+                            .onTapGesture {
+                                selectedAsset = asset
+                                showDetailView.toggle()
+                            }
                     }
                 }
             }
             .listStyle(PlainListStyle())
+        }
+        .background {
+            if let sa = selectedAsset {
+                NavigationLink(destination: AssetView(asset: sa, account: account), isActive: $showDetailView) {
+                    EmptyView()
+                }
+            } else {
+                EmptyView()
+            }
+            
+                
+            
         }
         .padding(10)
 //        .navigationViewStyle(StackNavigationViewStyle())

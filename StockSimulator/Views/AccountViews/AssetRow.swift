@@ -29,19 +29,21 @@ struct AssetRow: View{
                     Text(String(format: "$%.2f", asset.stock.regularMarketPrice))
                         .font(.body)
                         .foregroundColor(.secondary)
-                    
                 }
-                
                 Spacer()
                 VStack(alignment: .trailing) {
                     Text(String(format: "$%.2f", asset.amountChange))
                         .font(.title3)
-                    Text(String(format: "%.2f", asset.percentChange)+"%")
+                    Text(asset.percentChange.asPercentString())
                         .font(.body)
+                    
                 }
                 .foregroundColor(asset.amountChange < 0 ? Color.theme.red : Color.theme.green)
                 
             }
+        }
+        .background {
+            Color.theme.background.opacity(0.001)
         }
     }
 }
