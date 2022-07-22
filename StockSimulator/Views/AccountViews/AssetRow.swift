@@ -36,6 +36,9 @@ struct AssetRow: View{
                         .font(.title3)
                     Text(asset.percentChange.asPercentString())
                         .font(.body)
+//                        .onTapGesture {
+//                            print("\(asset.stock.symbol) percent change = \(asset.percentChange) and totalValue = \(asset.totalValue), cost basis = \(asset.costBasis)")
+//                        }
                     
                 }
                 .foregroundColor(asset.amountChange < 0 ? Color.theme.red : Color.theme.green)

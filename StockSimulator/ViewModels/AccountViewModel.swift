@@ -279,6 +279,7 @@ final class AccountViewModel: ObservableObject {
                                 newTranactionClose.closeTransaction(sellPrice: stockSnapshot.regularMarketPrice)
                                 
                                 newTransactionOpen.numShares -= newTranactionClose.numShares
+                                newTransactionOpen.costBasis = newTransactionOpen.numShares * newTransactionOpen.purchasePrice
 
                                 account.addToTransactions(newTranactionClose)
                                 account.addToTransactions(newTransactionOpen)

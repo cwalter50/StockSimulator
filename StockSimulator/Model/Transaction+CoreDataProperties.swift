@@ -92,6 +92,8 @@ extension Transaction {
         self.eventType = transaction.eventType
         self.splits = transaction.splits
         self.dividends = transaction.dividends
+        self.costBasis = transaction.costBasis
+        self.totalProceeds = transaction.totalProceeds
     }
     
     func updateValuesFromBuy(account: Account, purchasePrice:Double, numShares: Double)

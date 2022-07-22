@@ -28,7 +28,6 @@ class DeveloperPreview {
     
     let dataController = DataController()
     
-    
     var sampleTransaction: Transaction {
         let t = Transaction(context: dataController.container.viewContext)
         t.stock = sampleStock
