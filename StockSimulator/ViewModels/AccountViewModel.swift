@@ -132,6 +132,8 @@ final class AccountViewModel: ObservableObject {
                         self.updateSplitsToTransactions(chartData: chartData, asset: asset, context: context)
                     case .failure(let string):
                         print("Error loading dividends and splits for \(string)")
+                    default:
+                        print("found something unexpected when getting chartData with Splits and Dividends from APICaller")
                     }
                 }
             }

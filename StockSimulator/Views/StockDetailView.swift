@@ -9,23 +9,52 @@ import SwiftUI
 
 struct StockDetailView: View {
     
-    var stock: Stock
+    private let stock: Stock
+//    private let additionalInfo: [StatisticModel]
     
-//    init(stock: Stock)
-//    {
-//        // load most recent data for stock
-//        self.stock = stock
-//        
-//    }
+    private let columns: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+    init(stock: Stock)
+    {
+        // load most recent data for stock
+        self.stock = stock
+        
+        
+        
+    }
     
     var body: some View {
-        VStack {
-            StockBasicView(stockSnapshot: StockSnapshot(stock: stock))
-//            ChartView(stockSnapshot: StockSnapshot(stock: stock))
-            ChartView(symbol: stock.wrappedSymbol)
-                .frame(height: 300)
-            Spacer()
-        }.padding()
+        ScrollView {
+            VStack {
+                StockBasicView(stockSnapshot: StockSnapshot(stock: stock))
+                Divider()
+                Text("Overview")
+                    .font(.title)
+                    .bold()
+                    .foregroundColor(Color.theme.accent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Divider()
+                LazyVGrid(
+                    columns: columns,
+                    alignment: .center,
+                    spacing: nil,
+                    pinnedViews: [],
+                    content: {
+                        ForEach(0..<6) { stat in
+                            Text("Hi")
+                            
+                        }
+                })
+
+                ChartView(symbol: stock.wrappedSymbol)
+                    .frame(height: 300)
+                Spacer()
+            }.padding()
+        }
+        
         
         
     }
@@ -33,6 +62,9 @@ struct StockDetailView: View {
 
 struct StockDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        StockDetailView(stock: dev.sampleStock)
+        NavigationView {
+            StockDetailView(stock: dev.sampleStock)
+        }
+        
     }
 }

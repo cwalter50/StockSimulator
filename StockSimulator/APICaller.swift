@@ -11,6 +11,7 @@ import Foundation
 enum ConnectionResult {
     case success([StockSnapshot])
     case chartSuccess(ChartData)
+    case marketSummarySuccess([MarketSummary])
 //    case success([StockSnapshot])
     case failure(String)
 }
@@ -86,12 +87,12 @@ final class APICaller{
     
     func getChartData(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
     {
-        let interval = "1d"
+        var interval = "1d"
 
-//        if range == "1d" || range == "5d"
-//        {
-//            interval = "15m"
-//        }
+        if range == "1d" || range == "5d"
+        {
+            interval = "15m"
+        }
 //        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2 + interval + Constants.charturlStringPt3) else {
 //            return
 //        }
@@ -188,7 +189,7 @@ final class APICaller{
     
     
     // I used quickType.io to decode the data. It was having trouble with the ExchangeTimeZone Enum, so I changed that to String and it works great now.
-    func getMarketData() {
+    func getMarketData(completion: @escaping (ConnectionResult) -> Void) {
         let urlString = Constants.marketSummaryURL
         guard let url = URL(string: urlString) else {
             return
@@ -208,18 +209,54 @@ final class APICaller{
                 print("Message Found: \(message), Hint: \(hint)")
                 return
             }
-
-            
             guard let json = try? JSONSerialization.data(withJSONObject: results) else {return}
             let decoder = JSONDecoder()
             if let response = try? decoder.decode(CompleteMarketSummary.self, from: json) {
 //                print(response)
-                let marketData = response.marketSummaryResponse.result
-//                print(marketData)
+                completion(.marketSummarySuccess(response.marketSummaryResponse.result))
+//                self.marketData = response.marketSummaryResponse.result
             }
             
         }
         task.resume()
+        
+        
+        
+        
+        
+        
+        
+//        let urlString = Constants.marketSummaryURL
+//        guard let url = URL(string: urlString) else {
+//            return
+//        }
+//        var request = URLRequest(url: url)
+//        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+//        request.httpMethod = "GET"
+//
+//        let task = URLSession.shared.dataTask(with: request) {
+//            (data, response, error) in
+//            guard let data = data else { return }
+//
+//            guard let results = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { return }
+//
+//            // check for error message from API Call
+//            if let message = results["message"] as? String, let hint = results["hint"] as? String {
+//                print("Message Found: \(message), Hint: \(hint)")
+//                return
+//            }
+//
+//
+//            guard let json = try? JSONSerialization.data(withJSONObject: results) else {return}
+//            let decoder = JSONDecoder()
+//            if let response = try? decoder.decode(CompleteMarketSummary.self, from: json) {
+////                print(response)
+//                let marketData = response.marketSummaryResponse.result
+////                print(marketData)
+//            }
+//
+//        }
+//        task.resume()
     }
     
     

@@ -73,10 +73,10 @@ class StocksViewModel: ObservableObject {
         stockDataService.getQuoteData(searchSymbols: searchSymbols)
     }
     
-    func updateStockPrices(searchSymbols: String, stocks: FetchedResults<Stock>)
-    {
-        stockDataService.updateStockData(searchSymbols: searchSymbols, stocks: stocks)
-    }
+//    func updateStockPrices(searchSymbols: String, stocks: FetchedResults<Stock>)
+//    {
+//        stockDataService.updateStockData(searchSymbols: searchSymbols, stocks: stocks)
+//    }
     
     func updateMarketData()
     {

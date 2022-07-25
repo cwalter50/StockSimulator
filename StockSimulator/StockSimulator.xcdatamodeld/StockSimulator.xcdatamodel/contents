@@ -29,22 +29,66 @@
     </entity>
     <entity name="Stock" representedClassName=".Stock" syncable="YES">
         <attribute name="ask" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="askSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="averageAnalystRating" optional="YES" attributeType="String"/>
+        <attribute name="averageDailyVolume3Month" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="averageDailyVolume10Day" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="bid" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="bidSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="bookValue" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="currency" optional="YES" attributeType="String"/>
         <attribute name="displayName" optional="YES" attributeType="String"/>
+        <attribute name="dividendDate" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="earningsTimestamp" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="epsCurrentYear" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="epsForward" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="epsTrailingTwelveMonths" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyDayAverage" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyDayAverageChange" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyDayAverageChangePercent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyTwoWeekHigh" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyTwoWeekHighChange" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyTwoWeekHighChangePercent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyTwoWeekLow" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyTwoWeekLowChange" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fiftyTwoWeekRange" optional="YES" attributeType="String"/>
+        <attribute name="financialCurrency" optional="YES" attributeType="String"/>
+        <attribute name="forwardPE" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fullExchangeName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="language" optional="YES" attributeType="String"/>
         <attribute name="longName" optional="YES" attributeType="String"/>
         <attribute name="market" optional="YES" attributeType="String"/>
+        <attribute name="marketCap" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="postMarketChange" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="postMarketChangePercent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="postMarketPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="postMarketTime" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="priceEpsCurrentYear" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="priceHint" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="priceToBook" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="quoteType" optional="YES" attributeType="String"/>
         <attribute name="regularMarketChange" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="regularMarketChangePercent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="regularMarketDayHigh" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="regularMarketDayLow" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="regularMarketDayRange" optional="YES" attributeType="String"/>
+        <attribute name="regularMarketOpen" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="regularMarketPreviousClose" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="regularMarketPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="regularMarketTime" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="regularMarketVolume" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sharesOutstanding" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shortName" optional="YES" attributeType="String"/>
         <attribute name="symbol" optional="YES" attributeType="String"/>
         <attribute name="timeStamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="tradeable" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="trailingAnnualDividendRate" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="trailingAnnualDividendYield" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="trailingPE" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="twoHundredDayAverage" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="twoHundredDayAverageChange" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="twoHundredDayAverageChangePercent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Transaction" inverseName="stock" inverseEntity="Transaction"/>
         <relationship name="watchlists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Watchlist" inverseName="stocks" inverseEntity="Watchlist"/>
     </entity>
@@ -74,7 +118,7 @@
         <element name="Account" positionX="-83.875" positionY="-196.49609375" width="128" height="133"/>
         <element name="Dividend" positionX="-492.4375" positionY="-195.40234375" width="128" height="148"/>
         <element name="Split" positionX="-490.5625" positionY="10.38671875" width="128" height="163"/>
-        <element name="Stock" positionX="10.81640625" positionY="55.765625" width="128" height="328"/>
+        <element name="Stock" positionX="10.81640625" positionY="55.765625" width="128" height="988"/>
         <element name="Transaction" positionX="-273.6015625" positionY="-178.7109375" width="128" height="253"/>
         <element name="Watchlist" positionX="278.01171875" positionY="-68.328125" width="128" height="103"/>
     </elements>
