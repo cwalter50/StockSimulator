@@ -49,18 +49,67 @@ class StockDataService: ObservableObject {
     
     func getQuoteData(searchSymbols: String)
     {
+        print("Getting quote data on stock data service")
         let urlString = Constants.quoteurlString + searchSymbols.uppercased()
-        let apiCaller = APICaller.shared
-        apiCaller.getQuoteData(searchSymbols: urlString) { connectionResult in
-            switch connectionResult {
-            case .success(let stockSnapshots):
-                self.stockSnapshots = stockSnapshots
-            case .failure(let string):
-                print("Failure: \(string)")
-            default:
-                print("Got unexpected result when loading quote data.")
-            }
-        }
+        //        let urlString = Constants.quoteurlString + "AAPL"
+                guard let url = URL(string: urlString) else {
+                    return
+                }
+                var request = URLRequest(url: url)
+                request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+                request.httpMethod = "GET"
+                
+                let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
+
+                    guard let data = data else { return }
+                    do {
+                        guard let results =  try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
+                            print("error in getting JSON")
+                            return
+                        }
+                        if let message = results["message"] as? String
+                        {
+                            print(message)
+        //                    completion(.failure(message))
+                        }
+                        do {
+                            let json = try JSONSerialization.data(withJSONObject: results)
+        //                    print(json)
+                            let decoder = JSONDecoder()
+                            let quoteSnapshot = try decoder.decode(QuoteSnapshot.self, from: json)
+        //                    print(quoteSnapshot)
+                            self.stockSnapshots = quoteSnapshot.quoteResponse.result
+        //                    print("Found these stocks: \(self.stockSnapshots)")
+        //                    completion(.success(quoteSnapshot.quoteResponse.result))
+                        }
+                        catch {
+                            print(error)
+        //                    completion(.failure(error.localizedDescription))
+                        }
+                    }
+                    catch {
+                        print(error)
+        //                completion(.failure(error.localizedDescription))
+                    }
+                }
+                task.resume()
+        
+        
+        
+        
+//        let urlString = Constants.quoteurlString + searchSymbols.uppercased()
+//        let apiCaller = APICaller.shared
+//        apiCaller.getQuoteData(searchSymbols: urlString) { connectionResult in
+//            switch connectionResult {
+//            case .success(let stockSnapshots):
+//                self.stockSnapshots = stockSnapshots
+//                print("Found \(stockSnapshots.count) stocks")
+//            case .failure(let string):
+//                print("Failure: \(string)")
+//            default:
+//                print("Got unexpected result when loading quote data.")
+//            }
+//        }
         
 //        let urlString = Constants.quoteurlString + searchSymbols.uppercased()
 //        guard let url = URL(string: urlString) else { return }

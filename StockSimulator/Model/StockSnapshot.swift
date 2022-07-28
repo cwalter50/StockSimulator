@@ -33,8 +33,8 @@ struct StockSnapshot: Codable, Identifiable
     var currency: String // USD, etc
     var symbol: String // AAPL
     var language: String // en-US
-    var ask: Double // 170.7
-    var bid: Double // 170.6
+    var ask: Double? // 170.7
+    var bid: Double? // 170.6
     var market: String // us-market
     var regularMarketDayHigh: Double // 170.35
     var regularMarketDayLow: Double // 162.8
@@ -46,24 +46,24 @@ struct StockSnapshot: Codable, Identifiable
     var tradeable: Bool // false
     let earningsTimestamp: Int? // 1659038400
     let trailingPE: Double? // 25.055285
-    let trailingAnnualDividendRate, trailingAnnualDividendYield, epsTrailingTwelveMonths: Double // 0.88, 0.005664628, 6.15
-    let epsForward, epsCurrentYear, priceEpsCurrentYear: Double // 6.51, 6.13, 25.13703
-    let sharesOutstanding: Int // 16185199616
-    let bookValue, fiftyDayAverage, fiftyDayAverageChange, fiftyDayAverageChangePercent: Double // 4.158, 143.2188, 10.871201, 0.07590624
+    let trailingAnnualDividendRate, trailingAnnualDividendYield, epsTrailingTwelveMonths: Double? // 0.88, 0.005664628, 6.15
+    let epsForward, epsCurrentYear, priceEpsCurrentYear: Double? // 6.51, 6.13, 25.13703
+    let sharesOutstanding: Int? // 16185199616
+    let bookValue, fiftyDayAverage, fiftyDayAverageChange, fiftyDayAverageChangePercent: Double? // 4.158, 143.2188, 10.871201, 0.07590624
     let twoHundredDayAverage, twoHundredDayAverageChange, twoHundredDayAverageChangePercent: Double // 158.59525, -4.505249, -0.028407214,
-    let marketCap: Int // 2493977460736
-    let forwardPE, priceToBook: Double // 23.669737, 37.05868
+    let marketCap: Int? // 2493977460736
+    let forwardPE, priceToBook: Double? // 23.669737, 37.05868
     
     let averageAnalystRating: String? // "1.9 - Buy"
     let priceHint: Int // 2
-    let postMarketChangePercent: Double // -0.103838
-    let postMarketTime: Int // 1658534393
-    let postMarketPrice, postMarketChange: Double // 153.93, -0.160004
+    let postMarketChangePercent: Double? // -0.103838
+    let postMarketTime: Int? // 1658534393
+    let postMarketPrice, postMarketChange: Double? // 153.93, -0.160004
     let regularMarketTime: Int // 1658520003
     let regularMarketDayRange: String // 153.4101 - 156.28
     let regularMarketVolume: Int // 66675408
     let regularMarketPreviousClose: Double // 155.35
-    let bidSize, askSize: Int // 11, 8
+    let bidSize, askSize: Int? // 11, 8
     let fullExchangeName, financialCurrency: String? // NasdaqGS, USD
     let regularMarketOpen: Double // 155.39
     let averageDailyVolume3Month, averageDailyVolume10Day: Int // 93032838, , 72702620
@@ -71,8 +71,16 @@ struct StockSnapshot: Codable, Identifiable
     let fiftyTwoWeekRange: String // "129.04 - 182.94"
     let fiftyTwoWeekHighChange, fiftyTwoWeekHighChangePercent, fiftyTwoWeekLow, fiftyTwoWeekHigh: Double // -28.850006,-0.15770201, 129.04, 182.94
     
-    var id = UUID()
+    // added for Crypto stuff
+    let circulatingSupply: Int?
+    let lastMarket: String?
+    let volume24Hr, volumeAllCurrencies: Int?
+    let fromCurrency, toCurrency: String?
+    let coinMarketCapLink: String?
+    let startDate: Int?
+    let coinImageURL, logoURL: String?
     
+    var id = UUID()
     
     
     
@@ -117,7 +125,7 @@ struct StockSnapshot: Codable, Identifiable
 //    var id: Int = UUID().hashValue
     // these are added so that I can have the id property that is required for Identifiable. I need identifiable so that I can easily display in a stocks in a list.
     private enum CodingKeys: String, CodingKey {
-        case quoteType, displayName, currency, symbol, language, ask, bid, market, regularMarketDayHigh, regularMarketDayLow, regularMarketPrice, shortName, longName, regularMarketChange, regularMarketChangePercent, dividendDate, tradeable, earningsTimestamp,trailingAnnualDividendRate, trailingPE, trailingAnnualDividendYield, epsTrailingTwelveMonths, epsForward, epsCurrentYear, priceEpsCurrentYear, sharesOutstanding, bookValue, fiftyDayAverage, fiftyDayAverageChange, fiftyDayAverageChangePercent, twoHundredDayAverage, twoHundredDayAverageChange, twoHundredDayAverageChangePercent, marketCap, forwardPE, priceToBook, averageAnalystRating, priceHint, postMarketChangePercent, postMarketTime, postMarketPrice, postMarketChange, regularMarketTime, regularMarketDayRange, regularMarketVolume, regularMarketPreviousClose, bidSize, askSize, fullExchangeName, financialCurrency, regularMarketOpen, averageDailyVolume3Month, averageDailyVolume10Day, fiftyTwoWeekLowChange, fiftyTwoWeekRange, fiftyTwoWeekHighChange, fiftyTwoWeekHighChangePercent, fiftyTwoWeekLow, fiftyTwoWeekHigh
+        case quoteType, displayName, currency, symbol, language, ask, bid, market, regularMarketDayHigh, regularMarketDayLow, regularMarketPrice, shortName, longName, regularMarketChange, regularMarketChangePercent, dividendDate, tradeable, earningsTimestamp,trailingAnnualDividendRate, trailingPE, trailingAnnualDividendYield, epsTrailingTwelveMonths, epsForward, epsCurrentYear, priceEpsCurrentYear, sharesOutstanding, bookValue, fiftyDayAverage, fiftyDayAverageChange, fiftyDayAverageChangePercent, twoHundredDayAverage, twoHundredDayAverageChange, twoHundredDayAverageChangePercent, marketCap, forwardPE, priceToBook, averageAnalystRating, priceHint, postMarketChangePercent, postMarketTime, postMarketPrice, postMarketChange, regularMarketTime, regularMarketDayRange, regularMarketVolume, regularMarketPreviousClose, bidSize, askSize, fullExchangeName, financialCurrency, regularMarketOpen, averageDailyVolume3Month, averageDailyVolume10Day, fiftyTwoWeekLowChange, fiftyTwoWeekRange, fiftyTwoWeekHighChange, fiftyTwoWeekHighChangePercent, fiftyTwoWeekLow, fiftyTwoWeekHigh, circulatingSupply, lastMarket, volume24Hr, volumeAllCurrencies, fromCurrency, toCurrency, coinMarketCapLink, startDate, coinImageURL, logoURL
     }
 
 
@@ -139,8 +147,8 @@ struct StockSnapshot: Codable, Identifiable
         currency = try values.decode(String.self, forKey: .currency)
         symbol = try values.decode(String.self, forKey: .symbol)
         language = try values.decode(String.self, forKey: .language)
-        ask = try values.decode(Double.self, forKey: .ask)
-        bid = try values.decode(Double.self, forKey: .bid)
+        ask = try? values.decode(Double.self, forKey: .ask)
+        bid = try? values.decode(Double.self, forKey: .bid)
         market = try values.decode(String.self, forKey: .market)
         regularMarketDayHigh = try values.decode(Double.self, forKey: .regularMarketDayHigh)
         regularMarketDayLow = try values.decode(Double.self, forKey: .regularMarketDayLow)
@@ -151,37 +159,37 @@ struct StockSnapshot: Codable, Identifiable
         dividendDate = try? values.decode(Int.self, forKey: .dividendDate)
         tradeable = try values.decode(Bool.self, forKey: .tradeable)
         earningsTimestamp = try? values.decode(Int.self, forKey: .earningsTimestamp)
-        trailingAnnualDividendRate = try values.decode(Double.self, forKey: .trailingAnnualDividendRate)
+        trailingAnnualDividendRate = try? values.decode(Double.self, forKey: .trailingAnnualDividendRate)
         trailingPE = try? values.decode(Double.self, forKey: .trailingPE)
-        trailingAnnualDividendYield = try values.decode(Double.self, forKey: .trailingAnnualDividendYield)
-        epsTrailingTwelveMonths = try values.decode(Double.self, forKey: .epsTrailingTwelveMonths)
-        epsForward = try values.decode(Double.self, forKey: .epsForward)
-        epsCurrentYear = try values.decode(Double.self, forKey: .epsCurrentYear)
-        priceEpsCurrentYear = try values.decode(Double.self, forKey: .priceEpsCurrentYear)
-        sharesOutstanding = try values.decode(Int.self, forKey: .sharesOutstanding)
-        bookValue = try values.decode(Double.self, forKey: .bookValue)
-        fiftyDayAverage = try values.decode(Double.self, forKey: .fiftyDayAverage)
-        fiftyDayAverageChange = try values.decode(Double.self, forKey: .fiftyDayAverageChange)
-        fiftyDayAverageChangePercent = try values.decode(Double.self, forKey: .fiftyDayAverageChangePercent)
+        trailingAnnualDividendYield = try? values.decode(Double.self, forKey: .trailingAnnualDividendYield)
+        epsTrailingTwelveMonths = try? values.decode(Double.self, forKey: .epsTrailingTwelveMonths)
+        epsForward = try? values.decode(Double.self, forKey: .epsForward)
+        epsCurrentYear = try? values.decode(Double.self, forKey: .epsCurrentYear)
+        priceEpsCurrentYear = try? values.decode(Double.self, forKey: .priceEpsCurrentYear)
+        sharesOutstanding = try? values.decode(Int.self, forKey: .sharesOutstanding)
+        bookValue = try? values.decode(Double.self, forKey: .bookValue)
+        fiftyDayAverage = try? values.decode(Double.self, forKey: .fiftyDayAverage)
+        fiftyDayAverageChange = try? values.decode(Double.self, forKey: .fiftyDayAverageChange)
+        fiftyDayAverageChangePercent = try? values.decode(Double.self, forKey: .fiftyDayAverageChangePercent)
         twoHundredDayAverage = try values.decode(Double.self, forKey: .twoHundredDayAverage)
         twoHundredDayAverageChange = try values.decode(Double.self, forKey: .twoHundredDayAverageChange)
         twoHundredDayAverageChangePercent = try values.decode(Double.self, forKey: .twoHundredDayAverageChangePercent)
-        marketCap = try values.decode(Int.self, forKey: .marketCap)
-        forwardPE = try values.decode(Double.self, forKey: .forwardPE)
-        priceToBook = try values.decode(Double.self, forKey: .priceToBook)
+        marketCap = try? values.decode(Int.self, forKey: .marketCap)
+        forwardPE = try? values.decode(Double.self, forKey: .forwardPE)
+        priceToBook = try? values.decode(Double.self, forKey: .priceToBook)
         
         averageAnalystRating = try? values.decode(String.self, forKey: .averageAnalystRating)
         priceHint = try values.decode(Int.self, forKey: .priceHint)
-        postMarketChangePercent = try values.decode(Double.self, forKey: .postMarketChangePercent)
-        postMarketTime = try values.decode(Int.self, forKey: .postMarketTime)
-        postMarketPrice = try values.decode(Double.self, forKey: .postMarketPrice)
-        postMarketChange = try values.decode(Double.self, forKey: .postMarketChange)
+        postMarketChangePercent = try? values.decode(Double.self, forKey: .postMarketChangePercent)
+        postMarketTime = try? values.decode(Int.self, forKey: .postMarketTime)
+        postMarketPrice = try? values.decode(Double.self, forKey: .postMarketPrice)
+        postMarketChange = try? values.decode(Double.self, forKey: .postMarketChange)
         regularMarketTime = try values.decode(Int.self, forKey: .regularMarketTime)
         regularMarketDayRange = try values.decode(String.self, forKey: .regularMarketDayRange)
         regularMarketVolume = try values.decode(Int.self, forKey: .regularMarketVolume)
         regularMarketPreviousClose = try values.decode(Double.self, forKey: .regularMarketPreviousClose)
-        bidSize = try values.decode(Int.self, forKey: .bidSize)
-        askSize = try values.decode(Int.self, forKey: .askSize)
+        bidSize = try? values.decode(Int.self, forKey: .bidSize)
+        askSize = try? values.decode(Int.self, forKey: .askSize)
         fullExchangeName = try? values.decode(String.self, forKey: .fullExchangeName)
         financialCurrency = try? values.decode(String.self, forKey: .financialCurrency)
         regularMarketOpen = try values.decode(Double.self, forKey: .regularMarketOpen)
@@ -193,6 +201,17 @@ struct StockSnapshot: Codable, Identifiable
         fiftyTwoWeekHighChangePercent = try values.decode(Double.self, forKey: .fiftyTwoWeekHighChangePercent)
         fiftyTwoWeekLow = try values.decode(Double.self, forKey: .fiftyTwoWeekLow)
         fiftyTwoWeekHigh = try values.decode(Double.self, forKey: .fiftyTwoWeekHigh)
+        
+        circulatingSupply = try? values.decode(Int.self, forKey: .circulatingSupply)
+        lastMarket = try? values.decode(String.self, forKey: .lastMarket)
+        volume24Hr = try? values.decode(Int.self, forKey: .volume24Hr)
+        volumeAllCurrencies = try? values.decode(Int.self, forKey: .volumeAllCurrencies)
+        fromCurrency = try? values.decode(String.self, forKey: .fromCurrency)
+        toCurrency = try? values.decode(String.self, forKey: .toCurrency)
+        coinMarketCapLink = try? values.decode(String.self, forKey: .coinMarketCapLink)
+        startDate = try? values.decode(Int.self, forKey: .startDate)
+        coinImageURL = try? values.decode(String.self, forKey: .coinImageURL)
+        logoURL = try? values.decode(String.self, forKey: .logoURL)
         
         
         id = UUID()
@@ -261,6 +280,18 @@ struct StockSnapshot: Codable, Identifiable
         fiftyTwoWeekLow = stock.fiftyTwoWeekLow
         fiftyTwoWeekHigh = stock.fiftyTwoWeekHigh
         dividendDate = Int(stock.dividendDate)
+        
+        circulatingSupply = Int(stock.circulatingSupply)
+        lastMarket = stock.lastMarket
+        volume24Hr = Int(stock.volume24Hr)
+        volumeAllCurrencies = Int(stock.volumeAllCurrencies)
+        fromCurrency = stock.fromCurrency
+        toCurrency = stock.toCurrency
+        coinMarketCapLink = stock.coinMarketCapLink
+        startDate = Int(stock.startDate)
+        coinImageURL = stock.coinImageURL
+        logoURL = stock.logoURL
+        
         
     }
 
@@ -333,6 +364,17 @@ struct StockSnapshot: Codable, Identifiable
         fiftyTwoWeekHighChangePercent = -0.15770201
         fiftyTwoWeekLow = 129.04
         fiftyTwoWeekHigh = 182.94
+        
+        circulatingSupply = 19105088
+        lastMarket = "CoinMarketCap"
+        volume24Hr = 25998045184
+        volumeAllCurrencies = 25998045184
+        fromCurrency = "BTC"
+        toCurrency = "USD=X"
+        coinMarketCapLink = "https://coinmarketcap.com/currencies/bitcoin"
+        startDate = 1367107200
+        coinImageURL = "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+        logoURL = "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     }
 
 }
@@ -365,3 +407,152 @@ struct StockSnapshot: Codable, Identifiable
 //        try container.encodeNil()
 //    }
 //}
+
+/* MARK: Sample Crypto Response */
+/*
+ "language": "en-US",
+        "region": "US",
+        "quoteType": "CRYPTOCURRENCY",
+        "typeDisp": "Cryptocurrency",
+        "quoteSourceName": "CoinMarketCap",
+        "triggerable": true,
+        "customPriceAlertConfidence": "HIGH",
+        "currency": "USD",
+        "firstTradeDateMilliseconds": 1410912000000,
+        "fiftyTwoWeekLowChangePercent": 0.22418037,
+        "fiftyTwoWeekRange": "17708.623 - 68789.625",
+        "fiftyTwoWeekHighChange": -47111.08,
+        "fiftyTwoWeekHighChangePercent": -0.6848573,
+        "fiftyTwoWeekLow": 17708.623,
+        "fiftyTwoWeekHigh": 68789.625,
+        "fiftyDayAverage": 22011.48,
+        "fiftyDayAverageChange": -332.93164,
+        "fiftyDayAverageChangePercent": -0.015125363,
+        "marketState": "REGULAR",
+        "exchange": "CCC",
+        "shortName": "Bitcoin USD",
+        "messageBoardId": "finmb_BTC_CCC",
+        "exchangeTimezoneName": "UTC",
+        "exchangeTimezoneShortName": "UTC",
+        "gmtOffSetMilliseconds": 0,
+        "market": "ccc_market",
+        "esgPopulated": false,
+        "twoHundredDayAverage": 34544.03,
+        "twoHundredDayAverageChange": -12865.482,
+        "twoHundredDayAverageChangePercent": -0.3724372,
+        "marketCap": 414170578944,
+        "sourceInterval": 15,
+        "exchangeDataDelayedBy": 0,
+        "pageViewGrowthWeekly": 0.08143376,
+        "tradeable": false,
+        "priceHint": 2,
+        "circulatingSupply": 19105088,
+        "lastMarket": "CoinMarketCap",
+        "volume24Hr": 25998045184,
+        "volumeAllCurrencies": 25998045184,
+        "fromCurrency": "BTC",
+        "toCurrency": "USD=X",
+        "coinMarketCapLink": "https://coinmarketcap.com/currencies/bitcoin",
+        "regularMarketChange": 733.40234,
+        "regularMarketChangePercent": 3.5015354,
+        "regularMarketTime": 1658944560,
+        "regularMarketPrice": 21678.549,
+        "regularMarketDayHigh": 21687.785,
+        "regularMarketDayRange": "21070.807 - 21687.785",
+        "regularMarketDayLow": 21070.807,
+        "regularMarketVolume": 25998045184,
+        "regularMarketPreviousClose": 21227.094,
+        "fullExchangeName": "CCC",
+        "regularMarketOpen": 21227.094,
+        "averageDailyVolume3Month": 32070365589,
+        "averageDailyVolume10Day": 33143912705,
+        "startDate": 1367107200,
+        "coinImageUrl": "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+        "logoUrl": "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+        "fiftyTwoWeekLowChange": 3969.9258,
+        "symbol": "BTC-USD"
+ */
+
+/* MARK: Sample Stock Response */
+/*
+ {
+   "quoteResponse": {
+     "result": [
+       {
+         "language": "en-US",
+         "region": "US",
+         "quoteType": "EQUITY",
+         "typeDisp": "Equity",
+         "quoteSourceName": "Nasdaq Real Time Price",
+         "triggerable": true,
+         "customPriceAlertConfidence": "HIGH",
+         "currency": "USD",
+         "firstTradeDateMilliseconds": 345479400000,
+         "fiftyTwoWeekLowChangePercent": 0.1967607,
+         "fiftyTwoWeekRange": "129.04 - 182.94",
+         "fiftyTwoWeekHighChange": -28.51001,
+         "fiftyTwoWeekHighChangePercent": -0.1558435,
+         "fiftyTwoWeekLow": 129.04,
+         "fiftyTwoWeekHigh": 182.94,
+         "dividendDate": 1652313600,
+         "earningsTimestamp": 1659038400,
+         "earningsTimestampStart": 1659038400,
+         "earningsTimestampEnd": 1659038400,
+         "trailingAnnualDividendRate": 0.88,
+         "trailingPE": 25.110567,
+         "trailingAnnualDividendYield": 0.005804749,
+         "epsTrailingTwelveMonths": 6.15,
+         "epsForward": 6.5,
+         "epsCurrentYear": 6.13,
+         "priceEpsCurrentYear": 25.192493,
+         "sharesOutstanding": 16185199616,
+         "bookValue": 4.158,
+         "fiftyDayAverage": 143.5286,
+         "fiftyDayAverageChange": 10.901398,
+         "fiftyDayAverageChangePercent": 0.07595279,
+         "marketState": "REGULAR",
+         "exchange": "NMS",
+         "shortName": "Apple Inc.",
+         "longName": "Apple Inc.",
+         "messageBoardId": "finmb_24937",
+         "exchangeTimezoneName": "America/New_York",
+         "exchangeTimezoneShortName": "EDT",
+         "gmtOffSetMilliseconds": -14400000,
+         "market": "us_market",
+         "esgPopulated": false,
+         "twoHundredDayAverage": 158.69154,
+         "twoHundredDayAverageChange": -4.261551,
+         "twoHundredDayAverageChangePercent": -0.026854305,
+         "marketCap": 2499480387584,
+         "forwardPE": 23.758461,
+         "priceToBook": 37.14045,
+         "sourceInterval": 15,
+         "exchangeDataDelayedBy": 0,
+         "pageViewGrowthWeekly": -0.0075652064,
+         "averageAnalystRating": "1.9 - Buy",
+         "tradeable": false,
+         "priceHint": 2,
+         "regularMarketChange": 2.8299866,
+         "regularMarketChangePercent": 1.8667457,
+         "regularMarketTime": 1658944647,
+         "regularMarketPrice": 154.43,
+         "regularMarketDayHigh": 155.21,
+         "regularMarketDayRange": "152.18 - 155.21",
+         "regularMarketDayLow": 152.18,
+         "regularMarketVolume": 35560129,
+         "regularMarketPreviousClose": 151.6,
+         "bid": 154.45,
+         "ask": 154.47,
+         "bidSize": 18,
+         "askSize": 9,
+         "fullExchangeName": "NasdaqGS",
+         "financialCurrency": "USD",
+         "regularMarketOpen": 152.58,
+         "averageDailyVolume3Month": 91750000,
+         "averageDailyVolume10Day": 69474260,
+         "fiftyTwoWeekLowChange": 25.39,
+         "displayName": "Apple",
+         "symbol": "AAPL"
+       },
+ */
+

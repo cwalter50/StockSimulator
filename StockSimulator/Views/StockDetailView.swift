@@ -12,6 +12,8 @@ struct StockDetailView: View {
     private let stock: Stock
 //    private let additionalInfo: [StatisticModel]
     
+    @StateObject var vm: StockDetailViewModel
+    
     private let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -22,8 +24,7 @@ struct StockDetailView: View {
         // load most recent data for stock
         self.stock = stock
         
-        
-        
+        _vm = StateObject(wrappedValue: StockDetailViewModel(stock: stock))
     }
     
     var body: some View {
@@ -31,6 +32,10 @@ struct StockDetailView: View {
             VStack {
                 StockBasicView(stockSnapshot: StockSnapshot(stock: stock))
                 Divider()
+                
+
+                ChartView(symbol: stock.wrappedSymbol)
+                    .frame(height: 300)
                 Text("Overview")
                     .font(.title)
                     .bold()
@@ -43,14 +48,11 @@ struct StockDetailView: View {
                     spacing: nil,
                     pinnedViews: [],
                     content: {
-                        ForEach(0..<6) { stat in
-                            Text("Hi")
+                        ForEach(vm.overviewStatistics) { stat in
+                            StatisticView(stat: stat)
                             
                         }
                 })
-
-                ChartView(symbol: stock.wrappedSymbol)
-                    .frame(height: 300)
                 Spacer()
             }.padding()
         }

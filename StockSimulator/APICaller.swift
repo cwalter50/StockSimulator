@@ -41,6 +41,7 @@ final class APICaller{
     
     // MARK: this will get stock snapshots for all or multiple stocks... format needs to be SYMBOLA,SYMBOLB,SYMBOLC,... Max of 10 symbols
     public func getQuoteData(searchSymbols: String, completion: @escaping (ConnectionResult) -> Void){
+        
         let urlString = Constants.quoteurlString + searchSymbols.uppercased()
 //        let urlString = Constants.quoteurlString + "AAPL"
         guard let url = URL(string: urlString) else {
