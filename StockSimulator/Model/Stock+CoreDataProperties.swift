@@ -158,16 +158,16 @@ extension Stock {
         dividendDate = Int32(snapshot.dividendDate ?? 0)
         tradeable = snapshot.tradeable
         earningsTimestamp = Int32(snapshot.earningsTimestamp ?? 0)
-        
+
         trailingAnnualDividendRate = snapshot.trailingAnnualDividendRate ?? 0
-        
+
         trailingPE = snapshot.trailingPE ?? 0
         trailingAnnualDividendYield = snapshot.trailingAnnualDividendYield ?? 0
         epsTrailingTwelveMonths = snapshot.epsTrailingTwelveMonths ?? 0
         epsForward = snapshot.epsForward ?? 0
         epsCurrentYear = snapshot.epsCurrentYear ?? 0
         priceEpsCurrentYear = snapshot.priceEpsCurrentYear ?? 0
-        
+
         sharesOutstanding = Int64(snapshot.sharesOutstanding ?? 0)
         bookValue = snapshot.bookValue ?? 0
         fiftyDayAverage = snapshot.fiftyDayAverage ?? 0
@@ -203,7 +203,7 @@ extension Stock {
         fiftyTwoWeekHighChangePercent = snapshot.fiftyTwoWeekHighChangePercent
         fiftyTwoWeekLow = snapshot.fiftyTwoWeekLow
         fiftyTwoWeekHigh = snapshot.fiftyTwoWeekHigh
-        
+
         // Crypto Stuff
         circulatingSupply = Int64(snapshot.circulatingSupply ?? 0)
         lastMarket = snapshot.lastMarket

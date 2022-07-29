@@ -9,10 +9,14 @@ import SwiftUI
 
 struct StockDetailView: View {
     
-    private let stock: Stock
+    @Environment(\.managedObjectContext) var moc // CoreData
+    
+    @ObservedObject var stock: Stock
+    
 //    private let additionalInfo: [StatisticModel]
     
     @StateObject var vm: StockDetailViewModel
+//    @ObservedObject var vm: StockDetailViewModel
     
     private let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -24,7 +28,9 @@ struct StockDetailView: View {
         // load most recent data for stock
         self.stock = stock
         
+        
         _vm = StateObject(wrappedValue: StockDetailViewModel(stock: stock))
+//        vm = StockDetailViewModel(stock: stock)
     }
     
     var body: some View {
@@ -32,9 +38,7 @@ struct StockDetailView: View {
             VStack {
                 StockBasicView(stockSnapshot: StockSnapshot(stock: stock))
                 Divider()
-                
-
-                ChartView(symbol: stock.wrappedSymbol)
+                ChartView(symbol: vm.stock.wrappedSymbol)
                     .frame(height: 300)
                 Text("Overview")
                     .font(.title)
@@ -44,21 +48,60 @@ struct StockDetailView: View {
                 Divider()
                 LazyVGrid(
                     columns: columns,
-                    alignment: .center,
+                    alignment: .leading,
                     spacing: nil,
                     pinnedViews: [],
                     content: {
                         ForEach(vm.overviewStatistics) { stat in
                             StatisticView(stat: stat)
-                            
+
                         }
                 })
                 Spacer()
-            }.padding()
+            }
+            .padding()
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                print("HI")
+                    vm.reloadStockData()
+//                    loadCurrentStockInfo()
+                }) {
+                    Image(systemName: "arrow.clockwise")
+                }
+            }
+        }
+    }
+    
+    func loadCurrentStockInfo()
+    {
+        
+        let apiCaller = APICaller.shared
+        apiCaller.getQuoteData(searchSymbols: stock.wrappedSymbol) {
+            connectionResult in
+            switch connectionResult {
+                case .success(let theStocks):
+                    // link the stocks to the current stock prices, update the values,
+                if let foundStock = theStocks.first(where: { $0.symbol.uppercased() == self.stock.wrappedSymbol.uppercased() }) {
+                    DispatchQueue.main.async {
+                        
+                        self.stock.updateValuesFromStockSnapshot(snapshot: foundStock)
+                        try? moc.save()
+                    }
+                    
+                }
+                
+                
+
+                case .failure(let error):
+                    print(error)
+                default:
+                    print("ConnectionResult is not success or failure")
+            }
         }
         
-        
-        
+
     }
 }
 
@@ -67,6 +110,7 @@ struct StockDetailView_Previews: PreviewProvider {
         NavigationView {
             StockDetailView(stock: dev.sampleStock)
         }
+        .navigationViewStyle(.stack)
         
     }
 }

@@ -42,8 +42,8 @@ struct WatchlistView: View {
                     NavigationLink(
                         destination: StockDetailView(stock: stock)) {
                         StockRow(stock: stock)
-                    }
-                    
+                        }.isDetailLink(false)
+
                 }
                 .onDelete(perform: delete)
                 
@@ -78,6 +78,7 @@ struct WatchlistView: View {
                 Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
             }
             .navigationTitle("\(watchlist.name ?? "Watchlist")")
+            .navigationViewStyle(.stack)
             
         
             .onAppear(perform: loadCurrentStockInfo)
@@ -86,7 +87,6 @@ struct WatchlistView: View {
     
     func loadCurrentStockInfo()
     {
-        
 //        print("onAppear called")
         var searchString = ""
         for s in stocks
@@ -94,7 +94,6 @@ struct WatchlistView: View {
             searchString += s.wrappedSymbol+","
         }
 //        vm.updateStockPrices(searchSymbols: searchString, stocks: stocks)
-        
         let apiCaller = APICaller.shared
         apiCaller.getQuoteData(searchSymbols: searchString) {
             connectionResult in
@@ -109,9 +108,10 @@ struct WatchlistView: View {
                             print("updated values for \(stockCoreData.wrappedSymbol)")
                         }
                     }
+                DispatchQueue.main.async {
                     try? moc.save()
-
-
+                }
+                   
                 case .failure(let error):
                     print(error)
                     errorMessage = error
@@ -122,8 +122,6 @@ struct WatchlistView: View {
                     print("ConnectionResult is not success or failure")
             }
         }
-        
-
     }
     
     func delete(at offsets: IndexSet) {
@@ -143,8 +141,14 @@ struct WatchlistView_Previews: PreviewProvider {
         //Test data
 
         
-        return WatchlistView(watchlist: dev.sampleWatchlist)
-            .environment(\.managedObjectContext, context)
+        return
+        NavigationView {
+            WatchlistView(watchlist: dev.sampleWatchlist)
+                .environment(\.managedObjectContext, context)
+                .navigationViewStyle(.stack)
+        }
+        
+        
 //            .environmentObject(dev.stockVM)
         
     }

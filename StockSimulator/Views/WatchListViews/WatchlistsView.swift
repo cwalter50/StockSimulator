@@ -29,7 +29,7 @@ struct WatchlistsView: View {
                 }
                 .onDelete(perform: delete)
             }
-//            .listStyle(.plain)
+            .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -47,8 +47,11 @@ struct WatchlistsView: View {
             }
             .navigationTitle("Watchlists")
 
+
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationViewStyle(.stack)
+       
+//        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     

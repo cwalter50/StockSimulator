@@ -30,6 +30,7 @@ struct HomeView: View {
                             }
                     }
                 }
+                .listStyle(PlainListStyle())
             }
             .onAppear(perform: {
                 vm.updateMarketData()
@@ -64,5 +65,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(dev.stockVM)
     }
 }
