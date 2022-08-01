@@ -71,9 +71,9 @@ class StockDetailViewModel: ObservableObject
         let dayHighStat = StatisticModel(title: "Day High", value: stockSnapshot.regularMarketDayHigh.asCurrencyWith6Decimals())
         let dayLowStat = StatisticModel(title: "Day Low", value: stockSnapshot.regularMarketDayLow.asCurrencyWith6Decimals())
         let fiftyDayAvgStat = StatisticModel(title: "50 Day Average", value: stock.fiftyDayAverage.asCurrencyWith2Decimals())
-        let fiftyDayAvgChangeStat = StatisticModel(title: "50 Day Average Change", value: stock.fiftyDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stock.fiftyDayAverageChange)
+        let fiftyDayAvgChangeStat = StatisticModel(title: "50 Day Average Change", value: stock.fiftyDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stock.fiftyDayAverageChangePercent)
         let twoHundredDayAvgStat = StatisticModel(title: "200 Day Average", value: stock.twoHundredDayAverage.asCurrencyWith2Decimals())
-        let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stock.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stock.twoHundredDayAverageChange)
+        let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stock.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stock.twoHundredDayAverageChangePercent)
     
         let dividend = stockSnapshot.trailingAnnualDividendRate?.asCurrencyWith6Decimals() ?? "$0.00"
         let dividendRate = ((stockSnapshot.trailingAnnualDividendYield ?? 0) * 100).asPercentString()
@@ -136,16 +136,14 @@ class StockDetailViewModel: ObservableObject
                         self.stockSnapshot = foundStock
                         self.stock.updateValuesFromStockSnapshot(snapshot: foundStock)
                     }
-                    
-                    
                 }
-            case .chartSuccess(let chartData):
-                print("found chartData, but we should not have \(chartData)")
-            case .marketSummarySuccess(let array):
-                print("found marketData, but we should not have \(array)")
             case .failure(let string):
                 print("Error loading stock data for \(self.stock.wrappedSymbol): \(string)")
+            default:
+                print("Found Unexpected response getting quoteData")
             }
+            
+            
         }
     }
 }

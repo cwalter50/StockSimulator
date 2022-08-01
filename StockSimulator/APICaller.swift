@@ -12,6 +12,7 @@ enum ConnectionResult {
     case success([StockSnapshot])
     case chartSuccess(ChartData)
     case marketSummarySuccess([MarketSummary])
+    case stockReccomendations([Recommendation])
 //    case success([StockSnapshot])
     case failure(String)
 }
@@ -32,8 +33,8 @@ final class APICaller{
         static let charturlStringInterval = "&region=US&interval="
         static let charturlStringEnd = "&lang=en&events=div%2Csplit"
         
-        
-        
+        // https://yfapi.net/v6/finance/recommendationsbysymbol/PYPL
+        static let reccomdationsBySymbolURL = "https://yfapi.net/v6/finance/recommendationsbysymbol/"
         static let marketSummaryURL = "https://yfapi.net/v6/finance/quote/marketSummary?lang=en&region=US"
     }
 
@@ -163,27 +164,94 @@ final class APICaller{
 //                print(results)
                 let chartData = ChartData(results: results)
 //                print(chartData)
-//                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
-//
-//                if let events = chartData.events, let dividends = events.dividends {
-//                    for val in dividends {
-//                        print("val Dividend date = \(val.value.date), formatted = \(val.value.dateFormated)")
-//                    }
-//                }
-//
-//                if let events = chartData.events, let splits = events.splits {
-//                    for val in splits {
-//                        print("val Split date = \(val.value.date), formatted = \(val.value.dateFormated)")
-//                    }
-//                }
-//
-//
+
                 completion(.chartSuccess(chartData))
             } catch {
                 print("Cannot Decode JSON Response")
                 completion(.failure(error.localizedDescription))
                 return
             }
+        }
+        task.resume()
+    }
+    
+    // MARK: Reccomendations by symbol
+    /*
+     Sample response:
+      {
+        "finance": {
+          "result": [
+            {
+              "symbol": "PYPL",
+              "recommendedSymbols": [
+                {
+                  "symbol": "SQ",
+                  "score": 0.228741
+                },
+                {
+                  "symbol": "NVDA",
+                  "score": 0.162863
+                },
+                {
+                  "symbol": "V",
+                  "score": 0.15888
+                },
+                {
+                  "symbol": "SHOP",
+                  "score": 0.158117
+                },
+                {
+                  "symbol": "CRM",
+                  "score": 0.154448
+                }
+              ]
+            }
+          ],
+          "error": null
+        }
+      }
+     */
+    func getReccomendationsBySymbol(symbol: String, completion: @escaping (ConnectionResult) -> Void) {
+        // https://yfapi.net/v6/finance/recommendationsbysymbol/PYPL
+        let urlString = Constants.reccomdationsBySymbolURL + symbol.uppercased()
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) {
+            (data, response, error) in
+            guard let data = data else { return }
+            
+            // Check for Error Message from API
+            guard let results = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { return }
+
+            // check for error message from API Call
+            if let message = results["message"] as? String, let hint = results["hint"] as? String {
+                print("Message Found: \(message), Hint: \(hint)")
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            if let response = try? decoder.decode(StockReccomendations.self, from: data) {
+                print(response)
+                completion(.stockReccomendations(response.finance.result))
+            }
+            else {
+                completion(.failure("Failed to get Stock Reccomendations"))
+            }
+            
+            
+//            guard let json = try? JSONSerialization.data(withJSONObject: results) else {return}
+
+            
+//            if let response = try? decoder.decode(CompleteMarketSummary.self, from: json) {
+////                print(response)
+//                completion(.marketSummarySuccess(response.marketSummaryResponse.result))
+//                self.marketData = response.marketSummaryResponse.result
+//            }
         }
         task.resume()
     }
@@ -220,45 +288,10 @@ final class APICaller{
             
         }
         task.resume()
-        
-        
-        
-        
-        
-        
-        
-//        let urlString = Constants.marketSummaryURL
-//        guard let url = URL(string: urlString) else {
-//            return
-//        }
-//        var request = URLRequest(url: url)
-//        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
-//        request.httpMethod = "GET"
-//
-//        let task = URLSession.shared.dataTask(with: request) {
-//            (data, response, error) in
-//            guard let data = data else { return }
-//
-//            guard let results = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { return }
-//
-//            // check for error message from API Call
-//            if let message = results["message"] as? String, let hint = results["hint"] as? String {
-//                print("Message Found: \(message), Hint: \(hint)")
-//                return
-//            }
-//
-//
-//            guard let json = try? JSONSerialization.data(withJSONObject: results) else {return}
-//            let decoder = JSONDecoder()
-//            if let response = try? decoder.decode(CompleteMarketSummary.self, from: json) {
-////                print(response)
-//                let marketData = response.marketSummaryResponse.result
-////                print(marketData)
-//            }
-//
-//        }
-//        task.resume()
     }
+    
+    
+    
     
     
 }

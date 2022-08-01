@@ -22,6 +22,7 @@
 		83385A002891BD1B002AF992 /* Stock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833859FE2891BD1B002AF992 /* Stock+CoreDataProperties.swift */; };
 		83385A0228921841002AF992 /* StockDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83385A0128921841002AF992 /* StockDetailViewModel.swift */; };
 		83385A0428921AEF002AF992 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83385A0328921AEF002AF992 /* Codable.swift */; };
+		83385A0628986F22002AF992 /* StockRecomendations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83385A0528986F22002AF992 /* StockRecomendations.swift */; };
 		8339E2DF2885EACE006C3F63 /* Transaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8339E2DD2885EACE006C3F63 /* Transaction+CoreDataClass.swift */; };
 		8339E2E02885EACE006C3F63 /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8339E2DE2885EACE006C3F63 /* Transaction+CoreDataProperties.swift */; };
 		8368B3D527D05B30008AF135 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B3D427D05B30008AF135 /* DataController.swift */; };
@@ -108,6 +109,7 @@
 		833859FE2891BD1B002AF992 /* Stock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stock+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83385A0128921841002AF992 /* StockDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailViewModel.swift; sourceTree = "<group>"; };
 		83385A0328921AEF002AF992 /* Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Codable.swift; sourceTree = "<group>"; };
+		83385A0528986F22002AF992 /* StockRecomendations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockRecomendations.swift; sourceTree = "<group>"; };
 		8339E2DD2885EACE006C3F63 /* Transaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8339E2DE2885EACE006C3F63 /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8368B3D427D05B30008AF135 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				383B41852857BD6D00586B2E /* MarketSummary.swift */,
 				83F9F71427CAAB2600C14D87 /* Asset.swift */,
 				833859F3288DD0FD002AF992 /* StatisticModel.swift */,
+				83385A0528986F22002AF992 /* StockRecomendations.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				83813CBF27EAA328009344FE /* ChartData.swift in Sources */,
 				839E97F327DE77CA0017C9AE /* WatchlistView.swift in Sources */,
 				83D3FD2327A5FEF800F3746B /* ContentView.swift in Sources */,
+				83385A0628986F22002AF992 /* StockRecomendations.swift in Sources */,
 				833859EA288755F3002AF992 /* TransactionsView.swift in Sources */,
 				833265172874C18900E7FA8C /* Account+CoreDataProperties.swift in Sources */,
 				838AD1A72808FBFD0035F0C5 /* Color.swift in Sources */,
