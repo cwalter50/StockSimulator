@@ -20,12 +20,11 @@ struct AssetView: View {
     var body: some View {
         
         List {
-            Section {
-                StockBasicView(stockSnapshot: StockSnapshot(stock: asset.stock))
-                ChartView(symbol: asset.stock.wrappedSymbol)
+            StockBasicView(stockSnapshot: StockSnapshot(stock: asset.stock))
+            ChartView(symbol: asset.stock.wrappedSymbol)
 //                ChartView(stockSnapshot: StockSnapshot(stock: asset.stock))
-                    .frame(height: 300)
-            }
+                .frame(height: 300)
+          
             yourSharesSection
             .font(.body)
             

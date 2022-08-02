@@ -8,27 +8,63 @@
 import Foundation
 import SwiftUI
 import Combine
+import CoreData
 
 class StockDetailViewModel: ObservableObject
 {
-    @Published var stock: Stock
+    @Published var symbol: String = ""
+//    @Published var stock: Stock? = nil
     
     @Published var overviewStatistics: [StatisticModel] = []
     
-    @Published var stockSnapshot: StockSnapshot
+    @Published var stockSnapshot: StockSnapshot? = nil
     
+    @Published var stockRecommendations: [RecommendedSymbol] = [] // this has an array of RecommendedSymbols
+    
+    @Environment(\.managedObjectContext) var moc // CoreData
 
-    init(stock: Stock)
+    init(stockSnapshot: StockSnapshot)
     {
-
-        self.stock = stock
-        stockSnapshot = StockSnapshot(stock: stock)
-        loadOverviewStats()
+        self.symbol = stockSnapshot.symbol
         
+        self.stockSnapshot = stockSnapshot
+        stockRecommendations = []
+        loadOverviewStats()
+        loadStockRecommendations()
+    }
+    
+    init(symbol: String)
+    {
+        self.symbol = symbol
+        reloadStockData(symbol: symbol, moc: moc)
+        loadStockRecommendations()
+        
+    }
+    
+    func loadStockRecommendations() {
+        APICaller.shared.getReccomendationsBySymbol(symbol: self.symbol) { result in
+            switch result {
+            case .stockReccomendations(let array):
+                var result : [RecommendedSymbol] = []
+                for r in array {
+                    result.append(contentsOf: r.recommendedSymbols)
+                }
+                DispatchQueue.main.async {
+                    self.stockRecommendations = result
+                }
+            case .failure(let string):
+                print("Error: " + string)
+            default:
+                print("Found unexpected result when loading stock reccomendations")
+            }
+        }
     }
     
     func loadOverviewStats()
     {
+        guard let stockSnapshot = stockSnapshot else {
+            return
+        }
         if stockSnapshot.quoteType == "CRYPTOCURRENCY"
         {
             loadCryptoStats()
@@ -41,39 +77,42 @@ class StockDetailViewModel: ObservableObject
     
     private func loadStockStats()
     {
+        guard let stockSnapshot = stockSnapshot else {
+            return
+        }
 
         let regularMarketPrice = stockSnapshot.regularMarketPrice.asCurrencyWith6Decimals()
         let priceStat = StatisticModel(title: "Price", value: regularMarketPrice)
-        let previousCloseStat = StatisticModel(title: "Previous Close", value: stock.regularMarketPreviousClose.asCurrencyWith6Decimals())
-        let marketCap = Double(stock.marketCap).formattedWithAbbreviations()
+        let previousCloseStat = StatisticModel(title: "Previous Close", value: stockSnapshot.regularMarketPreviousClose.asCurrencyWith6Decimals())
+        let marketCap = Double(stockSnapshot.marketCap ?? 0).formattedWithAbbreviations()
         let marketCapStat = StatisticModel(title: "Market Cap", value: marketCap)
-        let open = stock.regularMarketOpen.asCurrencyWith6Decimals()
+        let open = stockSnapshot.regularMarketOpen.asCurrencyWith6Decimals()
         let openStat = StatisticModel(title: "Open", value: open)
-        let avgVolume3Month = Double(stock.averageDailyVolume3Month).formattedWithAbbreviations()
+        let avgVolume3Month = Double(stockSnapshot.averageDailyVolume3Month).formattedWithAbbreviations()
         let avgVolume3MonthStat = StatisticModel(title: "Average Volume 3 Months", value: avgVolume3Month)
-        let avgVolume10Day = Double(stock.averageDailyVolume10Day).formattedWithAbbreviations()
+        let avgVolume10Day = Double(stockSnapshot.averageDailyVolume10Day).formattedWithAbbreviations()
         let avgVolume10DayStat = StatisticModel(title: "Average Volume 10 Day", value: avgVolume10Day)
-        let volume = Double(stock.regularMarketVolume).formattedWithAbbreviations()
+        let volume = Double(stockSnapshot.regularMarketVolume).formattedWithAbbreviations()
         let volumeStat = StatisticModel(title: "Regular Market Volume", value: volume)
-        let bid = stock.bid.asCurrencyWith6Decimals()
+        let bid = (stockSnapshot.bid ?? 0).asCurrencyWith6Decimals()
         let bidStat = StatisticModel(title: "Bid", value: bid)
-        let ask = stock.ask.asCurrencyWith6Decimals()
+        let ask = (stockSnapshot.ask ?? 0).asCurrencyWith6Decimals()
         let askStat = StatisticModel(title: "Ask", value: ask)
-        let shares = Double(stock.sharesOutstanding).formattedWithAbbreviations()
+        let shares = Double(stockSnapshot.sharesOutstanding ?? 0).formattedWithAbbreviations()
         let sharesOutstanding = StatisticModel(title: "Shares Outstanding", value: shares)
-        let fiftyTwoWeekRange = StatisticModel(title: "FiftyTwo week range", value: stock.fiftyTwoWeekRange ?? "n/a")
-        let averageAnalystRating = StatisticModel(title: "Average Analyst Rating", value: stock.averageAnalystRating ?? "n/a")
-        let peratio = stock.trailingPE.asNumberString()
+        let fiftyTwoWeekRange = StatisticModel(title: "FiftyTwo week range", value: stockSnapshot.fiftyTwoWeekRange)
+        let averageAnalystRating = StatisticModel(title: "Average Analyst Rating", value: stockSnapshot.averageAnalystRating ?? "n/a")
+        let peratio = (stockSnapshot.trailingPE ?? 0).asNumberString()
         let peStat = StatisticModel(title: "P/E", value: peratio)
-        let forwardPeStat = StatisticModel(title: "Forward P/E", value: stock.forwardPE.asNumberString())
-        let eps = stock.epsTrailingTwelveMonths.asNumberString()
+        let forwardPeStat = StatisticModel(title: "Forward P/E", value: (stockSnapshot.forwardPE ?? 0).asNumberString())
+        let eps = (stockSnapshot.epsTrailingTwelveMonths ?? 0).asNumberString()
         let epsStat = StatisticModel(title: "EPS", value: eps)
         let dayHighStat = StatisticModel(title: "Day High", value: stockSnapshot.regularMarketDayHigh.asCurrencyWith6Decimals())
         let dayLowStat = StatisticModel(title: "Day Low", value: stockSnapshot.regularMarketDayLow.asCurrencyWith6Decimals())
-        let fiftyDayAvgStat = StatisticModel(title: "50 Day Average", value: stock.fiftyDayAverage.asCurrencyWith2Decimals())
-        let fiftyDayAvgChangeStat = StatisticModel(title: "50 Day Average Change", value: stock.fiftyDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stock.fiftyDayAverageChangePercent)
-        let twoHundredDayAvgStat = StatisticModel(title: "200 Day Average", value: stock.twoHundredDayAverage.asCurrencyWith2Decimals())
-        let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stock.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stock.twoHundredDayAverageChangePercent)
+        let fiftyDayAvgStat = StatisticModel(title: "50 Day Average", value: (stockSnapshot.fiftyDayAverage ?? 0).asCurrencyWith2Decimals())
+        let fiftyDayAvgChangeStat = StatisticModel(title: "50 Day Average Change", value: (stockSnapshot.fiftyDayAverageChange ?? 0).asCurrencyWith2Decimals(), percentageChange: stockSnapshot.fiftyDayAverageChangePercent)
+        let twoHundredDayAvgStat = StatisticModel(title: "200 Day Average", value: stockSnapshot.twoHundredDayAverage.asCurrencyWith2Decimals())
+        let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stockSnapshot.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stockSnapshot.twoHundredDayAverageChangePercent)
     
         let dividend = stockSnapshot.trailingAnnualDividendRate?.asCurrencyWith6Decimals() ?? "$0.00"
         let dividendRate = ((stockSnapshot.trailingAnnualDividendYield ?? 0) * 100).asPercentString()
@@ -95,27 +134,30 @@ class StockDetailViewModel: ObservableObject
     
     private func loadCryptoStats()
     {
-        let previousCloseStat = StatisticModel(title: "Previous Close", value: stock.regularMarketPreviousClose.asCurrencyWith6Decimals())
-        let dayRangeStat = StatisticModel(title: "24 HR Day Range", value: stock.regularMarketDayRange ?? "n/a")
-        let marketCap = Double(stock.marketCap).formattedWithAbbreviations()
+        guard let stockSnapshot = stockSnapshot else {
+            return
+        }
+        let previousCloseStat = StatisticModel(title: "Previous Close", value: stockSnapshot.regularMarketPreviousClose.asCurrencyWith6Decimals())
+        let dayRangeStat = StatisticModel(title: "24 HR Day Range", value: stockSnapshot.regularMarketDayRange)
+        let marketCap = Double(stockSnapshot.marketCap ?? 0).formattedWithAbbreviations()
         let marketCapStat = StatisticModel(title: "Market Cap", value: marketCap)
         
-        let volume = Double(stock.volume24Hr).formattedWithAbbreviations()
+        let volume = Double(stockSnapshot.volume24Hr ?? 0).formattedWithAbbreviations()
         let volume24HrStat = StatisticModel(title: "24Hr Volume", value: volume)
-        let volumeAll = Double(stock.volumeAllCurrencies).formattedWithAbbreviations()
+        let volumeAll = Double(stockSnapshot.volumeAllCurrencies ?? 0).formattedWithAbbreviations()
         let volumeAllStat = StatisticModel(title: "Volume All Currencies", value: volumeAll)
-        let avgVolume3Month = Double(stock.averageDailyVolume3Month).formattedWithAbbreviations()
+        let avgVolume3Month = Double(stockSnapshot.averageDailyVolume3Month).formattedWithAbbreviations()
         let avgVolume3MonthStat = StatisticModel(title: "Average Volume 3 Months", value: avgVolume3Month)
-        let avgVolume10Day = Double(stock.averageDailyVolume10Day).formattedWithAbbreviations()
+        let avgVolume10Day = Double(stockSnapshot.averageDailyVolume10Day).formattedWithAbbreviations()
         let avgVolume10DayStat = StatisticModel(title: "Average Volume 10 Day", value: avgVolume10Day)
-        let fiftyTwoWeekRangeStat = StatisticModel(title: "FiftyTwo Week Range", value: stock.fiftyTwoWeekRange ?? "n/a")
+        let fiftyTwoWeekRangeStat = StatisticModel(title: "FiftyTwo Week Range", value: stockSnapshot.fiftyTwoWeekRange)
 //        let highStat = StatisticModel(title: "Fifty-Two Week High", value: stock.fiftyTwoWeekHigh.asCurrencyWith6Decimals())
 //        let lowStat = StatisticModel(title: "Fifty-Two Week Low", value: stock.fiftyTwoWeekLow.asCurrencyWith6Decimals())
-        let fiftyDayAvgStat = StatisticModel(title: "50 Day Average", value: stock.fiftyDayAverage.asCurrencyWith2Decimals())
-        let fiftyDayAvgChangeStat = StatisticModel(title: "50 Day Average Change", value: stock.fiftyDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stock.fiftyDayAverageChange)
-        let twoHundredDayAvgStat = StatisticModel(title: "200 Day Average", value: stock.twoHundredDayAverage.asCurrencyWith2Decimals())
-        let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stock.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stock.twoHundredDayAverageChange)
-        let currencyStat = StatisticModel(title: "Currency", value: stock.currency ?? "n/a")
+        let fiftyDayAvgStat = StatisticModel(title: "50 Day Average", value: (stockSnapshot.fiftyDayAverage ?? 0).asCurrencyWith2Decimals())
+        let fiftyDayAvgChangeStat = StatisticModel(title: "50 Day Average Change", value: (stockSnapshot.fiftyDayAverageChange ?? 0).asCurrencyWith2Decimals(), percentageChange: stockSnapshot.fiftyDayAverageChange)
+        let twoHundredDayAvgStat = StatisticModel(title: "200 Day Average", value: stockSnapshot.twoHundredDayAverage.asCurrencyWith2Decimals())
+        let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stockSnapshot.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stockSnapshot.twoHundredDayAverageChange)
+        let currencyStat = StatisticModel(title: "Currency", value: stockSnapshot.currency)
         
         var startDate = "n/a"
         if let startDateInt = stockSnapshot.startDate {
@@ -126,19 +168,29 @@ class StockDetailViewModel: ObservableObject
         overviewStatistics = [previousCloseStat, dayRangeStat, marketCapStat, volume24HrStat, volumeAllStat, avgVolume10DayStat, avgVolume3MonthStat, fiftyTwoWeekRangeStat, fiftyDayAvgStat, fiftyDayAvgChangeStat, twoHundredDayAvgStat, twoHundredDayAvgChangeStat, currencyStat, startDateStat]
     }
     
-    func reloadStockData()
+    func reloadStockData(symbol: String, moc: NSManagedObjectContext)
     {
-        APICaller.shared.getQuoteData(searchSymbols: "\(stock.wrappedSymbol.uppercased())") { connectionResult in
+        
+        APICaller.shared.getQuoteData(searchSymbols: "\(symbol.uppercased())") { connectionResult in
             switch connectionResult {
             case .success(let stockSnapshots):
-                if let foundStock = stockSnapshots.first(where: { $0.symbol.uppercased() == self.stock.wrappedSymbol.uppercased()}) {
+                if let foundStock = stockSnapshots.first(where: { $0.symbol.uppercased() == self.symbol.uppercased()}) {
                     DispatchQueue.main.async {
                         self.stockSnapshot = foundStock
-                        self.stock.updateValuesFromStockSnapshot(snapshot: foundStock)
+//                        if self.stock != nil {
+//                            self.stock?.updateValuesFromStockSnapshot(snapshot: foundStock)
+//                        }
+//                        else {
+//                            // create a new Stock
+////                            self.stock = Stock(context: moc)
+////                            self.stock?.updateValuesFromStockSnapshot(snapshot: foundStock)
+//                        }
+                        self.loadOverviewStats()
+                        
                     }
                 }
             case .failure(let string):
-                print("Error loading stock data for \(self.stock.wrappedSymbol): \(string)")
+                print("Error loading stock data for \(self.symbol): \(string)")
             default:
                 print("Found Unexpected response getting quoteData")
             }

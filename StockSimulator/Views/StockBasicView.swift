@@ -9,7 +9,10 @@ import SwiftUI
 
 struct StockBasicView: View {
     
+//    @State var stockSnapshot: StockSnapshot? = nil
     @State var stockSnapshot: StockSnapshot
+
+    
     
     var body: some View {
         VStack {
@@ -21,7 +24,6 @@ struct StockBasicView: View {
                     Text(stockSnapshot.wrappedDisplayName)
                         .font(.body)
                         .foregroundColor(.secondary)
-                        
                 }
                 Spacer()
                 VStack {
@@ -34,11 +36,13 @@ struct StockBasicView: View {
                     }
                     .foregroundColor(stockSnapshot.regularMarketChange >= 0 ? Color.theme.green : Color.theme.red)
                     .font(.headline)
+                        
+                    
                     
                 }
-                
+                .onAppear(perform: loadCurrentStockInfo)
             }
-            .onAppear(perform: loadCurrentStockInfo)
+            
         }
         
     }
@@ -49,7 +53,7 @@ struct StockBasicView: View {
         let searchString = stockSnapshot.symbol
         
         let apiCaller = APICaller.shared
-        apiCaller.getQuoteData(searchSymbols: searchString) {
+        apiCaller.getQuoteData(searchSymbols: searchString.uppercased()) {
             connectionResult in
             
             switch connectionResult {

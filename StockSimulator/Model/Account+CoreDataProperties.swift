@@ -55,28 +55,6 @@ extension Account {
         }
     }
     
-//    func addSplitsAndDividendsToTransactions(chartData: ChartData, context: NSManagedObjectContext) {
-//        // loop through all transactions, loop through each ChartDataSplit and add to transaction, if it is not already there...
-//        for t in self.transactions?.allObjects as! [Transaction] {
-//            if let events = chartData.events, let splits = events.splits {
-//                for s in splits {
-//                    if !t.splitsContain(split: s.value) && t.splitIsInValidTimeFrame(split: s.value) {
-//                        // add newSplit to Transaction
-//                        let newSplit = Split(context: context)
-//                        newSplit.updateSplitValuesFromChartDataSplit(split: s.value, dateOfRecord: s.key)
-//                        t.addToSplits(newSplit)
-//                        if newSplit.appliedToHolding == false {
-//                            t.applySplit(split: newSplit, context: context)
-//                        }
-//                        
-//                        print("Added split: \(newSplit.splitRatio) on \(newSplit.wrappedDate) to \(t.stock?.wrappedSymbol)")
-//                    }
-//                }
-//            }
-//        }
-//        try? context.save()
-//    }
-    
 }
 
 

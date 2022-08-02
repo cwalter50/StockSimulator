@@ -30,9 +30,12 @@ struct Recommendation: Codable {
 }
 
 // MARK: - RecommendedSymbol
-struct RecommendedSymbol: Codable {
+struct RecommendedSymbol: Codable, Identifiable {
     let score: Double
     let symbol: String
+    var id: UUID {
+        return UUID()
+    }
 }
 
 
