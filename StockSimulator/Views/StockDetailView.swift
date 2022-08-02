@@ -15,6 +15,8 @@ struct StockDetailView: View {
     
 //    private let additionalInfo: [StatisticModel]
     
+    @State private var showFullDescription: Bool = false
+    
     @StateObject var vm: StockDetailViewModel
 //    @ObservedObject var vm: StockDetailViewModel
     
@@ -45,8 +47,10 @@ struct StockDetailView: View {
                     Divider()
                     ChartView(symbol: vm.symbol)
                         .frame(height: 300)
+                    descriptionHeader
+                    descriptionSection
                     overViewHeader
-                    Divider()
+//                    Divider()
                     overviewStatsGrid
                     stockRecommendationsHeader
                     Divider()
@@ -62,7 +66,7 @@ struct StockDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                 print("HI")
-                    vm.reloadStockData(symbol: vm.symbol, moc: moc)
+                    vm.reloadStockData(symbol: vm.symbol)
                 }) {
                     Image(systemName: "arrow.clockwise")
                 }
@@ -114,16 +118,51 @@ extension StockDetailView {
             else {
                 EmptyView()
             }
-            
-            
         }
     }
+    
     var overViewHeader: some View {
         Text("Overview")
             .font(.title)
             .bold()
             .foregroundColor(Color.theme.accent)
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    var descriptionHeader: some View {
+        Text("Description")
+            .font(.title)
+            .bold()
+            .foregroundColor(Color.theme.accent)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    private var descriptionSection: some View {
+        ZStack {
+            if let quoteSummary = vm.quoteSummary {
+                VStack(alignment: .leading) {
+                    Text(quoteSummary.assetProfile.wrappedDescription)
+                        .lineLimit(showFullDescription ? nil : 3)
+                        .font(.callout)
+                        .foregroundColor(Color.theme.secondaryText)
+                    Button {
+                        withAnimation(.easeInOut) {
+                            showFullDescription.toggle()
+                            
+                        }
+                    } label: {
+                        Text(showFullDescription ? "See Less" : "Read more..." )
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .padding(.vertical, 4)
+                    }
+                    .accentColor(.blue)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+
+            }
+        }
     }
     
     var overviewStatsGrid: some View {
@@ -138,6 +177,7 @@ extension StockDetailView {
 
                 }
         })
+        .padding(.horizontal, 20)
     }
     
     var stockRecommendationsHeader: some View {

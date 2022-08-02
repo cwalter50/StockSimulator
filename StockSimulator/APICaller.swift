@@ -13,6 +13,7 @@ enum ConnectionResult {
     case chartSuccess(ChartData)
     case marketSummarySuccess([MarketSummary])
     case stockReccomendations([Recommendation])
+    case quoteSummarySuccess([QuoteSummary])
 //    case success([StockSnapshot])
     case failure(String)
 }
@@ -36,6 +37,12 @@ final class APICaller{
         // https://yfapi.net/v6/finance/recommendationsbysymbol/PYPL
         static let reccomdationsBySymbolURL = "https://yfapi.net/v6/finance/recommendationsbysymbol/"
         static let marketSummaryURL = "https://yfapi.net/v6/finance/quote/marketSummary?lang=en&region=US"
+        
+        static func quoteSummaryURL(symbol: String) -> String {
+        // https://yfapi.net/v11/finance/quoteSummary/ura?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile
+            return "https://yfapi.net/v11/finance/quoteSummary/\(symbol)?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile"
+        }
+        static let quoteSummaryURL = "https://yfapi.net/v11/finance/quoteSummary/AAPL?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile"
     }
 
     private init() {}
@@ -236,22 +243,50 @@ final class APICaller{
             
             let decoder = JSONDecoder()
             if let response = try? decoder.decode(StockReccomendations.self, from: data) {
-                print(response)
+//                print(response)
                 completion(.stockReccomendations(response.finance.result))
             }
             else {
                 completion(.failure("Failed to get Stock Reccomendations"))
             }
+        }
+        task.resume()
+    }
+    
+    // MARK: Quote summary contains a description website and other key statistics. BTC-USD does not contain a lot of information so a lot of the model in optional...
+    func getQuoteSummary(symbol: String, completion: @escaping (ConnectionResult)-> Void)
+    {
+        // https://yfapi.net/v11/finance/quoteSummary/AAPL?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile
+        let urlString = Constants.quoteSummaryURL(symbol: symbol)
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = ["x-api-key": Constants.apiKey]
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) {
+            (data, response, error) in
+            guard let data = data else { return }
             
-            
-//            guard let json = try? JSONSerialization.data(withJSONObject: results) else {return}
+            // Check for Error Message from API
+            guard let results = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { return }
 
+//            print(results)
+            // check for error message from API Call
+            if let message = results["message"] as? String, let hint = results["hint"] as? String {
+                print("Message Found: \(message), Hint: \(hint)")
+                return
+            }
             
-//            if let response = try? decoder.decode(CompleteMarketSummary.self, from: json) {
-////                print(response)
-//                completion(.marketSummarySuccess(response.marketSummaryResponse.result))
-//                self.marketData = response.marketSummaryResponse.result
-//            }
+            let decoder = JSONDecoder()
+            if let response = try? decoder.decode(Summary.self, from: data) {
+//                print(response)
+                completion(.quoteSummarySuccess(response.quoteSummary.result))
+            }
+            else {
+                completion(.failure("Failed to get Quote Summary"))
+            }
         }
         task.resume()
     }

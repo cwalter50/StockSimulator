@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import Combine
-import CoreData
 
 class StockDetailViewModel: ObservableObject
 {
@@ -21,7 +20,8 @@ class StockDetailViewModel: ObservableObject
     
     @Published var stockRecommendations: [RecommendedSymbol] = [] // this has an array of RecommendedSymbols
     
-    @Environment(\.managedObjectContext) var moc // CoreData
+    @Published var quoteSummary: QuoteSummary? = nil
+//    @Environment(\.managedObjectContext) var moc // CoreData
 
     init(stockSnapshot: StockSnapshot)
     {
@@ -31,13 +31,15 @@ class StockDetailViewModel: ObservableObject
         stockRecommendations = []
         loadOverviewStats()
         loadStockRecommendations()
+        loadQuoteSummary(symbol: stockSnapshot.symbol)
     }
     
     init(symbol: String)
     {
         self.symbol = symbol
-        reloadStockData(symbol: symbol, moc: moc)
+        reloadStockData(symbol: symbol)
         loadStockRecommendations()
+        loadQuoteSummary(symbol: symbol)
         
     }
     
@@ -168,7 +170,7 @@ class StockDetailViewModel: ObservableObject
         overviewStatistics = [previousCloseStat, dayRangeStat, marketCapStat, volume24HrStat, volumeAllStat, avgVolume10DayStat, avgVolume3MonthStat, fiftyTwoWeekRangeStat, fiftyDayAvgStat, fiftyDayAvgChangeStat, twoHundredDayAvgStat, twoHundredDayAvgChangeStat, currencyStat, startDateStat]
     }
     
-    func reloadStockData(symbol: String, moc: NSManagedObjectContext)
+    func reloadStockData(symbol: String)
     {
         
         APICaller.shared.getQuoteData(searchSymbols: "\(symbol.uppercased())") { connectionResult in
@@ -177,16 +179,7 @@ class StockDetailViewModel: ObservableObject
                 if let foundStock = stockSnapshots.first(where: { $0.symbol.uppercased() == self.symbol.uppercased()}) {
                     DispatchQueue.main.async {
                         self.stockSnapshot = foundStock
-//                        if self.stock != nil {
-//                            self.stock?.updateValuesFromStockSnapshot(snapshot: foundStock)
-//                        }
-//                        else {
-//                            // create a new Stock
-////                            self.stock = Stock(context: moc)
-////                            self.stock?.updateValuesFromStockSnapshot(snapshot: foundStock)
-//                        }
                         self.loadOverviewStats()
-                        
                     }
                 }
             case .failure(let string):
@@ -195,6 +188,24 @@ class StockDetailViewModel: ObservableObject
                 print("Found Unexpected response getting quoteData")
             }
             
+            
+        }
+    }
+    
+    func loadQuoteSummary(symbol: String)
+    {
+        APICaller.shared.getQuoteSummary(symbol: symbol) { result in
+            switch result {
+            case .quoteSummarySuccess(let array):
+                print(array)
+                if let data = array.first {
+                    self.quoteSummary = data
+                }
+            case .failure(let string):
+                print("Error loading QuoteSummary: \(string)")
+            default:
+                print("Unexpected result when loading a quote summary for \(symbol)")
+            }
             
         }
     }
