@@ -74,6 +74,7 @@ struct AccountView: View {
                 loadCurrentStockInfo()
             }){
                 DepositView(account: account)
+                
             }
             .alert(isPresented: $showingDeleteAlert) {
                 Alert(title: Text("Delete \(account.name ?? "Account")?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete"), action: deleteAccount), secondaryButton: .cancel())

@@ -152,6 +152,7 @@ struct TradeFormView: View {
                 alertTitle = title
                 alertMessage = message
                 tradeCompleted = true
+                HapticManager.notification(type: .success)
             case .error(let title, let message):
                 alertTitle = title
                 alertMessage = message
@@ -170,6 +171,7 @@ struct TradeFormView: View {
                 alertTitle = title
                 alertMessage = message
                 tradeCompleted = true
+                HapticManager.notification(type: .success)
             case .error(let title, let message):
                 alertTitle = title
                 alertMessage = message
@@ -188,6 +190,7 @@ struct TradeFormView: View {
                 alertMessage = message
                 tradeCompleted = true
                 displayAlert.toggle()
+                HapticManager.notification(type: .success)
             case .error(let title, let message):
                 alertTitle = title
                 alertMessage = message
