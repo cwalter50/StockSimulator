@@ -13,20 +13,19 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     
     let defaultURL = URL(string: "https://www.google.com")!
-    let youTubeURL = URL(string: "https://www.youtube.com/c/swiftfulthinking")!
-    let coffeeURL = URL(string: "https://www.buymeacoffee.com/nicksarno")!
-    let coingeckoURL = URL(string: "https://www.coingecko.com")!
+
+//    let coffeeURL = URL(string: "https://www.buymeacoffee.com/nicksarno")!
+    let yahooFinanceURL = URL(string: "https://financeapi.net/")!
     let personalURL = URL(string: "https://www.cwalterbuilds.com")!
-    let githubURL = URL(string: "https://github.com/cwalter50/CryptoApp")!
+    let githubURL = URL(string: "https://github.com/cwalter50/StockSimulator")!
     let personalGithubURL = URL(string: "https://github.com/cwalter50")!
     
     
     var body: some View {
         NavigationView {
             List {
-                swiftfulThinkingSection
-                coinGeckoSection
                 developerSection
+                yahooFinanceSection
                 applicationSection
             }
             .font(.headline)
@@ -55,39 +54,38 @@ struct SettingsView_Previews: PreviewProvider {
 }
 
 extension SettingsView {
-    private var swiftfulThinkingSection: some View {
-        Section(header: Text("SwiftfulThinking")) {
-            VStack(alignment: .leading) {
-                Image("logo")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                Text("This app was made by following a @SwiftfulThinking course on YouTube. It uses MVVM Architecture, Combine, and CoreData!")
-                    .font(.callout)
-                    .fontWeight(.medium)
-                    .foregroundColor(Color.theme.accent)
-            }
-            .padding(.vertical)
-            Link("Subscribe on YouTube 🥳", destination: youTubeURL)
-            Link("Support his coffee addiction ☕️", destination: coffeeURL)
-        }
-    }
+//    private var swiftfulThinkingSection: some View {
+//        Section(header: Text("SwiftfulThinking")) {
+//            VStack(alignment: .leading) {
+//                Image("logo")
+//                    .resizable()
+//                    .frame(width: 100, height: 100)
+//                    .clipShape(RoundedRectangle(cornerRadius: 20))
+//                Text("This app was made by following a @SwiftfulThinking course on YouTube. It uses MVVM Architecture, Combine, and CoreData!")
+//                    .font(.callout)
+//                    .fontWeight(.medium)
+//                    .foregroundColor(Color.theme.accent)
+//            }
+//            .padding(.vertical)
+////            Link("Support his coffee addiction ☕️", destination: coffeeURL)
+//        }
+//    }
     
-    private var coinGeckoSection: some View {
-        Section(header: Text("CoinGecko")) {
+    private var yahooFinanceSection: some View {
+        Section(header: Text("YahooFinance")) {
             VStack(alignment: .leading) {
-                Image("coingecko")
+                Image("yahooLogo")
                     .resizable()
                     .scaledToFit()
                     .frame(height: 100)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
-                Text("The cryptocurrency data that is used in this app comes from a free API from CoinGecko! Prices may be slightly delayed.")
+                Text("The stock data that is used in this app comes from Yahoo Finance API. Prices may be slightly delayed.")
                     .font(.callout)
                     .fontWeight(.medium)
                     .foregroundColor(Color.theme.accent)
             }
             .padding(.vertical)
-            Link("Visit CoinGecko 🦎", destination: coingeckoURL)
+            Link("Visit Yahoo Finance API 💲", destination: yahooFinanceURL)
         }
     }
     
@@ -99,7 +97,7 @@ extension SettingsView {
                     .scaledToFit()
                     .frame(height: 100)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
-                Text("This app was developed by Chris Walter. It uses SwiftUI and is written 100% in Swift. The project benenfits from multi-threading, publishers/subscribers, and data persistance.")
+                Text("This app was developed by Chris Walter. It uses SwiftUI and is written 100% in Swift. The project benenfits from multi-threading, MVVM Architecture, CoreData, YahooFinanceAPI, and much more.")
                     .font(.callout)
                     .fontWeight(.medium)
                     .foregroundColor(Color.theme.accent)

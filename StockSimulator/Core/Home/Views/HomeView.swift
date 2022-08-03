@@ -17,6 +17,8 @@ struct HomeView: View {
     @State var selectedMarketSummary: MarketSummary? = nil
     @State var showDetailView = false
     
+    @State private var showSettingView: Bool = false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -39,19 +41,19 @@ struct HomeView: View {
 
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        withAnimation(.linear(duration: 2.0)) {
-                            vm.updateMarketData()
-                        }
-                        HapticManager.notification(type: .success)
-                        print("Should load market data")
-                    }) {
-                        Image(systemName: "arrow.clockwise")
-                    }
-                    .rotationEffect(Angle(degrees: vm.isLoading ? 360 : 0), anchor: .center)
-                    
+                    refreshToolBarButton
                 }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    CircleButton(iconName: "info")
+                        .onTapGesture {
+                            showSettingView.toggle()
+                        }
+                }
+                                
             }
+            .sheet(isPresented: $showSettingView, content: {
+                SettingsView()
+            })
             .background {
                 if let ms = selectedMarketSummary {
                     NavigationLink(destination: MarketSummaryView(marketSummary: ms), isActive: $showDetailView) {
@@ -71,5 +73,22 @@ struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
             .environmentObject(dev.stockVM)
+    }
+}
+
+extension HomeView {
+    private var refreshToolBarButton: some View {
+        Button(action: {
+            withAnimation(.linear(duration: 2.0)) {
+                vm.updateMarketData()
+            }
+            HapticManager.notification(type: .success)
+            print("Should load market data")
+        }) {
+            Image(systemName: "arrow.clockwise")
+        }
+        .rotationEffect(Angle(degrees: vm.isLoading ? 360 : 0), anchor: .center)
+        
+        
     }
 }
