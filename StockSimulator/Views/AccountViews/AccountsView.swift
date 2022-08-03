@@ -41,6 +41,7 @@ struct AccountsView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         loadData()
+                        HapticManager.notification(type: .success)
                     }) {
                         Image(systemName: "arrow.clockwise")
                     }

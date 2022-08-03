@@ -197,9 +197,11 @@ class StockDetailViewModel: ObservableObject
         APICaller.shared.getQuoteSummary(symbol: symbol) { result in
             switch result {
             case .quoteSummarySuccess(let array):
-                print(array)
+//                print(array)
                 if let data = array.first {
-                    self.quoteSummary = data
+                    DispatchQueue.main.async {
+                        self.quoteSummary = data
+                    }
                 }
             case .failure(let string):
                 print("Error loading QuoteSummary: \(string)")

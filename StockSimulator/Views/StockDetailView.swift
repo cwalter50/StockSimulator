@@ -40,11 +40,10 @@ struct StockDetailView: View {
     
     var body: some View {
         ZStack {
-
             ScrollView {
                 VStack {
                     topDetailView
-                    Divider()
+//                    Divider()
                     ChartView(symbol: vm.symbol)
                         .frame(height: 300)
                     descriptionHeader
@@ -53,20 +52,22 @@ struct StockDetailView: View {
 //                    Divider()
                     overviewStatsGrid
                     stockRecommendationsHeader
-                    Divider()
+//                    Divider()
                     stockRecommendationsSliderView
+                    websiteLinkView
                 }
+                .padding()
                 Spacer()
                 .padding()
             }
         }
-        
         .navigationTitle(vm.stockSnapshot == nil ? "\(vm.symbol)" :"\(vm.stockSnapshot?.wrappedDisplayName ?? "")")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                 print("HI")
                     vm.reloadStockData(symbol: vm.symbol)
+                    HapticManager.notification(type: .success)
                 }) {
                     Image(systemName: "arrow.clockwise")
                 }
@@ -186,6 +187,19 @@ extension StockDetailView {
             .bold()
             .foregroundColor(Color.theme.accent)
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    var websiteLinkView: some View {
+        ZStack(alignment: .leading) {
+            if let urlString = vm.quoteSummary?.assetProfile.website, let url = URL(string: urlString) {
+                Link(destination: url) {
+                    Text("Website: \(urlString)")
+                        .font(.headline)
+                        .foregroundColor(Color.blue)
+                        .padding()
+                }
+            }
+        }
     }
     
     var stockRecommendationsSliderView: some View {

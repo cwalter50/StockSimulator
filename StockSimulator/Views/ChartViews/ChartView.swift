@@ -9,7 +9,6 @@ import SwiftUI
 
 
 struct ChartView: View {
-
     
     @ObservedObject var vm = ChartViewModel()
     

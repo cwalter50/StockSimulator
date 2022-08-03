@@ -54,6 +54,7 @@ struct WatchlistView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         loadCurrentStockInfo()
+                        HapticManager.notification(type: .success)
                     }) {
 //                        Text("Reload")
                         Image(systemName: "arrow.clockwise")

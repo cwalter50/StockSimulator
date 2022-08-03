@@ -17,6 +17,8 @@ class StocksViewModel: ObservableObject {
     
     @Published var watchlists: [Watchlist] = []
     
+    @Published var isLoading: Bool = false
+    
 //    @Published var chartData: ChartData = ChartData()
     
     private let stockDataService = StockDataService()
@@ -44,6 +46,7 @@ class StocksViewModel: ObservableObject {
         stockDataService.$marketData
             .receive(on: DispatchQueue.main)
             .sink { [weak self] returnedData in
+                self?.isLoading = false
                 self?.marketData = returnedData
             }
             .store(in: &cancellables)
@@ -80,6 +83,7 @@ class StocksViewModel: ObservableObject {
     
     func updateMarketData()
     {
+        self.isLoading = true
         stockDataService.getMarketData()
     }
     

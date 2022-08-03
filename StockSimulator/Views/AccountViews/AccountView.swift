@@ -97,6 +97,7 @@ struct AccountView: View {
                 Spacer()
                 Button(action: {
                     loadCurrentStockInfo()
+                    HapticManager.notification(type: .success)
                 }, label: {
                     Image(systemName: "arrow.clockwise")
                 })

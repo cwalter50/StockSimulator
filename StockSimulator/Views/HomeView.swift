@@ -40,11 +40,16 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        vm.updateMarketData()
+                        withAnimation(.linear(duration: 2.0)) {
+                            vm.updateMarketData()
+                        }
+                        HapticManager.notification(type: .success)
                         print("Should load market data")
                     }) {
                         Image(systemName: "arrow.clockwise")
                     }
+                    .rotationEffect(Angle(degrees: vm.isLoading ? 360 : 0), anchor: .center)
+                    
                 }
             }
             .background {

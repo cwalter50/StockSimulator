@@ -33,6 +33,7 @@
 		8368B40727D2C57C008AF135 /* Watchlist+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8368B40327D2C57C008AF135 /* Watchlist+CoreDataProperties.swift */; };
 		836E864E281625E8006EB6D9 /* StockDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836E864D281625E8006EB6D9 /* StockDataService.swift */; };
 		837EEB102899A83500EA539D /* QuoteSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEB0F2899A83500EA539D /* QuoteSummary.swift */; };
+		837EEB12289A022900EA539D /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEB11289A022900EA539D /* HapticManager.swift */; };
 		83813CB927E7EDFA009344FE /* StockBasicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CB827E7EDFA009344FE /* StockBasicView.swift */; };
 		83813CBF27EAA328009344FE /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CBE27EAA328009344FE /* ChartData.swift */; };
 		83813CE127ED528C009344FE /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CE027ED528C009344FE /* ChartView.swift */; };
@@ -121,6 +122,7 @@
 		8368B40327D2C57C008AF135 /* Watchlist+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Watchlist+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		836E864D281625E8006EB6D9 /* StockDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDataService.swift; sourceTree = "<group>"; };
 		837EEB0F2899A83500EA539D /* QuoteSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteSummary.swift; sourceTree = "<group>"; };
+		837EEB11289A022900EA539D /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		83813CB827E7EDFA009344FE /* StockBasicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockBasicView.swift; sourceTree = "<group>"; };
 		83813CBE27EAA328009344FE /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		83813CE027ED528C009344FE /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				839CD199281987E500DFC77B /* NetworkingManager.swift */,
+				837EEB11289A022900EA539D /* HapticManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -513,6 +516,7 @@
 			files = (
 				83385A0428921AEF002AF992 /* Codable.swift in Sources */,
 				838613A728352BBD00FFBC34 /* UIApplication.swift in Sources */,
+				837EEB12289A022900EA539D /* HapticManager.swift in Sources */,
 				83813CB927E7EDFA009344FE /* StockBasicView.swift in Sources */,
 				83F9F71927CAED9900C14D87 /* TradeFormView.swift in Sources */,
 				8368B40627D2C57C008AF135 /* Watchlist+CoreDataClass.swift in Sources */,
