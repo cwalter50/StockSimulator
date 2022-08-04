@@ -92,7 +92,7 @@ extension SettingsView {
     private var developerSection: some View {
         Section(header: Text("Developer")) {
             VStack(alignment: .leading) {
-                Image("walter")
+                Image("CWBuildsLogo")
                     .resizable()
                     .scaledToFit()
                     .frame(height: 100)
