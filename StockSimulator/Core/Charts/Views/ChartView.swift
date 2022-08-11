@@ -57,7 +57,7 @@ struct ChartView: View {
         GeometryReader { gr in
             let height = gr.size.height
             let width = (gr.size.width) / CGFloat(vm.closeData.count - 1)
-            let points = getPoints(width: width, totalHeight: height - 90) // subtracting 90 to remove the rangepicker, barChart, and dateLabels
+            let points = getPoints(width: width, totalHeight: height - 94) // subtracting 94 to remove the rangepicker, barChart, and dateLabels
             
             VStack {
                 rangePicker
@@ -68,7 +68,7 @@ struct ChartView: View {
                         .overlay(alignment: .bottomLeading) {
                             DragIndicator(height: height, points: points)
                                 .padding(.horizontal, 4)
-                                .frame(width: 80, height: height - 90) // subtracting 90 to remove the rangepicker, barChart, and dateLabels
+                                .frame(width: 80, height: height - 94) // subtracting 94 to remove the rangepicker, barChart, and dateLabels
                                 .offset(x: -40)
                                 .offset(offset)
                                 .opacity(showPlot ? 1 : 0)
@@ -77,7 +77,7 @@ struct ChartView: View {
                         }
                         .overlay(alignment: .bottomLeading) {
                             indicatorStats
-                                .frame(width: 150, height: height - 90, alignment: .center) // subtracting 90 to remove the rangepicker, barChart, and dateLabels
+                                .frame(width: 150, height: height - 94, alignment: .center) // subtracting 94 to remove the rangepicker, barChart, and dateLabels
 //                                .offset(x: -40)
                                 .offset(CGSize(width: index > (vm.closeData.count / 2) ? offset.width - 160: offset.width + 10, height: offset.height ))
                                 .opacity(showPlot ? 1 : 0)
@@ -125,8 +125,8 @@ struct ChartView_Previews: PreviewProvider {
 //        ChartView(stockSnapshot: StockSnapshot())
         
         ChartView(symbol: "AAPL")
-            .frame(width: 350, height: 300)
-            .preferredColorScheme(.dark)
+            .frame(width: 350, height: 400)
+//            .preferredColorScheme(.dark)
             
     }
 }
@@ -270,7 +270,7 @@ extension ChartView {
             Spacer()
             Rectangle()
                 .fill(Color.theme.yellow)
-                .frame(width: 1, height: points.count > 0 ? max((height - points[index].y - 105), 0) : 20)
+                .frame(width: 2, height: points.count > 0 ? max((height - points[index].y - 94), 0) : 20)
 
             Circle()
                 .fill(Color.theme.yellow)
@@ -283,7 +283,7 @@ extension ChartView {
                             )
             Rectangle()
                 .fill(Color.theme.yellow)
-                .frame(width: 1, height: points.count > 0 ? points[index].y : 100)
+                .frame(width: 2, height: points.count > 0 ? points[index].y: 50)
         }
     }
     
