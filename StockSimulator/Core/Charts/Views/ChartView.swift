@@ -22,10 +22,8 @@ struct ChartView: View {
     
     @State private var selectedTimeInterval = "1mo"
     
-    @State var currentPlot = ""
-    @State var xShift: CGFloat = 100
-    @State var yShift: CGFloat = 50
-    @State var offset: CGSize = .zero
+    @State var currentPlotText = ""
+    @State var offset: CGSize = .zero // this is the offset of the ball on the indicator bar from the bottom left corner of the chart
     @State var showPlot = false
     @State var translation: CGFloat = 0
     @State var index: Int = 0
@@ -55,7 +53,7 @@ struct ChartView: View {
     var body: some View {
         GeometryReader { gr in
             let height = gr.size.height
-            let width = (gr.size.width) / CGFloat(vm.chartData.wrappedClose.count - 1)
+            let width = (gr.size.width) / CGFloat(vm.closeData.count - 1)
             
             let points = getPoints(width: width, totalHeight: height-60)
 
@@ -65,7 +63,6 @@ struct ChartView: View {
                 ZStack {
                     linegraph
                         .background(chartBackground)
-
                         .overlay(chartYAxis.padding(.horizontal,4), alignment: .leading)
                         .overlay(alignment: .bottomLeading) {
                             DragIndicator(height: height, points: points)
@@ -73,7 +70,12 @@ struct ChartView: View {
                                 .frame(width: 80, height: height - 60) // subtracting 60 to remove the rangepicker
 //                                .opacity(showPlot ? 1 : 0)
 //                                .background(Color.secondary.opacity(0.3))
-                            
+                                .offset(x: -40)
+                                .offset(offset)
+                        }
+                        .overlay(alignment: .bottomLeading) {
+                            Text(currentPlotText)
+                                .frame(width: 80, height: height - 60, alignment: .center)
                                 .offset(x: -40)
                                 .offset(offset)
                         }
@@ -94,11 +96,11 @@ struct ChartView: View {
                             
                             let xShift = value.location.x
                             
-                            self.index = max(min(Int((xShift / width).rounded()), vm.chartData.wrappedClose.count - 1), 0)
+                            self.index = max(min(Int((xShift / width).rounded()), vm.closeData.count - 1), 0)
                             
                             offset = CGSize(width: points.count > 0 ? points[index].x: xShift, height: 0)
 
-                            currentPlot =  vm.chartData.wrappedClose[index].asCurrencyWith2Decimals()
+                            currentPlotText =  vm.closeData[index].asCurrencyWith2Decimals()
                         })
                         .onEnded({ value in
                             withAnimation {
@@ -183,9 +185,7 @@ extension ChartView {
     }
     
     private var linegraph: some View {
-        LineGraph(dataPoints: vm.chartData.wrappedClose.normalized)
-        
-//                LineGraph(dataPoints: ChartMockData.oneMonth.normalized)
+        LineGraph(dataPoints: vm.closeDataNormalized)
             .trim(to: animateChart ? 1 : trimValue)
 //                        .stroke(lineColor)
             .stroke(vm.lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
@@ -238,18 +238,14 @@ extension ChartView {
             Rectangle()
                 .fill(Color.theme.secondaryText)
                 .frame(width: 1, height: points.count > 0 ? points[index].y : 100)
-            
         }
     }
-    
-    
-    
     private func getPoints(width: CGFloat, totalHeight: CGFloat) -> [CGPoint] {
         var result = [CGPoint]()
 
-        for i in vm.chartData.wrappedClose.normalized.indices {
+        for i in vm.closeDataNormalized.indices {
             let x = width * CGFloat(i)
-            let y = totalHeight * vm.chartData.wrappedClose.normalized[i]
+            let y = totalHeight * vm.closeDataNormalized[i]
 //            print("Width: \(width), x: \(x)")
             result.append(CGPoint(x: x, y: y))
         }

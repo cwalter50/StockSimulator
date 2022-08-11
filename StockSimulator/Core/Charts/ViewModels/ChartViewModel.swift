@@ -16,6 +16,8 @@ enum ChartDataResult {
 final class ChartViewModel: ObservableObject {
 //    @Published var chartData: ChartData
     @Published var chartData: ChartData = ChartData(emptyData: true) // this contains close, adjclose, volume, high, low, etc
+    @Published var closeData: [Double] = []
+    @Published var closeDataNormalized: [Double] = []
     
     @Published var maxY: Double = 0.0
     @Published var minY: Double = 0.0
@@ -44,11 +46,15 @@ final class ChartViewModel: ObservableObject {
                     print("failure loading chart data")
                     DispatchQueue.main.async {
                         self.chartData = ChartData(emptyData: true)
+                        self.closeData = []
+                        self.closeDataNormalized = []
                         completion(.failure(errorMessage))
                     }
                 default:
                     print("loading chart data was not a success or failure")
                     self.chartData = ChartData(emptyData: true)
+                    self.closeData = []
+                    self.closeDataNormalized = []
                     completion(.failure("Error loading ChartData"))
             }
         }
@@ -58,6 +64,8 @@ final class ChartViewModel: ObservableObject {
     func setData(from chartData: ChartData)
     {
         self.chartData = chartData
+        self.closeData = chartData.wrappedClose
+        self.closeDataNormalized = chartData.wrappedClose.normalized
         self.maxY = getMaxY()
 //        self.maxY = self.chartData.close.max() ?? 0
 //        self.minY = self.chartData.close.min() ?? 0
@@ -78,6 +86,8 @@ final class ChartViewModel: ObservableObject {
         let firstDateTimeInterval = TimeInterval(self.chartData.timestamp.first ?? 0)
         self.endingDate = Date(timeIntervalSince1970: lastDateTimeInterval)
         self.startingDate = Date(timeIntervalSince1970: firstDateTimeInterval)
+        
+        
     }
     
     private func getMaxY() -> Double {
