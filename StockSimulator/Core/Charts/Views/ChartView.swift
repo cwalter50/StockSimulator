@@ -22,7 +22,11 @@ struct ChartView: View {
     
     @State private var selectedTimeInterval = "1mo"
     
-    @State var currentPlotText = ""
+    // Indicator Stats
+    @State var currentDateTime = ""
+    @State var currentClose = ""
+    @State var currentVolume = ""
+    
     @State var offset: CGSize = .zero // this is the offset of the ball on the indicator bar from the bottom left corner of the chart
     @State var showPlot = false
     @State var translation: CGFloat = 0
@@ -68,16 +72,16 @@ struct ChartView: View {
                             DragIndicator(height: height, points: points)
                                 .padding(.horizontal, 4)
                                 .frame(width: 80, height: height - 60) // subtracting 60 to remove the rangepicker
-//                                .opacity(showPlot ? 1 : 0)
-//                                .background(Color.secondary.opacity(0.3))
+                                .opacity(showPlot ? 1 : 0)
                                 .offset(x: -40)
                                 .offset(offset)
                         }
                         .overlay(alignment: .bottomLeading) {
-                            Text(currentPlotText)
-                                .frame(width: 80, height: height - 60, alignment: .center)
+                            indicatorStats
+                                .frame(width: 150, height: height - 60, alignment: .center)
                                 .offset(x: -40)
-                                .offset(CGSize(width: index > (vm.closeData.count / 2) ? offset.width - 50: offset.width + 50, height: offset.height ))
+                                .offset(CGSize(width: index > (vm.closeData.count / 2) ? offset.width - 120: offset.width + 50, height: offset.height ))
+                                .opacity(showPlot ? 1 : 0)
                         }
                         
                         .onAppear(perform: {
@@ -100,7 +104,17 @@ struct ChartView: View {
                             
                             offset = CGSize(width: points.count > 0 ? points[index].x: xShift, height: 0)
 
-                            currentPlotText =  vm.closeData[index].asCurrencyWith2Decimals()
+                            if index < vm.closeData.count {
+                                currentClose =  vm.closeData[index].asCurrencyWith2Decimals()
+                                currentVolume = "\(vm.chartData.wrappedvolume[index])"
+                                if selectedTimeInterval == "1d" || selectedTimeInterval == "5d" {
+                                    currentDateTime =  Date(timeIntervalSince1970: Double(vm.chartData.timestamp[index])).asShortDateAndTimeString()
+                                } else {
+                                    currentDateTime = Date(timeIntervalSince1970: Double(vm.chartData.timestamp[index])).asShortDateString()
+                                }
+                            }
+                            
+                            
                         })
                         .onEnded({ value in
                             withAnimation {
@@ -151,6 +165,8 @@ struct ChartView_Previews: PreviewProvider {
         
         ChartView(symbol: "AAPL")
             .frame(width: 350, height: 300)
+//            .preferredColorScheme(.dark)
+            
     }
 }
 
@@ -219,15 +235,48 @@ extension ChartView {
         }
     }
     
+    private var indicatorStats: some View {
+        VStack {
+            HStack{
+                Text("Date/Time:")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(currentDateTime)
+            }
+            HStack {
+                Text("Close:")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(currentClose)
+            }
+            HStack {
+                Text("Volume:")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(currentVolume)
+            }
+        }
+        .font(.caption2)
+        .padding(6)
+        .foregroundColor(Color.white)
+        .background(
+            Rectangle()
+                .fill(Color.gray.opacity(0.6))
+                .cornerRadius(10)
+                .shadow(color: Color.gray, radius: 5, x: 0.3, y: 0.3)
+            
+        )
+    }
+    
     @ViewBuilder func DragIndicator(height: CGFloat, points: [CGPoint]) -> some View {
         VStack(spacing:0) {
             Spacer()
             Rectangle()
-                .fill(Color.theme.secondaryText)
+                .fill(Color.theme.yellow)
                 .frame(width: 1, height: points.count > 0 ? max((height - points[index].y - 80), 0) : 100)
 
             Circle()
-                .fill(Color.theme.secondaryText)
+                .fill(Color.theme.yellow)
                 .frame(width: 22, height: 22)
 
                 .overlay(
@@ -236,10 +285,12 @@ extension ChartView {
                         .frame(width: 10, height: 10)
                             )
             Rectangle()
-                .fill(Color.theme.secondaryText)
+                .fill(Color.theme.yellow)
                 .frame(width: 1, height: points.count > 0 ? points[index].y : 100)
         }
     }
+    
+    
     private func getPoints(width: CGFloat, totalHeight: CGFloat) -> [CGPoint] {
         var result = [CGPoint]()
 

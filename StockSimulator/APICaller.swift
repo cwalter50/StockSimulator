@@ -96,11 +96,18 @@ final class APICaller{
     func getChartData(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)
     {
         var interval = "1d"
-
-        if range == "1d" || range == "5d"
-        {
+        
+        switch range {
+        case "1d":
             interval = "5m"
+        case "5d":
+            interval = "15m"
+        case "1y", "max":
+            interval = "1wk"
+        default:
+            interval = "1d"
         }
+
         
 //    https://yfapi.net/v8/finance/chart/AAPL?range=5d&region=US&interval=15m&lang=en&events=div%2Csplit
         let urlString = Constants.chartURL(symbol: searchSymbol.uppercased(), range: range, interval: interval)
