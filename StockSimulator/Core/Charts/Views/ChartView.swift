@@ -59,31 +59,29 @@ struct ChartView: View {
             let height = gr.size.height
             let width = (gr.size.width) / CGFloat(vm.closeData.count - 1)
             
-            let points = getPoints(width: width, totalHeight: height-60)
-
+            let points = getPoints(width: width, totalHeight: height - 60)
             
             VStack {
                 rangePicker
                 ZStack {
                     linegraph
                         .background(chartBackground)
-                        .overlay(chartYAxis.padding(.horizontal,4), alignment: .leading)
+                        .overlay(chartYAxis.padding(.horizontal,4).foregroundColor(Color.theme.secondaryText), alignment: .leading)
                         .overlay(alignment: .bottomLeading) {
                             DragIndicator(height: height, points: points)
                                 .padding(.horizontal, 4)
                                 .frame(width: 80, height: height - 60) // subtracting 60 to remove the rangepicker
-                                .opacity(showPlot ? 1 : 0)
                                 .offset(x: -40)
                                 .offset(offset)
+                                .opacity(showPlot ? 1 : 0)
                         }
                         .overlay(alignment: .bottomLeading) {
                             indicatorStats
                                 .frame(width: 150, height: height - 60, alignment: .center)
-                                .offset(x: -40)
-                                .offset(CGSize(width: index > (vm.closeData.count / 2) ? offset.width - 120: offset.width + 50, height: offset.height ))
+//                                .offset(x: -40)
+                                .offset(CGSize(width: index > (vm.closeData.count / 2) ? offset.width - 160: offset.width + 10, height: offset.height ))
                                 .opacity(showPlot ? 1 : 0)
                         }
-                        
                         .onAppear(perform: {
                             loadData()
                         })
@@ -123,7 +121,10 @@ struct ChartView: View {
                             
                         })
                 )
+                volumeBarChart(width: width)
+                
                 chartDateLabels
+                    .foregroundColor(Color.theme.secondaryText)
                     .padding(.horizontal, 4)
             }
             .frame(width: gr.size.width, height: gr.size.height)
@@ -287,6 +288,19 @@ extension ChartView {
             Rectangle()
                 .fill(Color.theme.yellow)
                 .frame(width: 1, height: points.count > 0 ? points[index].y : 100)
+        }
+    }
+    
+    @ViewBuilder func volumeBarChart(width: CGFloat) -> some View {
+        let maxVolume = vm.chartData.wrappedvolume.max() ?? 0
+        
+        HStack(alignment: .bottom,spacing: width - 3) {
+            ForEach(0..<vm.chartData.wrappedvolume.count, id: \.self) { i in
+                Rectangle()
+                    .fill(i >= 1 && vm.closeData[i] < vm.closeData[i-1] ? Color.theme.red : Color.theme.green)
+                    .frame(width: 3, height: CGFloat(25 * vm.chartData.wrappedvolume[i] / maxVolume))
+                
+            }
         }
     }
     
