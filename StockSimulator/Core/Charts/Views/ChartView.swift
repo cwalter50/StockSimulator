@@ -10,7 +10,6 @@ import SwiftUI
 struct ChartView: View {
     
 //    @ObservedObject var vm = ChartViewModel()
-    
     @StateObject var vm: ChartViewModel = ChartViewModel()
     
     @State private var animateChart = false
@@ -58,8 +57,7 @@ struct ChartView: View {
         GeometryReader { gr in
             let height = gr.size.height
             let width = (gr.size.width) / CGFloat(vm.closeData.count - 1)
-            
-            let points = getPoints(width: width, totalHeight: height - 60)
+            let points = getPoints(width: width, totalHeight: height - 90) // subtracting 90 to remove the rangepicker, barChart, and dateLabels
             
             VStack {
                 rangePicker
@@ -70,14 +68,16 @@ struct ChartView: View {
                         .overlay(alignment: .bottomLeading) {
                             DragIndicator(height: height, points: points)
                                 .padding(.horizontal, 4)
-                                .frame(width: 80, height: height - 60) // subtracting 60 to remove the rangepicker
+                                .frame(width: 80, height: height - 90) // subtracting 90 to remove the rangepicker, barChart, and dateLabels
                                 .offset(x: -40)
                                 .offset(offset)
                                 .opacity(showPlot ? 1 : 0)
+//                                .background(Color.gray.opacity(0.5))
+                            
                         }
                         .overlay(alignment: .bottomLeading) {
                             indicatorStats
-                                .frame(width: 150, height: height - 60, alignment: .center)
+                                .frame(width: 150, height: height - 90, alignment: .center) // subtracting 90 to remove the rangepicker, barChart, and dateLabels
 //                                .offset(x: -40)
                                 .offset(CGSize(width: index > (vm.closeData.count / 2) ? offset.width - 160: offset.width + 10, height: offset.height ))
                                 .opacity(showPlot ? 1 : 0)
@@ -95,24 +95,7 @@ struct ChartView: View {
                             withAnimation {
                                 showPlot = true
                             }
-                            
-                            let xShift = value.location.x
-                            
-                            self.index = max(min(Int((xShift / width).rounded()), vm.closeData.count - 1), 0)
-                            
-                            offset = CGSize(width: points.count > 0 ? points[index].x: xShift, height: 0)
-
-                            if index < vm.closeData.count {
-                                currentClose =  vm.closeData[index].asCurrencyWith2Decimals()
-                                currentVolume = "\(vm.chartData.wrappedvolume[index])"
-                                if selectedTimeInterval == "1d" || selectedTimeInterval == "5d" {
-                                    currentDateTime =  Date(timeIntervalSince1970: Double(vm.chartData.timestamp[index])).asShortDateAndTimeString()
-                                } else {
-                                    currentDateTime = Date(timeIntervalSince1970: Double(vm.chartData.timestamp[index])).asShortDateString()
-                                }
-                            }
-                            
-                            
+                            updateDragIndactorData(value: value, width: width, points: points)
                         })
                         .onEnded({ value in
                             withAnimation {
@@ -135,12 +118,24 @@ struct ChartView: View {
             }
         }
     }
+}
+
+struct ChartView_Previews: PreviewProvider {
+    static var previews: some View {
+//        ChartView(stockSnapshot: StockSnapshot())
+        
+        ChartView(symbol: "AAPL")
+            .frame(width: 350, height: 300)
+            .preferredColorScheme(.dark)
+            
+    }
+}
+
+extension ChartView {
     
-    
-    func loadData()
+    private func loadData()
     {
         showLoader = true
-
         animateChart = false
         trimValue = 0
         vm.loadData(symbol: symbol, range: selectedTimeInterval) {
@@ -158,20 +153,6 @@ struct ChartView: View {
             }
         }
     }
-}
-
-struct ChartView_Previews: PreviewProvider {
-    static var previews: some View {
-//        ChartView(stockSnapshot: StockSnapshot())
-        
-        ChartView(symbol: "AAPL")
-            .frame(width: 350, height: 300)
-//            .preferredColorScheme(.dark)
-            
-    }
-}
-
-extension ChartView {
     
     private var rangePicker: some View {
         Picker("Time Interval", selection: $selectedTimeInterval) {
@@ -220,8 +201,6 @@ extension ChartView {
         }
     }
     
-
-    
     private var chartYAxis: some View {
         VStack {
             Text("\(vm.maxY.formattedWithAbbreviations())")
@@ -265,8 +244,25 @@ extension ChartView {
                 .fill(Color.gray.opacity(0.6))
                 .cornerRadius(10)
                 .shadow(color: Color.gray, radius: 5, x: 0.3, y: 0.3)
-            
         )
+    }
+    
+    func updateDragIndactorData(value: DragGesture.Value, width: CGFloat, points: [CGPoint]) {
+        let xShift = value.location.x
+        
+        self.index = max(min(Int((xShift / width).rounded()), vm.closeData.count - 1), 0)
+        
+        offset = CGSize(width: points.count > 0 ? points[index].x: xShift, height: 0)
+
+        if index < vm.closeData.count {
+            currentClose =  vm.closeData[index].asCurrencyWith2Decimals()
+            currentVolume = "\(vm.chartData.wrappedvolume[index])"
+            if selectedTimeInterval == "1d" || selectedTimeInterval == "5d" {
+                currentDateTime =  Date(timeIntervalSince1970: Double(vm.chartData.timestamp[index])).asShortDateAndTimeString()
+            } else {
+                currentDateTime = Date(timeIntervalSince1970: Double(vm.chartData.timestamp[index])).asShortDateString()
+            }
+        }
     }
     
     @ViewBuilder func DragIndicator(height: CGFloat, points: [CGPoint]) -> some View {
@@ -274,7 +270,7 @@ extension ChartView {
             Spacer()
             Rectangle()
                 .fill(Color.theme.yellow)
-                .frame(width: 1, height: points.count > 0 ? max((height - points[index].y - 80), 0) : 100)
+                .frame(width: 1, height: points.count > 0 ? max((height - points[index].y - 105), 0) : 20)
 
             Circle()
                 .fill(Color.theme.yellow)
@@ -294,11 +290,11 @@ extension ChartView {
     @ViewBuilder func volumeBarChart(width: CGFloat) -> some View {
         let maxVolume = vm.chartData.wrappedvolume.max() ?? 0
         
-        HStack(alignment: .bottom,spacing: width - 3) {
+        HStack(alignment: .bottom,spacing: width - 2) {
             ForEach(0..<vm.chartData.wrappedvolume.count, id: \.self) { i in
                 Rectangle()
                     .fill(i >= 1 && vm.closeData[i] < vm.closeData[i-1] ? Color.theme.red : Color.theme.green)
-                    .frame(width: 3, height: CGFloat(25 * vm.chartData.wrappedvolume[i] / maxVolume))
+                    .frame(width: 2, height: CGFloat(25 * vm.chartData.wrappedvolume[i] / maxVolume))
                 
             }
         }
