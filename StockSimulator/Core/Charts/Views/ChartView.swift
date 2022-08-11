@@ -77,7 +77,7 @@ struct ChartView: View {
                             Text(currentPlotText)
                                 .frame(width: 80, height: height - 60, alignment: .center)
                                 .offset(x: -40)
-                                .offset(offset)
+                                .offset(CGSize(width: index > (vm.closeData.count / 2) ? offset.width - 50: offset.width + 50, height: offset.height ))
                         }
                         
                         .onAppear(perform: {
