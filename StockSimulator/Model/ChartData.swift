@@ -550,7 +550,7 @@ struct ChartData: Codable {
                         print(error)
                     }
                 }
-                if let indicators = result[0]["indicators"] as? [String: Any], let quote = indicators["quote"] as? [[String: Any]], let adjClose2 = indicators["adjclose"] as? [[String: Any]] {
+                if let indicators = result[0]["indicators"] as? [String: Any], let quote = indicators["quote"] as? [[String: Any]] {
                     
 //                    print(quote)
                     if quote.count > 0
@@ -567,11 +567,13 @@ struct ChartData: Codable {
                         self.volume = quote[0]["volume"] as? [Int?] ?? [Int]()
 //                        print(volume)
                     }
+                    if let adjClose2 = indicators["adjclose"] as? [[String: Any]] {
                     
-                    if adjClose2.count > 0
-                    {
-                        self.adjclose = adjClose2[0]["adjclose"] as? [Double] ?? [Double]()
-//                        print(adjclose)
+                        if adjClose2.count > 0
+                        {
+                            self.adjclose = adjClose2[0]["adjclose"] as? [Double] ?? [Double]()
+    //                        print(adjclose)
+                        }
                     }
                     
                 }

@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-
 struct ChartView: View {
     
-    @ObservedObject var vm = ChartViewModel()
+//    @ObservedObject var vm = ChartViewModel()
+    
+    @StateObject var vm: ChartViewModel = ChartViewModel()
     
     @State private var animateChart = false
     @State private var showLoader = false
@@ -20,15 +21,23 @@ struct ChartView: View {
     @State private var errorMessage = ""
     
     @State private var selectedTimeInterval = "1mo"
-//    @State var symbol : String = ""
-//    var timeRanges = ["1d","5d","1mo", "3mo","6mo","ytd","1y","2y","5y","10y","max"]
+    
+    @State var currentPlot = ""
+    @State var xShift: CGFloat = 100
+    @State var yShift: CGFloat = 50
+    @State var offset: CGSize = .zero
+    @State var showPlot = false
+    @State var translation: CGFloat = 0
+    @State var index: Int = 0
+    
+    
     var timeRanges = ["1d","5d","1mo","6mo","ytd","1y","max"]
 
     var symbol: String
     
     init(symbol: String)
     {
-        // have to convert symbol into a new form. the when the symbol is ^DJI -> %5EDJI. I do not know why, but I need to convert it. also CL=F -> CL%3DF
+        // have to convert symbol into a new form. the when the symbol is ^DJI -> %5EDJI. I do not know why, but I need to convert it to make it work with the API. also CL=F -> CL%3DF
         if symbol.contains("^") {
             let result = symbol.replacingOccurrences(of: "^", with: "%5E")
             self.symbol = result
@@ -40,25 +49,64 @@ struct ChartView: View {
         else {
             self.symbol = symbol
         }
-        loadData()
+
     }
     
     var body: some View {
         GeometryReader { gr in
+            let height = gr.size.height
+            let width = (gr.size.width) / CGFloat(vm.chartData.wrappedClose.count - 1)
+            
+            let points = getPoints(width: width, totalHeight: height-60)
+
+            
             VStack {
                 rangePicker
                 ZStack {
                     linegraph
                         .background(chartBackground)
+
                         .overlay(chartYAxis.padding(.horizontal,4), alignment: .leading)
+                        .overlay(alignment: .bottomLeading) {
+                            DragIndicator(height: height, points: points)
+                                .padding(.horizontal, 4)
+                                .frame(width: 80, height: height - 60) // subtracting 60 to remove the rangepicker
+//                                .opacity(showPlot ? 1 : 0)
+//                                .background(Color.secondary.opacity(0.3))
+                            
+                                .offset(x: -40)
+                                .offset(offset)
+                        }
+                        
                         .onAppear(perform: {
                             loadData()
-                            print("onAppear called in ChartView")
                         })
                     if showLoader {
                         ChartLoader()
                     }
                 }
+                .gesture(
+                    DragGesture()
+                        .onChanged({ value in
+                            withAnimation {
+                                showPlot = true
+                            }
+                            
+                            let xShift = value.location.x
+                            
+                            self.index = max(min(Int((xShift / width).rounded()), vm.chartData.wrappedClose.count - 1), 0)
+                            
+                            offset = CGSize(width: points.count > 0 ? points[index].x: xShift, height: 0)
+
+                            currentPlot =  vm.chartData.wrappedClose[index].asCurrencyWith2Decimals()
+                        })
+                        .onEnded({ value in
+                            withAnimation {
+                                showPlot = false
+                            }
+                            
+                        })
+                )
                 chartDateLabels
                     .padding(.horizontal, 4)
             }
@@ -68,7 +116,6 @@ struct ChartView: View {
             .alert(isPresented: $showingErrorAlert) {
                 Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
             }
-            
         }
     }
     
@@ -76,10 +123,9 @@ struct ChartView: View {
     func loadData()
     {
         showLoader = true
-//        viewModel.chartData = ChartData(emptyData: true)
+
         animateChart = false
         trimValue = 0
-//        viewModel.loadData(symbol: stockSnapshot.symbol, range: selectedTimeInterval) {
         vm.loadData(symbol: symbol, range: selectedTimeInterval) {
             chartDataResult in
             switch chartDataResult {
@@ -171,6 +217,43 @@ extension ChartView {
             Spacer()
             Text("\(vm.minY.formattedWithAbbreviations())")
         }
+    }
+    
+    @ViewBuilder func DragIndicator(height: CGFloat, points: [CGPoint]) -> some View {
+        VStack(spacing:0) {
+            Spacer()
+            Rectangle()
+                .fill(Color.theme.secondaryText)
+                .frame(width: 1, height: points.count > 0 ? max((height - points[index].y - 80), 0) : 100)
+
+            Circle()
+                .fill(Color.theme.secondaryText)
+                .frame(width: 22, height: 22)
+
+                .overlay(
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 10, height: 10)
+                            )
+            Rectangle()
+                .fill(Color.theme.secondaryText)
+                .frame(width: 1, height: points.count > 0 ? points[index].y : 100)
+            
+        }
+    }
+    
+    
+    
+    private func getPoints(width: CGFloat, totalHeight: CGFloat) -> [CGPoint] {
+        var result = [CGPoint]()
+
+        for i in vm.chartData.wrappedClose.normalized.indices {
+            let x = width * CGFloat(i)
+            let y = totalHeight * vm.chartData.wrappedClose.normalized[i]
+//            print("Width: \(width), x: \(x)")
+            result.append(CGPoint(x: x, y: y))
+        }
+        return result
     }
     
 }

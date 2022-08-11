@@ -27,13 +27,7 @@ final class APICaller{
 //        static let apiKey = "JvcnVegPVxaamusnImc1S1pTgWQoSWnB1zwAIrnP" // started working on 3/5/22. Stopped working on 3/12/22
         static let apiKey = "u0oXimhO5g6AIR9DIy85D80DPTAtPQP95l9FiAkk" // started working on 3/12/22
         static let quoteurlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols="
-//         'https://yfapi.net/v8/finance/chart/AAPL?range=1d&region=US&interval=5m&lang=en&events=div%2Csplit'
-//        "https://yfapi.net/v8/finance/chart/AAPL?range=1mo&region=US&interval=1d&lang=en&events=div%2Csplit"
-        static let charturlStringStart = "https://yfapi.net/v8/finance/chart/"
-        static let charturlRange = "?range="
-        static let charturlStringInterval = "&region=US&interval="
-        static let charturlStringEnd = "&lang=en&events=div%2Csplit"
-        
+
         // https://yfapi.net/v6/finance/recommendationsbysymbol/PYPL
         static let reccomdationsBySymbolURL = "https://yfapi.net/v6/finance/recommendationsbysymbol/"
         static let marketSummaryURL = "https://yfapi.net/v6/finance/quote/marketSummary?lang=en&region=US"
@@ -41,6 +35,11 @@ final class APICaller{
         static func quoteSummaryURL(symbol: String) -> String {
         // https://yfapi.net/v11/finance/quoteSummary/ura?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile
             return "https://yfapi.net/v11/finance/quoteSummary/\(symbol)?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile"
+        }
+        
+        static func chartURL(symbol: String, range: String, interval: String) -> String {
+//            'https://yfapi.net/v8/finance/chart/AAPL?range=1d&region=US&interval=5m&lang=en&events=div%2Csplit'
+            return "https://yfapi.net/v8/finance/chart/\(symbol)?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit"
         }
         static let quoteSummaryURL = "https://yfapi.net/v11/finance/quoteSummary/AAPL?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile"
     }
@@ -100,14 +99,12 @@ final class APICaller{
 
         if range == "1d" || range == "5d"
         {
-            interval = "15m"
+            interval = "5m"
         }
-//        guard let url = URL(string: Constants.charturlStringPt1 + searchSymbol.uppercased() + Constants.charturlRange + range + Constants.charturlStringPt2 + interval + Constants.charturlStringPt3) else {
-//            return
-//        }
         
 //    https://yfapi.net/v8/finance/chart/AAPL?range=5d&region=US&interval=15m&lang=en&events=div%2Csplit
-        let urlString = "https://yfapi.net/v8/finance/chart/\(searchSymbol.uppercased())?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit"
+        let urlString = Constants.chartURL(symbol: searchSymbol.uppercased(), range: range, interval: interval)
+        
         guard let url = URL(string: urlString) else {
             return
         }
@@ -131,7 +128,7 @@ final class APICaller{
 //                print(results)
                 let chartData = ChartData(results: results)
 //                print(chartData)
-                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
+//                print("loaded chart data for \(searchSymbol). found \(chartData.close.count) pieces of data for close")
                 
                 completion(.chartSuccess(chartData))
             } catch {

@@ -36,6 +36,8 @@
 		837EEB12289A022900EA539D /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEB11289A022900EA539D /* HapticManager.swift */; };
 		837EEB1A289AC8BC00EA539D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEB19289AC8BC00EA539D /* SettingsView.swift */; };
 		837EEB2E289ACC9100EA539D /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEB2D289ACC9100EA539D /* CircleButton.swift */; };
+		837EEB3028A2C82A00EA539D /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEB2F28A2C82A00EA539D /* LineGraphView.swift */; };
+		837EEB3228A2CB7500EA539D /* HomeView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEB3128A2CB7500EA539D /* HomeView2.swift */; };
 		83813CB927E7EDFA009344FE /* StockBasicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CB827E7EDFA009344FE /* StockBasicView.swift */; };
 		83813CBF27EAA328009344FE /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CBE27EAA328009344FE /* ChartData.swift */; };
 		83813CE127ED528C009344FE /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83813CE027ED528C009344FE /* ChartView.swift */; };
@@ -127,6 +129,8 @@
 		837EEB11289A022900EA539D /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		837EEB19289AC8BC00EA539D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		837EEB2D289ACC9100EA539D /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
+		837EEB2F28A2C82A00EA539D /* LineGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
+		837EEB3128A2CB7500EA539D /* HomeView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView2.swift; sourceTree = "<group>"; };
 		83813CB827E7EDFA009344FE /* StockBasicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockBasicView.swift; sourceTree = "<group>"; };
 		83813CBE27EAA328009344FE /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		83813CE027ED528C009344FE /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
@@ -443,6 +447,8 @@
 				838AD1A52808FBEB0035F0C5 /* Extensions */,
 				836E864F281625EF006EB6D9 /* Utilities */,
 				83D3FD2427A5FEF800F3746B /* Assets.xcassets */,
+				837EEB2F28A2C82A00EA539D /* LineGraphView.swift */,
+				837EEB3128A2CB7500EA539D /* HomeView2.swift */,
 				83D3FD5527A60E7D00F3746B /* APICaller.swift */,
 				38CD5C88284E7DE100E96954 /* Persistence.swift */,
 				83D3FD2B27A5FEF800F3746B /* StockSimulator.xcdatamodeld */,
@@ -652,6 +658,7 @@
 				838AD1A72808FBFD0035F0C5 /* Color.swift in Sources */,
 				8368B3F727D2BB06008AF135 /* AddWatchlistView.swift in Sources */,
 				838F679E2886045C005E3BA0 /* Dividend+CoreDataClass.swift in Sources */,
+				837EEB3228A2CB7500EA539D /* HomeView2.swift in Sources */,
 				83385A002891BD1B002AF992 /* Stock+CoreDataProperties.swift in Sources */,
 				383B41862857BD6D00586B2E /* MarketSummary.swift in Sources */,
 				380958B727EE1CB000705D9F /* StockDetailView.swift in Sources */,
@@ -680,6 +687,7 @@
 				833859F4288DD0FD002AF992 /* StatisticModel.swift in Sources */,
 				839CD19A281987E500DFC77B /* NetworkingManager.swift in Sources */,
 				838613A928352BED00FFBC34 /* PreviewProvider.swift in Sources */,
+				837EEB3028A2C82A00EA539D /* LineGraphView.swift in Sources */,
 				83E86FBB27FA4010000A454D /* ChartLoader.swift in Sources */,
 				83FA270B27BDF424008DA2BC /* AccountsView.swift in Sources */,
 				83813CE727ED589E009344FE /* LineGraph.swift in Sources */,

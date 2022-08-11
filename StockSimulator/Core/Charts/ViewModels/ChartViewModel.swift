@@ -16,6 +16,7 @@ enum ChartDataResult {
 final class ChartViewModel: ObservableObject {
 //    @Published var chartData: ChartData
     @Published var chartData: ChartData = ChartData(emptyData: true) // this contains close, adjclose, volume, high, low, etc
+    
     @Published var maxY: Double = 0.0
     @Published var minY: Double = 0.0
     @Published var medY: Double = 0.0
@@ -24,7 +25,7 @@ final class ChartViewModel: ObservableObject {
     @Published var lineColor: Color = Color.theme.green
     @Published var startingDate: Date = Date()
     @Published var endingDate: Date = Date()
-    
+
     func loadData(symbol: String, range: String, completion: @escaping(ChartDataResult) -> Void ) {
         
         let apiCaller = APICaller.shared
@@ -48,6 +49,7 @@ final class ChartViewModel: ObservableObject {
                 default:
                     print("loading chart data was not a success or failure")
                     self.chartData = ChartData(emptyData: true)
+                    completion(.failure("Error loading ChartData"))
             }
         }
     }
