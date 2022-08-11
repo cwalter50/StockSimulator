@@ -256,7 +256,7 @@ extension ChartView {
 
         if index < vm.closeData.count {
             currentClose =  vm.closeData[index].asCurrencyWith2Decimals()
-            currentVolume = "\(vm.chartData.wrappedvolume[index])"
+            currentVolume = "\(Double(vm.chartData.wrappedvolume[index]).formattedWithAbbreviations())"
             if selectedTimeInterval == "1d" || selectedTimeInterval == "5d" {
                 currentDateTime =  Date(timeIntervalSince1970: Double(vm.chartData.timestamp[index])).asShortDateAndTimeString()
             } else {
