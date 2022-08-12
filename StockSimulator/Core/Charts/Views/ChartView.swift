@@ -162,8 +162,7 @@ extension ChartView {
         }
         .pickerStyle(SegmentedPickerStyle())
         .onChange(of: selectedTimeInterval) { value in
-            print("picker changed")
-            // figure out how to reload the data if picker changes
+            self.index = 0 // reset the index so that it prevents an app crash
             loadData()
         }
     }
