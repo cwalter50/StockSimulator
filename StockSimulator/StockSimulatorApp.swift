@@ -21,13 +21,23 @@ struct StockSimulatorApp: App {
 ////        _vm = StateObject(wrappedValue: AccountViewModel(account: Account(context: dataController.container.viewContext)))
 //    }
     
+    @State private var showLaunchView: Bool = true
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, dataController.container.viewContext)
-                .environmentObject(stockVM)
-//                .environmentObject(dataController)
-//                .environmentObject(vm)
+            ZStack {
+                ContentView()
+                    .environment(\.managedObjectContext, dataController.container.viewContext)
+                    .environmentObject(stockVM)
+    //                .environmentObject(dataController)
+    //                .environmentObject(vm)
+                ZStack {
+                    if showLaunchView {
+                        LaunchView(showLaunchView: $showLaunchView)
+                    }
+                }
+            }
+            
         }
     }
 }
