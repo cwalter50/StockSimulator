@@ -27,6 +27,7 @@ struct QuoteSummaryClass: Codable {
 struct QuoteSummary: Codable {
     let assetProfile: AssetProfile
 //    let defaultKeyStatistics: DefaultKeyStatistics?
+    let earnings: Earnings?
 }
 
 // MARK: - AssetProfile
@@ -185,4 +186,91 @@ struct The52_WeekChange: Codable {
     let fmt: String
     let raw: Double
 }
+
+// MARK: - Earnings
+struct Earnings: Codable {
+    let maxAge: Int
+    let earningsChart: EarningsChart
+    let financialsChart: FinancialsChart
+    let financialCurrency: String
+    
+    // computed property to figure out the EPS, earnings, and revenue
+    var earningsModels: [EarningsModel] {
+        var result = [EarningsModel]()
+        
+        for q in earningsChart.quarterly {
+            let title = q.date
+            
+            let actual = q.actual.raw
+            let estimate = q.estimate.raw
+            
+            let financial = financialsChart.quarterly.first(where: {$0.date == q.date})
+            let revenue = financial?.revenue.raw
+            let earnings = financial?.earnings.raw
+            
+            let model = EarningsModel(title: title, actual: actual, estimate: estimate, revenue: revenue, earnings: earnings)
+            result.append(model)
+        }
+        
+        return result
+    }
+}
+
+// MARK: - EarningsChart
+struct EarningsChart: Codable {
+    let quarterly: [EarningsChartQuarterly]
+    let currentQuarterEstimate: The52_WeekChange
+    let currentQuarterEstimateDate: String
+    let currentQuarterEstimateYear: Int
+    let earningsDate: [The52_WeekChange]
+}
+
+// MARK: - EarningsChartQuarterly
+struct EarningsChartQuarterly: Codable {
+    let date: String
+    let actual, estimate: The52_WeekChange
+}
+
+// MARK: - FinancialsChart
+struct FinancialsChart: Codable {
+    let yearly: [Yearly]
+    let quarterly: [FinancialsChartQuarterly]
+}
+
+// MARK: - FinancialsChartQuarterly
+struct FinancialsChartQuarterly: Codable {
+    let date: String
+    let revenue, earnings: EnterpriseValue
+}
+
+// MARK: - Yearly
+struct Yearly: Codable {
+    let date: Int
+    let revenue, earnings: EnterpriseValue
+}
+
+
+
+// I built this struct to dsiply earnings, revenue, and more all together based on a date
+struct EarningsModel: Identifiable {
+    
+    let id = UUID().uuidString
+    let title: String
+    let actual: Double?
+    let estimate: Double?
+    let revenue: Int?
+    let earnings: Int?
+    
+    init(title: String, actual: Double? = nil, estimate: Double? = nil, revenue: Int? = nil, earnings: Int? = nil)
+    {
+        self.title = title
+        self.actual = actual
+        self.estimate = estimate
+        self.revenue = revenue
+        self.earnings = earnings
+    }
+    
+}
+
+
 

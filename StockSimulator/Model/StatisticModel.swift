@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct StatisticModel: Identifiable {
     
     let id = UUID().uuidString
@@ -24,3 +23,4 @@ struct StatisticModel: Identifiable {
     }
     
 }
+

@@ -50,6 +50,8 @@
 		838613A728352BBD00FFBC34 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613A628352BBD00FFBC34 /* UIApplication.swift */; };
 		838613A928352BED00FFBC34 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838613A828352BED00FFBC34 /* PreviewProvider.swift */; };
 		838AD1A72808FBFD0035F0C5 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838AD1A62808FBFD0035F0C5 /* Color.swift */; };
+		838C220F28B999DF008BA3CB /* StatisticRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838C220E28B999DF008BA3CB /* StatisticRow.swift */; };
+		838C221128B99DDC008BA3CB /* EarningsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838C221028B99DDC008BA3CB /* EarningsRow.swift */; };
 		838F679C2886045C005E3BA0 /* Split+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838F67982886045C005E3BA0 /* Split+CoreDataClass.swift */; };
 		838F679D2886045C005E3BA0 /* Split+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838F67992886045C005E3BA0 /* Split+CoreDataProperties.swift */; };
 		838F679E2886045C005E3BA0 /* Dividend+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838F679A2886045C005E3BA0 /* Dividend+CoreDataClass.swift */; };
@@ -145,6 +147,8 @@
 		838613A628352BBD00FFBC34 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		838613A828352BED00FFBC34 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		838AD1A62808FBFD0035F0C5 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		838C220E28B999DF008BA3CB /* StatisticRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticRow.swift; sourceTree = "<group>"; };
+		838C221028B99DDC008BA3CB /* EarningsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningsRow.swift; sourceTree = "<group>"; };
 		838F67982886045C005E3BA0 /* Split+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Split+CoreDataClass.swift"; sourceTree = "<group>"; };
 		838F67992886045C005E3BA0 /* Split+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Split+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		838F679A2886045C005E3BA0 /* Dividend+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dividend+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -258,6 +262,8 @@
 				83FA26E627B85F38008DA2BC /* StockSearchView.swift */,
 				83FA26E327B82461008DA2BC /* StockRow.swift */,
 				833859F1288DD0C9002AF992 /* StatisticView.swift */,
+				838C220E28B999DF008BA3CB /* StatisticRow.swift */,
+				838C221028B99DDC008BA3CB /* EarningsRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -702,10 +708,12 @@
 				83F9F71527CAAB2600C14D87 /* Asset.swift in Sources */,
 				83FA26E427B82461008DA2BC /* StockRow.swift in Sources */,
 				8368B3F527D2B936008AF135 /* StockSnapshot.swift in Sources */,
+				838C221128B99DDC008BA3CB /* EarningsRow.swift in Sources */,
 				837EEB2E289ACC9100EA539D /* CircleButton.swift in Sources */,
 				383B41882857C2EA00586B2E /* HomeView.swift in Sources */,
 				833859FF2891BD1B002AF992 /* Stock+CoreDataClass.swift in Sources */,
 				83C961F928ABE6E70019627B /* LineGraphView.swift in Sources */,
+				838C220F28B999DF008BA3CB /* StatisticRow.swift in Sources */,
 				833859F2288DD0C9002AF992 /* StatisticView.swift in Sources */,
 				838613A528352B8100FFBC34 /* Array.swift in Sources */,
 				83813CE127ED528C009344FE /* ChartView.swift in Sources */,

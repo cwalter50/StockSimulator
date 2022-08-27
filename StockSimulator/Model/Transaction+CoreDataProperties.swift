@@ -189,9 +189,9 @@ extension Transaction {
                 newTransaction.addToDividends(dividend)
                 newTransaction.stock = self.stock
                 account.addToTransactions(newTransaction)
-                print("Dividend paid added transaction to \(newTransaction.stock?.symbol) \(newTransaction)")
-                print(chartDividend)
-                print(chartDividend.dateFormated)
+//                print("Dividend paid added transaction to \(newTransaction.stock?.symbol) \(newTransaction)")
+//                print(chartDividend)
+//                print(chartDividend.dateFormated)
             }
             else {
                 print("Cannot find account to add dividend to the transaction")

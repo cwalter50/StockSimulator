@@ -22,8 +22,6 @@ final class APICaller{
     static let shared = APICaller()
 
     private struct Constants{
-//        static let apiKey = "BEDD33LJaE8HYMSFDX1Sf1lMVbkR3CKU518oCr8x" // stopped working 2/23/2022
-//        static let apiKey = "g4Kz4cnymT3w6iiUfowfT8s0Nthdk35adU4tjEq5" // stopped working on 3/5/22
 //        static let apiKey = "JvcnVegPVxaamusnImc1S1pTgWQoSWnB1zwAIrnP" // started working on 3/5/22. Stopped working on 3/12/22
         static let apiKey = "u0oXimhO5g6AIR9DIy85D80DPTAtPQP95l9FiAkk" // started working on 3/12/22
         static let quoteurlString = "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols="
@@ -34,14 +32,13 @@ final class APICaller{
         
         static func quoteSummaryURL(symbol: String) -> String {
         // https://yfapi.net/v11/finance/quoteSummary/ura?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile
-            return "https://yfapi.net/v11/finance/quoteSummary/\(symbol)?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile"
+            return "https://yfapi.net/v11/finance/quoteSummary/\(symbol)?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile%2Cearnings"
         }
         
         static func chartURL(symbol: String, range: String, interval: String) -> String {
 //            'https://yfapi.net/v8/finance/chart/AAPL?range=1d&region=US&interval=5m&lang=en&events=div%2Csplit'
             return "https://yfapi.net/v8/finance/chart/\(symbol)?range=\(range)&region=US&interval=\(interval)&lang=en&events=div%2Csplit"
         }
-        static let quoteSummaryURL = "https://yfapi.net/v11/finance/quoteSummary/AAPL?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile"
     }
 
     private init() {}
@@ -260,7 +257,6 @@ final class APICaller{
     // MARK: Quote summary contains a description website and other key statistics. BTC-USD does not contain a lot of information so a lot of the model in optional...
     func getQuoteSummary(symbol: String, completion: @escaping (ConnectionResult)-> Void)
     {
-        // https://yfapi.net/v11/finance/quoteSummary/AAPL?lang=en&region=US&modules=defaultKeyStatistics%2CassetProfile
         let urlString = Constants.quoteSummaryURL(symbol: symbol)
         guard let url = URL(string: urlString) else {
             return
@@ -285,7 +281,7 @@ final class APICaller{
             
             let decoder = JSONDecoder()
             if let response = try? decoder.decode(Summary.self, from: data) {
-//                print(response)
+                print(response)
                 completion(.quoteSummarySuccess(response.quoteSummary.result))
             }
             else {

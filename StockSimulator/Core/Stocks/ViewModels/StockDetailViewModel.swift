@@ -22,6 +22,8 @@ class StockDetailViewModel: ObservableObject
     
     @Published var quoteSummary: QuoteSummary? = nil
 //    @Environment(\.managedObjectContext) var moc // CoreData
+    
+    @Published var earningsStatistics: [EarningsModel] = []
 
     init(stockSnapshot: StockSnapshot)
     {
@@ -112,9 +114,9 @@ class StockDetailViewModel: ObservableObject
         let dayHighStat = StatisticModel(title: "Day High", value: stockSnapshot.regularMarketDayHigh.asCurrencyWith6Decimals())
         let dayLowStat = StatisticModel(title: "Day Low", value: stockSnapshot.regularMarketDayLow.asCurrencyWith6Decimals())
         let fiftyDayAvgStat = StatisticModel(title: "50 Day Average", value: (stockSnapshot.fiftyDayAverage ?? 0).asCurrencyWith2Decimals())
-        let fiftyDayAvgChangeStat = StatisticModel(title: "50 Day Average Change", value: (stockSnapshot.fiftyDayAverageChange ?? 0).asCurrencyWith2Decimals(), percentageChange: stockSnapshot.fiftyDayAverageChangePercent)
+        let fiftyDayAvgChangeStat = StatisticModel(title: "50 Day Average Change", value: (stockSnapshot.fiftyDayAverageChange ?? 0).asCurrencyWith2Decimals(), percentageChange: (stockSnapshot.fiftyDayAverageChangePercent ?? 0) * 100)
         let twoHundredDayAvgStat = StatisticModel(title: "200 Day Average", value: stockSnapshot.twoHundredDayAverage.asCurrencyWith2Decimals())
-        let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stockSnapshot.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stockSnapshot.twoHundredDayAverageChangePercent)
+        let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stockSnapshot.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stockSnapshot.twoHundredDayAverageChangePercent * 100)
     
         let dividend = stockSnapshot.trailingAnnualDividendRate?.asCurrencyWith6Decimals() ?? "$0.00"
         let dividendRate = ((stockSnapshot.trailingAnnualDividendYield ?? 0) * 100).asPercentString()
@@ -132,6 +134,20 @@ class StockDetailViewModel: ObservableObject
         let earningsDateStat = StatisticModel(title: "Earnings Date", value: earningsDate)
 
         overviewStatistics = [priceStat, previousCloseStat, dayHighStat, dayLowStat, marketCapStat, openStat, sharesOutstanding, volumeStat, avgVolume3MonthStat,avgVolume10DayStat, bidStat, askStat,  fiftyTwoWeekRange, peStat, forwardPeStat, epsStat, fiftyDayAvgStat,fiftyDayAvgChangeStat,twoHundredDayAvgStat,twoHundredDayAvgChangeStat,dividendStat, divDateStat,earningsDateStat, averageAnalystRating ]
+        
+        
+        
+        
+    }
+    
+    private func loadEarningsStats() {
+        
+        guard let quoteSummary = quoteSummary, let earnings = quoteSummary.earnings else {
+            print("no quote summary for \(symbol) found or no earnings found")
+            return
+        }
+        
+        earningsStatistics = earnings.earningsModels
     }
     
     private func loadCryptoStats()
@@ -201,6 +217,7 @@ class StockDetailViewModel: ObservableObject
                 if let data = array.first {
                     DispatchQueue.main.async {
                         self.quoteSummary = data
+                        self.loadEarningsStats()
                     }
                 }
             case .failure(let string):

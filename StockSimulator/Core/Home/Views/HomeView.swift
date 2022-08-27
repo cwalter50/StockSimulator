@@ -22,6 +22,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack {
+
                 List{
                     ForEach(vm.marketData, id: \.symbol) {
                         item in
@@ -67,6 +68,8 @@ struct HomeView: View {
         }
         .navigationViewStyle(.stack)
     }
+    
+
 }
 
 struct HomeView_Previews: PreviewProvider {

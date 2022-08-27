@@ -51,10 +51,12 @@ struct StockDetailView: View {
                     overViewHeader
 //                    Divider()
                     overviewStatsGrid
+                    earningsHeader
+                    earningsStatsGrid
                     stockRecommendationsHeader
 //                    Divider()
                     stockRecommendationsSliderView
-                    websiteLinkView
+//                    websiteLinkView
                 }
                 .padding()
                 Spacer()
@@ -129,6 +131,13 @@ extension StockDetailView {
             .foregroundColor(Color.theme.accent)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
+    var earningsHeader: some View {
+        Text("Earnings")
+            .font(.title)
+            .bold()
+            .foregroundColor(Color.theme.accent)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
     
     var descriptionHeader: some View {
         Text("Description")
@@ -181,6 +190,12 @@ extension StockDetailView {
         .padding(.horizontal, 20)
     }
     
+    var earningsStatsGrid: some View {
+        ForEach(vm.earningsStatistics) { stat in
+            EarningsRow(earnings: stat)
+        }
+        .padding([.bottom], 5)
+    }
     var stockRecommendationsHeader: some View {
         Text("Stock Recomendations")
             .font(.title)
