@@ -16,7 +16,6 @@ struct BarView: View {
     
     var color: Color
 
-    
     var range: Double {
         if minValue >= 0 {
             return maxValue
@@ -65,7 +64,5 @@ struct BarView_Previews: PreviewProvider {
         }
         .background(Color.yellow.opacity(0.1))
 
-        
-//        BarView(name: "4Q2021", value: 1.2, maxValue: 1.8, minValue: -0.4, totalHeight: 300)
     }
 }

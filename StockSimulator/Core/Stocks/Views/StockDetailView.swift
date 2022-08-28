@@ -190,8 +190,8 @@ extension StockDetailView {
                 .frame(maxWidth: .infinity, alignment: .leading)
             Divider()
             BarChartView(data: vm.earningsStatistics)
-                .frame(height: vm.earningsStatistics.count > 0 ? 150: 0, alignment: .center)
-                .padding(.bottom, 40)
+                .frame(height: vm.earningsStatistics.count > 0 ? 200: 0, alignment: .center)
+//                .padding(.bottom, 40)
         }
     }
     

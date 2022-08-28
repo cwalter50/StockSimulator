@@ -26,7 +26,7 @@ struct QuoteSummaryClass: Codable {
 // MARK: - Result
 struct QuoteSummary: Codable {
     let assetProfile: AssetProfile?
-//    let defaultKeyStatistics: DefaultKeyStatistics?
+    let defaultKeyStatistics: DefaultKeyStatistics?
     let earnings: Earnings?
 }
 
@@ -77,9 +77,11 @@ struct AssetProfile: Codable {
 // MARK: - EnterpriseValue
 struct EnterpriseValue: Codable {
     let fmt: String?
-    let longFmt: String
-    let raw: Int
+    let longFmt: String?
+    let raw: Int?
 }
+
+
 
 // MARK: - DefaultKeyStatistics
 struct DefaultKeyStatistics: Codable {
@@ -89,34 +91,36 @@ struct DefaultKeyStatistics: Codable {
 //    let beta3Year: AnnualHoldingsTurnover?
     let bookValue: The52_WeekChange?
 //    let category: JSONNull?
-    let dateShortInterest, earningsQuarterlyGrowth, enterpriseToEbitda, enterpriseToRevenue: The52_WeekChange?
+    let earningsQuarterlyGrowth: The52_WeekChange?
+//    let dateShortInterest, enterpriseToEbitda, enterpriseToRevenue: The52_WeekChange?
     let enterpriseValue: EnterpriseValue?
 //    let fiveYearAverageReturn: AnnualHoldingsTurnover?
-    let floatShares: EnterpriseValue?
+//    let floatShares: EnterpriseValue?
     let forwardEps, forwardPE: The52_WeekChange?
 //    let fundFamily: JSONNull?
 //    let fundInceptionDate: AnnualHoldingsTurnover?
     let heldPercentInsiders, heldPercentInstitutions: The52_WeekChange?
 //    let lastCapGain, lastDividendValue: AnnualHoldingsTurnover?
-    let lastFiscalYearEnd, lastSplitDate: The52_WeekChange?
-    let lastSplitFactor: String?
+//    let lastFiscalYearEnd, lastSplitDate: The52_WeekChange?
+//    let lastSplitFactor: String?
 //    let legalType: JSONNull?
-    let maxAge: Int?
+//    let maxAge: Int?
 //    let morningStarOverallRating, morningStarRiskRating: AnnualHoldingsTurnover?
-    let mostRecentQuarter: The52_WeekChange?
-    let netIncomeToCommon: EnterpriseValue?
-    let nextFiscalYearEnd, pegRatio: The52_WeekChange?
-    let priceHint: EnterpriseValue?
+//    let mostRecentQuarter: The52_WeekChange?
+//    let netIncomeToCommon: EnterpriseValue?
+//    let nextFiscalYearEnd: The52_WeekChange?
+    let pegRatio: The52_WeekChange?
+//    let priceHint: EnterpriseValue?
     let priceToBook: The52_WeekChange?
 //    let priceToSalesTrailing12Months: AnnualHoldingsTurnover?
     let profitMargins: The52_WeekChange?
 //    let revenueQuarterlyGrowth: AnnualHoldingsTurnover?
     let sharesOutstanding: EnterpriseValue?
-    let sharesPercentSharesOut: The52_WeekChange?
+//    let sharesPercentSharesOut: The52_WeekChange?
     let sharesShort: EnterpriseValue?
-    let sharesShortPreviousMonthDate: The52_WeekChange?
+//    let sharesShortPreviousMonthDate: The52_WeekChange?
     let sharesShortPriorMonth: EnterpriseValue?
-    let shortPercentOfFloat, shortRatio: The52_WeekChange?
+//    let shortPercentOfFloat, shortRatio: The52_WeekChange?
 //    let threeYearAverageReturn, totalAssets: AnnualHoldingsTurnover?
     let trailingEps: The52_WeekChange?
 //    let yield, ytdReturn: AnnualHoldingsTurnover?
@@ -130,13 +134,13 @@ struct DefaultKeyStatistics: Codable {
 //             beta3Year,
              bookValue,
 //             category,
-             dateShortInterest,
+//             dateShortInterest,
              earningsQuarterlyGrowth,
-             enterpriseToEbitda,
-             enterpriseToRevenue,
+//             enterpriseToEbitda,
+//             enterpriseToRevenue,
              enterpriseValue,
 //             fiveYearAverageReturn,
-             floatShares,
+//             floatShares,
              forwardEps,
              forwardPE,
 //             fundFamily,
@@ -145,29 +149,29 @@ struct DefaultKeyStatistics: Codable {
              heldPercentInstitutions,
 //             lastCapGain,
 //             lastDividendValue,
-             lastFiscalYearEnd,
-             lastSplitDate,
-             lastSplitFactor,
+//             lastFiscalYearEnd,
+//             lastSplitDate,
+//             lastSplitFactor,
 //             legalType,
-             maxAge,
+//             maxAge,
 //             morningStarOverallRating,
 //             morningStarRiskRating,
-             mostRecentQuarter,
-             netIncomeToCommon,
-             nextFiscalYearEnd,
+//             mostRecentQuarter,
+//             netIncomeToCommon,
+//             nextFiscalYearEnd,
              pegRatio,
-             priceHint,
+//             priceHint,
              priceToBook,
 //             priceToSalesTrailing12Months,
              profitMargins,
 //             revenueQuarterlyGrowth,
              sharesOutstanding,
-             sharesPercentSharesOut,
+//             sharesPercentSharesOut,
              sharesShort,
-             sharesShortPreviousMonthDate,
+//             sharesShortPreviousMonthDate,
              sharesShortPriorMonth,
-             shortPercentOfFloat,
-             shortRatio,
+//             shortPercentOfFloat,
+//             shortRatio,
 //             threeYearAverageReturn,
 //             totalAssets,
              trailingEps
@@ -185,8 +189,8 @@ struct DefaultKeyStatistics: Codable {
 
 // MARK: - The52_WeekChange
 struct The52_WeekChange: Codable {
-    let fmt: String
-    let raw: Double
+    let fmt: String?
+    let raw: Double?
 }
 
 // MARK: - Earnings
@@ -274,62 +278,6 @@ struct EarningsModel: Identifiable {
     
 }
 
-
-
-
-
-
-
-
-
-
-//// MARK: - DefaultKeyStatistics
-//struct DefaultKeyStatistics: Codable {
-//    let maxAge: Int
-//    let priceHint, enterpriseValue: EnterpriseValue
-//    let forwardPE: AnnualHoldingsTurnover
-//    let profitMargins: The52_WeekChange
-//    let floatShares, sharesOutstanding, sharesShort, sharesShortPriorMonth: EnterpriseValue
-//    let sharesShortPreviousMonthDate, dateShortInterest, sharesPercentSharesOut, heldPercentInsiders: The52_WeekChange
-//    let heldPercentInstitutions, shortRatio, shortPercentOfFloat, beta: The52_WeekChange
-//    let impliedSharesOutstanding: EnterpriseValue
-//    let morningStarOverallRating, morningStarRiskRating: AnnualHoldingsTurnover
-//    let category: JSONNull?
-//    let bookValue, priceToBook: The52_WeekChange
-//    let annualReportExpenseRatio, ytdReturn, beta3Year, totalAssets: AnnualHoldingsTurnover
-//    let yield: AnnualHoldingsTurnover
-//    let fundFamily: JSONNull?
-//    let fundInceptionDate: AnnualHoldingsTurnover
-//    let legalType: JSONNull?
-//    let threeYearAverageReturn, fiveYearAverageReturn, priceToSalesTrailing12Months: AnnualHoldingsTurnover
-//    let lastFiscalYearEnd, nextFiscalYearEnd, mostRecentQuarter: The52_WeekChange
-//    let earningsQuarterlyGrowth, revenueQuarterlyGrowth: AnnualHoldingsTurnover
-//    let netIncomeToCommon: EnterpriseValue
-//    let trailingEps, forwardEps: The52_WeekChange
-//    let pegRatio: AnnualHoldingsTurnover
-//    let lastSplitFactor: JSONNull?
-//    let lastSplitDate: AnnualHoldingsTurnover
-//    let enterpriseToRevenue, enterpriseToEbitda, the52WeekChange, sandP52WeekChange: The52_WeekChange
-//    let lastDividendValue, lastDividendDate, lastCapGain, annualHoldingsTurnover: AnnualHoldingsTurnover
-//
-//    enum CodingKeys: String, CodingKey {
-//        case maxAge, priceHint, enterpriseValue, forwardPE, profitMargins, floatShares, sharesOutstanding, sharesShort, sharesShortPriorMonth, sharesShortPreviousMonthDate, dateShortInterest, sharesPercentSharesOut, heldPercentInsiders, heldPercentInstitutions, shortRatio, shortPercentOfFloat, beta, impliedSharesOutstanding, morningStarOverallRating, morningStarRiskRating, category, bookValue, priceToBook, annualReportExpenseRatio, ytdReturn, beta3Year, totalAssets, yield, fundFamily, fundInceptionDate, legalType, threeYearAverageReturn, fiveYearAverageReturn, priceToSalesTrailing12Months, lastFiscalYearEnd, nextFiscalYearEnd, mostRecentQuarter, earningsQuarterlyGrowth, revenueQuarterlyGrowth, netIncomeToCommon, trailingEps, forwardEps, pegRatio, lastSplitFactor, lastSplitDate, enterpriseToRevenue, enterpriseToEbitda
-//        case the52WeekChange = "52WeekChange"
-//        case sandP52WeekChange = "SandP52WeekChange"
-//        case lastDividendValue, lastDividendDate, lastCapGain, annualHoldingsTurnover
-//    }
-//}
-//
-//// MARK: - AnnualHoldingsTurnover
-//struct AnnualHoldingsTurnover: Codable {
-//}
-//
-//// MARK: - The52_WeekChange
-//struct The52_WeekChange: Codable {
-//    let raw: Double
-//    let fmt: String
-//}
-//
 
 
 
