@@ -208,6 +208,13 @@ struct Earnings: Codable {
             let model = EarningsModel(title: title, actual: actual, estimate: estimate)
             result.append(model)
         }
+        
+        if let nextEstimate = earningsChart.currentQuarterEstimate {
+            let title = "\(earningsChart.currentQuarterEstimateDate ?? "")\(earningsChart.currentQuarterEstimateYear ?? 0)"
+            let estimate = nextEstimate.raw
+            let model = EarningsModel(title: title, estimate: estimate)
+            result.append(model)
+        }
         return result
     }
 }

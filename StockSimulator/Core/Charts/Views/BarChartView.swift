@@ -46,7 +46,7 @@ struct BarChartView: View {
                             HStack(spacing: 5) {
                                 StatisticView(stat: StatisticModel(title: "Estimation", value: (item.estimate ?? 0).formattedWithAbbreviations()))
                                 Spacer()
-                                StatisticView(stat: StatisticModel(title: "Actual", value: (item.actual ?? 0).formattedWithAbbreviations(), percentageChange: ((item.actual ?? 0) - (item.estimate ?? 0)), isPercentChange: false))
+                                StatisticView(stat: StatisticModel(title: "Actual", value: item.actual?.formattedWithAbbreviations() ?? "???", percentageChange: item.actual != nil ? (((item.actual ?? 0) - (item.estimate ?? 0))): nil, isPercentChange: false))
                                 
                             }
                             .padding(.horizontal, 5)
