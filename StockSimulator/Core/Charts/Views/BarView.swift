@@ -39,17 +39,17 @@ struct BarView: View {
             VStack(spacing: 0) { // Estimate BarChart
                 RoundedRectangle(cornerRadius: 5.0)
                     .fill(Color.clear) //
-                    .frame(height: value >= 0 ? (positivesHeight - barHeight) : positivesHeight)
+                    .frame(height: value >= 0 ? abs(positivesHeight - barHeight) : abs(positivesHeight))
                 RoundedRectangle(cornerRadius: 5.0)
                         .fill(color)
-                .frame(height: value >= 0 ? barHeight : 0)
+                .frame(height: value >= 0 ? abs(barHeight) : 0)
                 
                 RoundedRectangle(cornerRadius: 5.0)
                     .fill(color)
-                    .frame(height: value < 0 ? barHeight : 0)
+                    .frame(height: value < 0 ? abs(barHeight) : 0)
                 RoundedRectangle(cornerRadius: 5.0)
                     .fill(Color.clear)
-                    .frame(height: value < 0 ? negativesHeight - barHeight: negativesHeight)
+                    .frame(height: value < 0 ? abs(negativesHeight - barHeight): abs(negativesHeight))
             }
             .frame(width: 50)
         }
