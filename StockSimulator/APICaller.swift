@@ -281,7 +281,7 @@ final class APICaller{
             
             let decoder = JSONDecoder()
             if let response = try? decoder.decode(Summary.self, from: data) {
-                print(response)
+//                print(response)
                 completion(.quoteSummarySuccess(response.quoteSummary.result))
             }
             else {

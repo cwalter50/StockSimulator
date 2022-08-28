@@ -32,7 +32,17 @@ class DeveloperPreview {
     let stat2 = StatisticModel(title: "Total Volume", value: "$1.23Tr")
     let stat3 = StatisticModel(title: "Portfolio Value", value: "$50.4K", percentageChange: -12.34)
     
-    let earnings1 = EarningsModel(title: "3Q2021", actual: 2.1, estimate: 1.89, revenue: 83360000000, earnings: 20551000000)
+    let earnings1 = EarningsModel(title: "3Q2021", actual: 2.1, estimate: 1.89) // gain, beat
+    let earnings2 = EarningsModel(title: "4Q2021", actual: -0.4, estimate: -0.6) // loss, miss
+    let earnings3 = EarningsModel(title: "1Q2022", actual: 1.27, estimate: 1.4) // gain, miss
+    let earnings4 = EarningsModel(title: "2Q2022", actual: -0.2, estimate: -0.11) // loss, beat
+    let earnings5 = EarningsModel(title: "3Q2022", actual: 0.4, estimate: 0.4) // gain, tie
+    let earnings6 = EarningsModel(title: "4Q2022", actual: -0.8, estimate: -0.8) // loss, tie
+    let earnings7 = EarningsModel(title: "1Q2023", estimate: 1.7) // estimate only
+    
+    var earningsData: [EarningsModel] {
+        return [earnings1, earnings2, earnings3, earnings4, earnings5, earnings6, earnings7]
+    }
     
     var sampleTransaction: Transaction {
         let t = Transaction(context: dataController.container.viewContext)

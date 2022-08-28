@@ -25,11 +25,12 @@ struct QuoteSummaryClass: Codable {
 
 // MARK: - Result
 struct QuoteSummary: Codable {
-    let assetProfile: AssetProfile
+    let assetProfile: AssetProfile?
 //    let defaultKeyStatistics: DefaultKeyStatistics?
     let earnings: Earnings?
 }
 
+// PYPL does not have description....
 // MARK: - AssetProfile
 struct AssetProfile: Codable {
 //    let address1: String
@@ -71,6 +72,7 @@ struct AssetProfile: Codable {
 //    let totalPay, unexercisedValue: EnterpriseValue
 //    let yearBorn: Int
 //}
+
 
 // MARK: - EnterpriseValue
 struct EnterpriseValue: Codable {
@@ -200,18 +202,12 @@ struct Earnings: Codable {
         
         for q in earningsChart.quarterly {
             let title = q.date
-            
             let actual = q.actual.raw
             let estimate = q.estimate.raw
             
-            let financial = financialsChart.quarterly.first(where: {$0.date == q.date})
-            let revenue = financial?.revenue.raw
-            let earnings = financial?.earnings.raw
-            
-            let model = EarningsModel(title: title, actual: actual, estimate: estimate, revenue: revenue, earnings: earnings)
+            let model = EarningsModel(title: title, actual: actual, estimate: estimate)
             result.append(model)
         }
-        
         return result
     }
 }
@@ -219,10 +215,10 @@ struct Earnings: Codable {
 // MARK: - EarningsChart
 struct EarningsChart: Codable {
     let quarterly: [EarningsChartQuarterly]
-    let currentQuarterEstimate: The52_WeekChange
-    let currentQuarterEstimateDate: String
-    let currentQuarterEstimateYear: Int
-    let earningsDate: [The52_WeekChange]
+    let currentQuarterEstimate: The52_WeekChange? // this was causing the data not to load for PYPL, so I made it optional... It loads great now for PYPL 8/27/22
+    let currentQuarterEstimateDate: String?
+    let currentQuarterEstimateYear: Int?
+    let earningsDate: [The52_WeekChange?]
 }
 
 // MARK: - EarningsChartQuarterly
@@ -251,6 +247,7 @@ struct Yearly: Codable {
 
 
 
+
 // I built this struct to dsiply earnings, revenue, and more all together based on a date
 struct EarningsModel: Identifiable {
     
@@ -258,19 +255,75 @@ struct EarningsModel: Identifiable {
     let title: String
     let actual: Double?
     let estimate: Double?
-    let revenue: Int?
-    let earnings: Int?
+
     
-    init(title: String, actual: Double? = nil, estimate: Double? = nil, revenue: Int? = nil, earnings: Int? = nil)
+    init(title: String, actual: Double? = nil, estimate: Double? = nil)
     {
         self.title = title
         self.actual = actual
         self.estimate = estimate
-        self.revenue = revenue
-        self.earnings = earnings
+
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+//// MARK: - DefaultKeyStatistics
+//struct DefaultKeyStatistics: Codable {
+//    let maxAge: Int
+//    let priceHint, enterpriseValue: EnterpriseValue
+//    let forwardPE: AnnualHoldingsTurnover
+//    let profitMargins: The52_WeekChange
+//    let floatShares, sharesOutstanding, sharesShort, sharesShortPriorMonth: EnterpriseValue
+//    let sharesShortPreviousMonthDate, dateShortInterest, sharesPercentSharesOut, heldPercentInsiders: The52_WeekChange
+//    let heldPercentInstitutions, shortRatio, shortPercentOfFloat, beta: The52_WeekChange
+//    let impliedSharesOutstanding: EnterpriseValue
+//    let morningStarOverallRating, morningStarRiskRating: AnnualHoldingsTurnover
+//    let category: JSONNull?
+//    let bookValue, priceToBook: The52_WeekChange
+//    let annualReportExpenseRatio, ytdReturn, beta3Year, totalAssets: AnnualHoldingsTurnover
+//    let yield: AnnualHoldingsTurnover
+//    let fundFamily: JSONNull?
+//    let fundInceptionDate: AnnualHoldingsTurnover
+//    let legalType: JSONNull?
+//    let threeYearAverageReturn, fiveYearAverageReturn, priceToSalesTrailing12Months: AnnualHoldingsTurnover
+//    let lastFiscalYearEnd, nextFiscalYearEnd, mostRecentQuarter: The52_WeekChange
+//    let earningsQuarterlyGrowth, revenueQuarterlyGrowth: AnnualHoldingsTurnover
+//    let netIncomeToCommon: EnterpriseValue
+//    let trailingEps, forwardEps: The52_WeekChange
+//    let pegRatio: AnnualHoldingsTurnover
+//    let lastSplitFactor: JSONNull?
+//    let lastSplitDate: AnnualHoldingsTurnover
+//    let enterpriseToRevenue, enterpriseToEbitda, the52WeekChange, sandP52WeekChange: The52_WeekChange
+//    let lastDividendValue, lastDividendDate, lastCapGain, annualHoldingsTurnover: AnnualHoldingsTurnover
+//
+//    enum CodingKeys: String, CodingKey {
+//        case maxAge, priceHint, enterpriseValue, forwardPE, profitMargins, floatShares, sharesOutstanding, sharesShort, sharesShortPriorMonth, sharesShortPreviousMonthDate, dateShortInterest, sharesPercentSharesOut, heldPercentInsiders, heldPercentInstitutions, shortRatio, shortPercentOfFloat, beta, impliedSharesOutstanding, morningStarOverallRating, morningStarRiskRating, category, bookValue, priceToBook, annualReportExpenseRatio, ytdReturn, beta3Year, totalAssets, yield, fundFamily, fundInceptionDate, legalType, threeYearAverageReturn, fiveYearAverageReturn, priceToSalesTrailing12Months, lastFiscalYearEnd, nextFiscalYearEnd, mostRecentQuarter, earningsQuarterlyGrowth, revenueQuarterlyGrowth, netIncomeToCommon, trailingEps, forwardEps, pegRatio, lastSplitFactor, lastSplitDate, enterpriseToRevenue, enterpriseToEbitda
+//        case the52WeekChange = "52WeekChange"
+//        case sandP52WeekChange = "SandP52WeekChange"
+//        case lastDividendValue, lastDividendDate, lastCapGain, annualHoldingsTurnover
+//    }
+//}
+//
+//// MARK: - AnnualHoldingsTurnover
+//struct AnnualHoldingsTurnover: Codable {
+//}
+//
+//// MARK: - The52_WeekChange
+//struct The52_WeekChange: Codable {
+//    let raw: Double
+//    let fmt: String
+//}
+//
+
 
 
 

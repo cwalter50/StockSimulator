@@ -43,20 +43,17 @@ struct StockDetailView: View {
             ScrollView {
                 VStack {
                     topDetailView
-//                    Divider()
+                    Divider()
                     ChartView(symbol: vm.symbol)
                         .frame(height: 300)
-                    descriptionHeader
+//                    descriptionHeader
                     descriptionSection
-                    overViewHeader
-//                    Divider()
-                    overviewStatsGrid
-                    earningsHeader
-                    earningsStatsGrid
+                    overviewSection
+                    earningsSection
                     stockRecommendationsHeader
-//                    Divider()
+                    Divider()
                     stockRecommendationsSliderView
-//                    websiteLinkView
+                    websiteLinkView
                 }
                 .padding()
                 Spacer()
@@ -124,78 +121,80 @@ extension StockDetailView {
         }
     }
     
-    var overViewHeader: some View {
-        Text("Overview")
-            .font(.title)
-            .bold()
-            .foregroundColor(Color.theme.accent)
-            .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    var earningsHeader: some View {
-        Text("Earnings")
-            .font(.title)
-            .bold()
-            .foregroundColor(Color.theme.accent)
-            .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    
-    var descriptionHeader: some View {
-        Text("Description")
-            .font(.title)
-            .bold()
-            .foregroundColor(Color.theme.accent)
-            .frame(maxWidth: .infinity, alignment: .leading)
-    }
+
     
     private var descriptionSection: some View {
-        ZStack {
-            if let quoteSummary = vm.quoteSummary {
-                VStack(alignment: .leading) {
-                    Text(quoteSummary.assetProfile.wrappedDescription)
-                        .lineLimit(showFullDescription ? nil : 3)
-                        .font(.callout)
-                        .foregroundColor(Color.theme.secondaryText)
-                    Button {
-                        withAnimation(.easeInOut) {
-                            showFullDescription.toggle()
-                            
-                        }
-                    } label: {
-                        Text(showFullDescription ? "See Less" : "Read more..." )
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .padding(.vertical, 4)
-                    }
-                    .accentColor(.blue)
-                }
+        VStack {
+            Text("Description")
+                .font(.title)
+                .bold()
+                .foregroundColor(Color.theme.accent)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                
-
+            Divider()
+            ZStack {
+                if let quoteSummary = vm.quoteSummary, let assetProfile = quoteSummary.assetProfile {
+                    VStack(alignment: .leading) {
+                        Text(assetProfile.wrappedDescription)
+                            .lineLimit(showFullDescription ? nil : 3)
+                            .font(.callout)
+                            .foregroundColor(Color.theme.secondaryText)
+                        Button {
+                            withAnimation(.easeInOut) {
+                                showFullDescription.toggle()
+                                
+                            }
+                        } label: {
+                            Text(showFullDescription ? "See Less" : "Read more..." )
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .padding(.vertical, 4)
+                        }
+                        .accentColor(.blue)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
         }
+        
     }
     
-    var overviewStatsGrid: some View {
-        LazyVGrid(
-            columns: columns,
-            alignment: .leading,
-            spacing: nil,
-            pinnedViews: [],
-            content: {
-                ForEach(vm.overviewStatistics) { stat in
-                    StatisticView(stat: stat)
+    var overviewSection: some View {
+        VStack {
+            Text("Overview")
+                .font(.title)
+                .bold()
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Divider()
+            LazyVGrid(
+                columns: columns,
+                alignment: .leading,
+                spacing: nil,
+                pinnedViews: [],
+                content: {
+                    ForEach(vm.overviewStatistics) { stat in
+                        StatisticView(stat: stat)
 
-                }
-        })
-        .padding(.horizontal, 20)
+                    }
+            })
+            .padding(.horizontal, 5)
+        }
     }
     
-    var earningsStatsGrid: some View {
-        ForEach(vm.earningsStatistics) { stat in
-            EarningsRow(earnings: stat)
+    var earningsSection: some View {
+        VStack {
+            Text("Earnings")
+                .font(.title)
+                .bold()
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Divider()
+            BarChartView(data: vm.earningsStatistics)
+                .frame(height: vm.earningsStatistics.count > 0 ? 150: 0, alignment: .center)
+                .padding(.bottom, 40)
         }
-        .padding([.bottom], 5)
     }
+    
     var stockRecommendationsHeader: some View {
         Text("Stock Recomendations")
             .font(.title)
@@ -206,7 +205,7 @@ extension StockDetailView {
     
     var websiteLinkView: some View {
         ZStack(alignment: .leading) {
-            if let urlString = vm.quoteSummary?.assetProfile.website, let url = URL(string: urlString) {
+            if let summary = vm.quoteSummary, let assetProfile = summary.assetProfile, let urlString = assetProfile.website, let url = URL(string: urlString) {
                 Link(destination: url) {
                     Text("Website: \(urlString)")
                         .font(.headline)

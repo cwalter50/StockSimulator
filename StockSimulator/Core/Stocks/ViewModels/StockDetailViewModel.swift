@@ -135,9 +135,6 @@ class StockDetailViewModel: ObservableObject
 
         overviewStatistics = [priceStat, previousCloseStat, dayHighStat, dayLowStat, marketCapStat, openStat, sharesOutstanding, volumeStat, avgVolume3MonthStat,avgVolume10DayStat, bidStat, askStat,  fiftyTwoWeekRange, peStat, forwardPeStat, epsStat, fiftyDayAvgStat,fiftyDayAvgChangeStat,twoHundredDayAvgStat,twoHundredDayAvgChangeStat,dividendStat, divDateStat,earningsDateStat, averageAnalystRating ]
         
-        
-        
-        
     }
     
     private func loadEarningsStats() {
