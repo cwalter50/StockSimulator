@@ -18,6 +18,8 @@ class StockDetailViewModel: ObservableObject
     
     @Published var stockSnapshot: StockSnapshot? = nil
     
+    @Published var stockRating: Double = 0
+    
     @Published var stockRecommendations: [RecommendedSymbol] = [] // this has an array of RecommendedSymbols
     
     @Published var quoteSummary: QuoteSummary? = nil
@@ -42,6 +44,42 @@ class StockDetailViewModel: ObservableObject
         reloadStockData(symbol: symbol)
         loadStockRecommendations()
         loadQuoteSummary(symbol: symbol)
+        
+    }
+    
+    func calculateStockRating() {
+        
+        guard let stockSnapshot = stockSnapshot else {
+            return
+        }
+        
+        guard let quoteSummary = quoteSummary, let keyStats = quoteSummary.defaultKeyStatistics else {
+            return
+        }
+        
+
+
+        // look at future earnings, PEG ratio, PE Ratio, 200 Day Average, 50 Day Average. Dividend Percent, average analyst rating
+        
+        var total = 0.0
+        
+        // Dividend Score will be worth 10 points If dividend 10% or higher, stock gets a 10, otherwise stock gets the dividend rate.
+        let dividendRate = (stockSnapshot.trailingAnnualDividendYield ?? 0) * 100
+        
+        total += (dividendRate >= 10) ? 10 : dividendRate
+
+        // average analyst rating
+        // The weighting of the ratings is 1 for buy, 2 for outperform, 3 for hold, 4 for underperform and 5 for sell.
+        
+        
+//        let epsForward = stockSnapshot.epsForward ?? 0
+//        let eps = stockSnapshot.epsTrailingTwelveMonths ?? 0
+//        print("epsForward: \(epsForward), eps: \(eps)")
+//        let growth = epsForward - eps
+//        total += growth
+        
+        
+        stockRating = total
         
     }
     
@@ -75,6 +113,7 @@ class StockDetailViewModel: ObservableObject
         }
         else {
             loadStockStats()
+            calculateStockRating()
         }
         
     }
@@ -215,6 +254,7 @@ class StockDetailViewModel: ObservableObject
                     DispatchQueue.main.async {
                         self.quoteSummary = data
                         self.loadEarningsStats()
+                        self.calculateStockRating()
                     }
                 }
             case .failure(let string):

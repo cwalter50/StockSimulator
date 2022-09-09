@@ -293,7 +293,7 @@ extension ChartView {
         HStack(alignment: .bottom,spacing: width - 2) {
             ForEach(0..<vm.chartData.wrappedvolume.count, id: \.self) { i in
                 Rectangle()
-                    .fill(i >= 1 && vm.closeData[i] < vm.closeData[i-1] ? Color.theme.red : Color.theme.green)
+                    .fill(i >= 1 && vm.closeData.count > i && vm.closeData[i] < vm.closeData[i-1] ? Color.theme.red : Color.theme.green)
                     .frame(width: 2, height:maxVolume != 0 ? CGFloat(25 * vm.chartData.wrappedvolume[i] / maxVolume) : 1)
                 
             }

@@ -15,7 +15,7 @@ struct StatisticRow: View {
         HStack(spacing: 15) {
             Text(stat.title)
                 .font(.caption)
-                .foregroundColor(Color.theme.secondaryText)
+//                .foregroundColor(Color.theme.secondaryText)
             Spacer()
             
             HStack {
@@ -24,7 +24,7 @@ struct StatisticRow: View {
                     .rotationEffect(
                         Angle(degrees:(stat.percentageChange ?? 0) >= 0 ? 0 : 180))
                 
-                Text(stat.percentageChange?.asDecimalWith2Decimals() ?? "")
+                Text((stat.isPercentChange ?? true) ? (stat.percentageChange?.asPercentString() ?? ""): (stat.percentageChange?.formattedWithAbbreviations() ?? ""))
                     .font(.caption)
                     .bold()
             }

@@ -52,7 +52,6 @@
 		838AD1A72808FBFD0035F0C5 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838AD1A62808FBFD0035F0C5 /* Color.swift */; };
 		838C220F28B999DF008BA3CB /* StatisticRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838C220E28B999DF008BA3CB /* StatisticRow.swift */; };
 		838C221528BA6172008BA3CB /* BarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838C221428BA6172008BA3CB /* BarChartView.swift */; };
-		838C221728BA61C3008BA3CB /* BarChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838C221628BA61C3008BA3CB /* BarChartViewModel.swift */; };
 		838C221F28BA6FAE008BA3CB /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838C221E28BA6FAE008BA3CB /* BarView.swift */; };
 		838F679C2886045C005E3BA0 /* Split+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838F67982886045C005E3BA0 /* Split+CoreDataClass.swift */; };
 		838F679D2886045C005E3BA0 /* Split+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838F67992886045C005E3BA0 /* Split+CoreDataProperties.swift */; };
@@ -151,7 +150,6 @@
 		838AD1A62808FBFD0035F0C5 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		838C220E28B999DF008BA3CB /* StatisticRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticRow.swift; sourceTree = "<group>"; };
 		838C221428BA6172008BA3CB /* BarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartView.swift; sourceTree = "<group>"; };
-		838C221628BA61C3008BA3CB /* BarChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewModel.swift; sourceTree = "<group>"; };
 		838C221E28BA6FAE008BA3CB /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
 		838F67982886045C005E3BA0 /* Split+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Split+CoreDataClass.swift"; sourceTree = "<group>"; };
 		838F67992886045C005E3BA0 /* Split+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Split+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -392,7 +390,6 @@
 			isa = PBXGroup;
 			children = (
 				83813CEB27F27FEF009344FE /* ChartViewModel.swift */,
-				838C221628BA61C3008BA3CB /* BarChartViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -732,7 +729,6 @@
 				83813CE527ED5461009344FE /* ChartMockData.swift in Sources */,
 				837EEB102899A83500EA539D /* QuoteSummary.swift in Sources */,
 				838F679F2886045C005E3BA0 /* Dividend+CoreDataProperties.swift in Sources */,
-				838C221728BA61C3008BA3CB /* BarChartViewModel.swift in Sources */,
 				83D3FD2127A5FEF800F3746B /* StockSimulatorApp.swift in Sources */,
 				838C221F28BA6FAE008BA3CB /* BarView.swift in Sources */,
 				83FA26E727B85F38008DA2BC /* StockSearchView.swift in Sources */,

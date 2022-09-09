@@ -22,6 +22,27 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack {
+                Text("Overview")
+                    .font(.title)
+                    .bold()
+                    .foregroundColor(Color.theme.accent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Divider()
+                Text("Here is where I will display market summary...")
+                    .foregroundColor(Color.theme.secondaryText)
+                Text("S&P Data")
+                    .font(.title)
+                    .bold()
+                    .foregroundColor(Color.theme.accent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Divider()
+                VStack (spacing: 2){
+                    ForEach(vm.snpMarketStats) {
+                        stat in
+                        StatisticRow(stat: stat)
+                    }
+                }
+                .padding(.horizontal, 20)
 
                 List{
                     ForEach(vm.marketData, id: \.symbol) {
@@ -37,6 +58,7 @@ struct HomeView: View {
             }
             .onAppear(perform: {
                 vm.updateMarketData()
+                vm.updateMarketStats()
             })
             .navigationTitle(Text("Market Data"))
 

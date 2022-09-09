@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct BarChartView: View {
-    
-    
-
 //    @StateObject var vm: BarChartViewModel = BarChartViewModel()
     
     var data: [EarningsModel]
@@ -54,9 +51,6 @@ struct BarChartView: View {
 //                            Text("Estimation:")
 //                            StatisticView(stat: StatisticModel(title: item.title, value: (item.actual ?? 0).formattedWithAbbreviations()))
                         }
-                        
-                    
-                        
                     }
                 }
             }

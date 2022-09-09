@@ -43,7 +43,7 @@ struct StockDetailView: View {
             ScrollView {
                 VStack {
                     topDetailView
-                    Divider()
+                    stockRatingView
                     ChartView(symbol: vm.symbol)
                         .frame(height: 300)
 //                    descriptionHeader
@@ -89,6 +89,18 @@ struct StockDetailView_Previews: PreviewProvider {
 
 extension StockDetailView {
     
+    private var stockRatingView: some View {
+        VStack {
+            HStack {
+                Text("Stock Rating")
+                Spacer()
+                Text("\(vm.stockRating.asDecimalWith2Decimals())")
+                    .foregroundColor(vm.stockRating >= 70 ? Color.theme.green : Color.theme.red)
+            }
+            .font(.title2)
+        }
+    }
+    
     private var topDetailView: some View {
         VStack {
             if let stockSnapshot = vm.stockSnapshot {
@@ -118,6 +130,7 @@ extension StockDetailView {
             else {
                 EmptyView()
             }
+            Divider()
         }
     }
     

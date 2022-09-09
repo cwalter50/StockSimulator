@@ -7,14 +7,12 @@
 
 import Foundation
 
-
 enum ConnectionResult {
     case success([StockSnapshot])
     case chartSuccess(ChartData)
     case marketSummarySuccess([MarketSummary])
     case stockReccomendations([Recommendation])
     case quoteSummarySuccess([QuoteSummary])
-//    case success([StockSnapshot])
     case failure(String)
 }
 
@@ -46,7 +44,22 @@ final class APICaller{
     // MARK: this will get stock snapshots for all or multiple stocks... format needs to be SYMBOLA,SYMBOLB,SYMBOLC,... Max of 10 symbols
     public func getQuoteData(searchSymbols: String, completion: @escaping (ConnectionResult) -> Void){
         
-        let urlString = Constants.quoteurlString + searchSymbols.uppercased()
+        var symbols = ""
+        // have to convert symbol into a new form. the when the symbol is ^DJI -> %5EDJI. I do not know why, but I need to convert it to make it work with the API. also CL=F -> CL%3DF
+        if searchSymbols.contains("^") {
+            let result = searchSymbols.replacingOccurrences(of: "^", with: "%5E")
+            symbols = result
+        }
+        else if searchSymbols.contains("=") {
+            let result = searchSymbols.replacingOccurrences(of: "=", with: "%3D")
+            symbols = result
+        }
+        else {
+            symbols = searchSymbols
+        }
+        
+        
+        let urlString = Constants.quoteurlString + symbols.uppercased()
 //        let urlString = Constants.quoteurlString + "AAPL"
         guard let url = URL(string: urlString) else {
             return
@@ -65,6 +78,7 @@ final class APICaller{
                 }
                 if let message = results["message"] as? String
                 {
+                    print(message)
                     completion(.failure(message))
                 }
                 do {
@@ -72,9 +86,9 @@ final class APICaller{
 //                    print(json)
                     let decoder = JSONDecoder()
                     let quoteSnapshot = try decoder.decode(QuoteSnapshot.self, from: json)
-//                    print("found QuoteSnapshot")
 //                    print(quoteSnapshot)
-
+//                    self.stockSnapshots = quoteSnapshot.quoteResponse.result
+//                    print("Found these stocks: \(self.stockSnapshots)")
                     completion(.success(quoteSnapshot.quoteResponse.result))
                 }
                 catch {
@@ -88,6 +102,7 @@ final class APICaller{
             }
         }
         task.resume()
+        
     }
     
     func getChartData(searchSymbol: String, range: String, completion: @escaping (ConnectionResult) -> Void)

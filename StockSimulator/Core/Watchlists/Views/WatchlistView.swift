@@ -143,11 +143,11 @@ struct WatchlistView_Previews: PreviewProvider {
 
         
         return
-        NavigationView {
-            WatchlistView(watchlist: dev.sampleWatchlist)
-                .environment(\.managedObjectContext, context)
-                .navigationViewStyle(.stack)
-        }
+            NavigationView {
+                WatchlistView(watchlist: dev.sampleWatchlist)
+                    .environment(\.managedObjectContext, context)
+                    .navigationViewStyle(.stack)
+            }
         
         
 //            .environmentObject(dev.stockVM)
