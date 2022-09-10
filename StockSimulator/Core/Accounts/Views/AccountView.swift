@@ -46,17 +46,17 @@ struct AccountView: View {
             NavigationLink(destination: TransactionsView(account: account)) {
                 Text("See Transactions")
             }
-            Button {
-                testSampleSplit()
-            } label: {
-                Text("Test Sample Split")
-            }
-            
-            Button {
-                testSampleDividend()
-            } label: {
-                Text("Test Sample Dividend")
-            }
+//            Button {
+//                testSampleSplit()
+//            } label: {
+//                Text("Test Sample Split")
+//            }
+//            
+//            Button {
+//                testSampleDividend()
+//            } label: {
+//                Text("Test Sample Dividend")
+//            }
 
             HStack(alignment: .firstTextBaseline){
                 Text(account.wrappedName)

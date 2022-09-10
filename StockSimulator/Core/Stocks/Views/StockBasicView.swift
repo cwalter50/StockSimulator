@@ -12,8 +12,6 @@ struct StockBasicView: View {
 //    @State var stockSnapshot: StockSnapshot? = nil
     @State var stockSnapshot: StockSnapshot
 
-    
-    
     var body: some View {
         VStack {
             HStack (alignment: .firstTextBaseline){
@@ -36,9 +34,6 @@ struct StockBasicView: View {
                     }
                     .foregroundColor(stockSnapshot.regularMarketChange >= 0 ? Color.theme.green : Color.theme.red)
                     .font(.headline)
-                        
-                    
-                    
                 }
                 .onAppear(perform: loadCurrentStockInfo)
             }

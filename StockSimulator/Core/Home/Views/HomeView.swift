@@ -28,8 +28,10 @@ struct HomeView: View {
                         Text("Here is where I will display market summary...")
                             .foregroundColor(Color.theme.secondaryText)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        snpHeader
+                        
                         snpStatsView
+                        nasdaqStatsView
+                        dowStatsView
                         marketHeader
                         marketDataView
                     }
@@ -109,16 +111,7 @@ extension HomeView {
         }
     }
     
-    private var snpHeader: some View {
-        VStack {
-            Text("S&P Data")
-                .font(.title)
-                .bold()
-                .foregroundColor(Color.theme.accent)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Divider()
-        }
-    }
+
     private var marketHeader: some View {
         VStack {
             Text("Markets")
@@ -132,11 +125,46 @@ extension HomeView {
     
     private var snpStatsView: some View {
         VStack (spacing: 2){
+            Text("S&P Data")
+                .font(.headline)
+                .bold()
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
             ForEach(vm.snpMarketStats) {
                 stat in
                 StatisticRow(stat: stat)
             }
         }
+        .padding(.bottom)
+    }
+    
+    private var dowStatsView: some View {
+        VStack (spacing: 2){
+            Text("Dow Data")
+                .font(.headline)
+                .bold()
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            ForEach(vm.dowMarketStats) {
+                stat in
+                StatisticRow(stat: stat)
+            }
+        }
+        .padding(.bottom)
+    }
+    private var nasdaqStatsView: some View {
+        VStack (spacing: 2){
+            Text("NASDAQ Data")
+                .font(.headline)
+                .bold()
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            ForEach(vm.nasdaqMarketStats) {
+                stat in
+                StatisticRow(stat: stat)
+            }
+        }
+        .padding(.bottom)
     }
     
     private var marketDataView: some View {

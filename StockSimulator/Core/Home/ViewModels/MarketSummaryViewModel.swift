@@ -13,11 +13,11 @@ class MarketSummaryViewModel: ObservableObject
     @Published var marketData: [MarketSummary] = []
     
     @Published var snpMarketStats: [StatisticModel] = [] // this will display S&P market highlights on homeview
+    @Published var dowMarketStats: [StatisticModel] = [] // this will display dow market highlights on homeview
+    @Published var nasdaqMarketStats: [StatisticModel] = [] // this will display nasdaq market highlights on homeview
     
     
     @Published var isLoading: Bool = false
-    
-    
     
     init() {
         loadMarketData()
@@ -27,7 +27,7 @@ class MarketSummaryViewModel: ObservableObject
     {
         isLoading = true
         loadMarketData()
-        updatesnpData()
+        updateOverviewData()
         
     }
     
@@ -50,11 +50,39 @@ class MarketSummaryViewModel: ObservableObject
     }
     
     
-    func updatesnpData() {
-        APICaller.shared.getQuoteData(searchSymbols: "^GSPC") { result in
+    func updateOverviewData() {
+        APICaller.shared.getQuoteData(searchSymbols: "^GSPC,^DJI,^IXIC") { result in
             switch result {
             case .success(let stockSnapShots):
                 if let snpData = stockSnapShots.first(where: { $0.symbol == "^GSPC" }) {
+                    DispatchQueue.main.async {
+                        self.snpMarketStats = self.createStatisticModels(stockSnapshot: snpData)
+                    }
+                }
+                if let dowData = stockSnapShots.first(where: { $0.symbol == "^DJI" }) {
+                    DispatchQueue.main.async {
+                        self.dowMarketStats = self.createStatisticModels(stockSnapshot: dowData)
+                    }
+                }
+                if let nasdaqData = stockSnapShots.first(where: { $0.symbol == "^IXIC" }) {
+                    DispatchQueue.main.async {
+                        self.nasdaqMarketStats = self.createStatisticModels(stockSnapshot: nasdaqData)
+                    }
+                }
+            case .failure(let string):
+                print("Error getting overview stats: " + string)
+                
+            default:
+                print("Error in getting overview data")
+            }
+        }
+    }
+    
+    func updateDowData() {
+        APICaller.shared.getQuoteData(searchSymbols: "^DJI") { result in
+            switch result {
+            case .success(let stockSnapShots):
+                if let snpData = stockSnapShots.first(where: { $0.symbol == "^DJI" }) {
                     DispatchQueue.main.async {
                         self.snpMarketStats = self.createStatisticModels(stockSnapshot: snpData)
                     }
@@ -72,17 +100,17 @@ class MarketSummaryViewModel: ObservableObject
     {
         let regularMarketPrice = stockSnapshot.regularMarketPrice.asCurrencyWith6Decimals()
         let priceStat = StatisticModel(title: "Price", value: regularMarketPrice)
-        let previousCloseStat = StatisticModel(title: "Previous Close", value: stockSnapshot.regularMarketPreviousClose.asCurrencyWith6Decimals())
-        let avgVolume3Month = Double(stockSnapshot.averageDailyVolume3Month).formattedWithAbbreviations()
-        let avgVolume3MonthStat = StatisticModel(title: "Average Volume 3 Months", value: avgVolume3Month)
-        let avgVolume10Day = Double(stockSnapshot.averageDailyVolume10Day).formattedWithAbbreviations()
-        let avgVolume10DayStat = StatisticModel(title: "Average Volume 10 Day", value: avgVolume10Day)
-        let volume = Double(stockSnapshot.regularMarketVolume).formattedWithAbbreviations()
-        let volumeStat = StatisticModel(title: "Regular Market Volume", value: volume)
-        let shares = Double(stockSnapshot.sharesOutstanding ?? 0).formattedWithAbbreviations()
-        let sharesOutstanding = StatisticModel(title: "Shares Outstanding", value: shares)
+//        let previousCloseStat = StatisticModel(title: "Previous Close", value: stockSnapshot.regularMarketPreviousClose.asCurrencyWith6Decimals())
+//        let avgVolume3Month = Double(stockSnapshot.averageDailyVolume3Month).formattedWithAbbreviations()
+//        let avgVolume3MonthStat = StatisticModel(title: "Average Volume 3 Months", value: avgVolume3Month)
+//        let avgVolume10Day = Double(stockSnapshot.averageDailyVolume10Day).formattedWithAbbreviations()
+//        let avgVolume10DayStat = StatisticModel(title: "Average Volume 10 Day", value: avgVolume10Day)
+//        let volume = Double(stockSnapshot.regularMarketVolume).formattedWithAbbreviations()
+//        let volumeStat = StatisticModel(title: "Regular Market Volume", value: volume)
+//        let shares = Double(stockSnapshot.sharesOutstanding ?? 0).formattedWithAbbreviations()
+//        let sharesOutstanding = StatisticModel(title: "Shares Outstanding", value: shares)
         let fiftyTwoWeekRange = StatisticModel(title: "FiftyTwo week range", value: stockSnapshot.fiftyTwoWeekRange)
-        let averageAnalystRating = StatisticModel(title: "Average Analyst Rating", value: stockSnapshot.averageAnalystRating ?? "n/a")
+//        let averageAnalystRating = StatisticModel(title: "Average Analyst Rating", value: stockSnapshot.averageAnalystRating ?? "n/a")
         
         let dayHighStat = StatisticModel(title: "Day High", value: stockSnapshot.regularMarketDayHigh.asCurrencyWith6Decimals())
         let dayLowStat = StatisticModel(title: "Day Low", value: stockSnapshot.regularMarketDayLow.asCurrencyWith6Decimals())
@@ -92,7 +120,7 @@ class MarketSummaryViewModel: ObservableObject
         let twoHundredDayAvgChangeStat = StatisticModel(title: "200 Day Average Change", value: stockSnapshot.twoHundredDayAverageChange.asCurrencyWith2Decimals(), percentageChange: stockSnapshot.twoHundredDayAverageChangePercent * 100)
     
         
-        return [priceStat, previousCloseStat, dayHighStat, dayLowStat, sharesOutstanding, volumeStat, avgVolume3MonthStat,avgVolume10DayStat, fiftyTwoWeekRange, fiftyDayAvgStat,fiftyDayAvgChangeStat,twoHundredDayAvgStat,twoHundredDayAvgChangeStat, averageAnalystRating ]
+        return [priceStat, dayHighStat, dayLowStat,fiftyTwoWeekRange, fiftyDayAvgStat,fiftyDayAvgChangeStat,twoHundredDayAvgStat,twoHundredDayAvgChangeStat ]
     }
     
 }
