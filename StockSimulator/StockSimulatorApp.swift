@@ -14,6 +14,7 @@ struct StockSimulatorApp: App {
     @StateObject private var dataController: DataController = DataController()
 //    @StateObject private var vm: AccountViewModel
     @StateObject private var stockVM = StocksViewModel()
+    @StateObject private var marketSummaryVM = MarketSummaryViewModel()
     
 //    init(){
 //        let dataController = DataController()
@@ -29,6 +30,7 @@ struct StockSimulatorApp: App {
                 ContentView()
                     .environment(\.managedObjectContext, dataController.container.viewContext)
                     .environmentObject(stockVM)
+                    .environmentObject(marketSummaryVM)
     //                .environmentObject(dataController)
     //                .environmentObject(vm)
                 ZStack {

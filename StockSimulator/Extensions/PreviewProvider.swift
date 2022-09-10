@@ -25,6 +25,7 @@ class DeveloperPreview {
 //    let homeVM = HomeViewModel()
     let stockVM = StocksViewModel()
     let chartVM = ChartViewModel()
+    let marketsummaryVM = MarketSummaryViewModel()
     
     let dataController = DataController()
     

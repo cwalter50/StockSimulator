@@ -9,10 +9,10 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @EnvironmentObject var vm: StocksViewModel
+//    @EnvironmentObject var vm: StocksViewModel
+    @EnvironmentObject var vm: MarketSummaryViewModel
 //    @ObservedObject var vm = StocksViewModel()
     
-
     // needed to move navigationLink to background and not on the individual rows. When its on a row, it loads the data, before I need it. I prefer lazy loading, and only load the data when it is needed
     @State var selectedMarketSummary: MarketSummary? = nil
     @State var showDetailView = false
@@ -21,44 +21,24 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Text("Overview")
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(Color.theme.accent)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Divider()
-                Text("Here is where I will display market summary...")
-                    .foregroundColor(Color.theme.secondaryText)
-                Text("S&P Data")
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(Color.theme.accent)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Divider()
-                VStack (spacing: 2){
-                    ForEach(vm.snpMarketStats) {
-                        stat in
-                        StatisticRow(stat: stat)
+            ZStack {
+                ScrollView {
+                    VStack {
+                        overviewHeader
+                        Text("Here is where I will display market summary...")
+                            .foregroundColor(Color.theme.secondaryText)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        snpHeader
+                        snpStatsView
+                        marketHeader
+                        marketDataView
                     }
                 }
-                .padding(.horizontal, 20)
-
-                List{
-                    ForEach(vm.marketData, id: \.symbol) {
-                        item in
-                        MarketSummaryRow(marketSummary: item)
-                            .onTapGesture {
-                                selectedMarketSummary = item
-                                showDetailView.toggle()
-                            }
-                    }
-                }
-                .listStyle(PlainListStyle())
+                .padding()
             }
             .onAppear(perform: {
                 vm.updateMarketData()
-                vm.updateMarketStats()
+//                vm.updateMarketStats()
             })
             .navigationTitle(Text("Market Data"))
 
@@ -72,7 +52,6 @@ struct HomeView: View {
                             showSettingView.toggle()
                         }
                 }
-                                
             }
             .sheet(isPresented: $showSettingView, content: {
                 SettingsView()
@@ -97,7 +76,8 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
-            .environmentObject(dev.stockVM)
+            .environmentObject(dev.marketsummaryVM)
+//            .environmentObject(dev.stockVM)
     }
 }
 
@@ -115,5 +95,64 @@ extension HomeView {
         .rotationEffect(Angle(degrees: vm.isLoading ? 360 : 0), anchor: .center)
         
         
+    }
+    
+    
+    private var overviewHeader: some View {
+        VStack {
+            Text("Overview")
+                .font(.title)
+                .bold()
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Divider()
+        }
+    }
+    
+    private var snpHeader: some View {
+        VStack {
+            Text("S&P Data")
+                .font(.title)
+                .bold()
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Divider()
+        }
+    }
+    private var marketHeader: some View {
+        VStack {
+            Text("Markets")
+                .font(.title)
+                .bold()
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Divider()
+        }
+    }
+    
+    private var snpStatsView: some View {
+        VStack (spacing: 2){
+            ForEach(vm.snpMarketStats) {
+                stat in
+                StatisticRow(stat: stat)
+            }
+        }
+    }
+    
+    private var marketDataView: some View {
+        VStack {
+            ForEach(vm.marketData, id: \.symbol) {
+                item in
+                VStack {
+                    MarketSummaryRow(marketSummary: item)
+                        .onTapGesture {
+                            selectedMarketSummary = item
+                            showDetailView.toggle()
+                        }
+                    Divider()
+                }
+            }
+            
+        }
     }
 }
