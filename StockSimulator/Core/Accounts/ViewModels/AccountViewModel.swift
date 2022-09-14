@@ -202,7 +202,7 @@ final class AccountViewModel: ObservableObject {
         if canAffordTrade(numShares: numShares, stockSnapshot: stockSnapshot)
         {
             let newTransaction = Transaction(context: context)
-            newTransaction.updateValuesFromBuy(account: self.account, purchasePrice: stockSnapshot.regularMarketPrice, numShares: numShares)
+            newTransaction.updateValuesFromBuy(account: self.account, purchasePrice: stockSnapshot.regularMarketPrice, numShares: numShares, buyDate: Date())
             
             let newStock = Stock(context: context)
             newStock.updateValuesFromStockSnapshot(snapshot: stockSnapshot)

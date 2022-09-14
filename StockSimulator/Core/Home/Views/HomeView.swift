@@ -19,24 +19,43 @@ struct HomeView: View {
     
     @State private var showSettingView: Bool = false
     
+    init() {
+        UIPageControl.appearance().currentPageIndicatorTintColor = UIColor.systemBlue
+       UIPageControl.appearance().pageIndicatorTintColor = UIColor.gray
+       }
+    
     var body: some View {
         NavigationView {
             ZStack {
                 ScrollView {
                     VStack {
                         overviewHeader
+                            .padding()
                         Text("Here is where I will display market summary...")
                             .foregroundColor(Color.theme.secondaryText)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                        ScrollView(.horizontal) {
+                            TabView {
+                                snpStatsView
+                                    .padding(.horizontal, 10)
+                                dowStatsView
+                                    .padding(.horizontal, 10)
+                                nasdaqStatsView
+                                    .padding(.horizontal, 10)
+                                
+                            }
+                            .frame(width: UIScreen.main.bounds.width - 10, height: 280)
+                            .tabViewStyle(.page)
+                        }
+                            
                         
-                        snpStatsView
-                        nasdaqStatsView
-                        dowStatsView
                         marketHeader
+                            .padding()
                         marketDataView
+                            .padding()
                     }
                 }
-                .padding()
+//                .padding()
             }
             .onAppear(perform: {
                 vm.updateMarketData()
@@ -135,7 +154,15 @@ extension HomeView {
                 StatisticRow(stat: stat)
             }
         }
-        .padding(.bottom)
+        .padding(.bottom, 50)
+        .padding()
+//        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .strokeBorder()
+                .foregroundColor(Color.theme.buttonColor)
+        )
+
     }
     
     private var dowStatsView: some View {
@@ -150,7 +177,13 @@ extension HomeView {
                 StatisticRow(stat: stat)
             }
         }
-        .padding(.bottom)
+        .padding(.bottom, 50)
+        .padding()
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .strokeBorder()
+                .foregroundColor(Color.theme.buttonColor)
+        )
     }
     private var nasdaqStatsView: some View {
         VStack (spacing: 2){
@@ -164,7 +197,13 @@ extension HomeView {
                 StatisticRow(stat: stat)
             }
         }
-        .padding(.bottom)
+        .padding(.bottom, 50)
+        .padding()
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .strokeBorder()
+                .foregroundColor(Color.theme.buttonColor)
+        )
     }
     
     private var marketDataView: some View {

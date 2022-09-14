@@ -15,6 +15,7 @@ struct StatisticRow: View {
         HStack(spacing: 15) {
             Text(stat.title)
                 .font(.caption)
+                .lineLimit(2)
 //                .foregroundColor(Color.theme.secondaryText)
             Spacer()
             
@@ -27,15 +28,18 @@ struct StatisticRow: View {
                 Text((stat.isPercentChange ?? true) ? (stat.percentageChange?.asPercentString() ?? ""): (stat.percentageChange?.formattedWithAbbreviations() ?? ""))
                     .font(.caption)
                     .bold()
+                    .lineLimit(2)
             }
             .foregroundColor((stat.percentageChange ?? 0) >= 0 ? Color.theme.green : Color.theme.red)
             .opacity(stat.percentageChange == nil ? 0.0 : 1.0)
             Text(stat.value)
                 .font(.caption)
                 .foregroundColor(Color.theme.accent)
+                .lineLimit(2)
             
             
         }
+    
         
     }
 }
