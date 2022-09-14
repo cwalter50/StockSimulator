@@ -96,11 +96,11 @@ extension Transaction {
         self.totalProceeds = transaction.totalProceeds
     }
     
-    func updateValuesFromBuy(account: Account, purchasePrice:Double, numShares: Double)
+    func updateValuesFromBuy(account: Account, purchasePrice:Double, numShares: Double, buyDate: Date)
     {
         self.account = account
         self.id = UUID()
-        self.buyDate = Date()
+        self.buyDate = buyDate
         self.purchasePrice = purchasePrice
         self.numShares = numShares
         self.isClosed = false
@@ -183,8 +183,9 @@ extension Transaction {
             let newShares = newCash / dividend.stockPriceAtDate
             if let account = account {
                 let newTransaction = Transaction(context: context)
-                newTransaction.updateValuesFromBuy(account: account, purchasePrice: dividend.stockPriceAtDate, numShares: newShares)
+                newTransaction.updateValuesFromBuy(account: account, purchasePrice: dividend.stockPriceAtDate, numShares: newShares, buyDate: Date(timeIntervalSince1970: Double(chartDividend.date)))
                 newTransaction.eventType = "DIVIDEND"
+//                newTransaction.buyDate = Date(timeIntervalSince1970: Double(chartDividend.date))
                 // add this dividend to the newTransaction's Dividends, so that it will not make duplicates
                 newTransaction.addToDividends(dividend)
                 newTransaction.stock = self.stock
@@ -226,12 +227,13 @@ extension Transaction {
               return dividendDate > wrappedBuyDate
         }
     }
-    // MARK: Checks if the dividends already in the transactions contains the ChartData.dividend
+    // MARK: Checks if the dividends already in the transactions contains the ChartData.dividend and if the transaction
     private func isDividendAlreadyAddedToTransaction(dividend: ChartData.Dividend) -> Bool
     {
         let theDividends = dividends?.allObjects as! [Dividend]
         return theDividends.contains {$0.date == dividend.date} // dates are stored as Int32's
     }
+    
     
     // MARK:  check if split is valid to be applied to Transaction. It is valid if the split has not already been added to the transaction, and the split record date is within the time frame of the buy date and sell date
     private func isSplitValid(split: ChartData.Split, dateOfRecord: String) -> Bool
