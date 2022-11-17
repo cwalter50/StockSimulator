@@ -14,6 +14,8 @@ struct AddAccountView: View {
     
     @State var startingAmount: String
     
+    @State var notes: String = ""
+    
     @Environment(\.managedObjectContext) var moc // CoreData
 
     // will allow us to dismiss
@@ -25,6 +27,14 @@ struct AddAccountView: View {
                 HStack {
                     Text("Name:")
                     TextField("Enter Account Name", text: $name)
+                        .autocapitalization(.words)
+//                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                }
+            }
+            Section{
+                HStack {
+                    Text("Notes: ")
+                    TextEditor(text: $notes)
                         .autocapitalization(.words)
 //                            .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
@@ -54,6 +64,7 @@ struct AddAccountView: View {
                 newAccount.startingValue = cash
                 newAccount.cash = cash
                 newAccount.created = Date()
+                newAccount.notes = notes
                 if moc.hasChanges {
                     try? moc.save()
                 }

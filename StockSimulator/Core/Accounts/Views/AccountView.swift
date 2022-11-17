@@ -29,12 +29,16 @@ struct AccountView: View {
     
     @State var showDetailView = false
     @State var selectedAsset: Asset? = nil
+    
+    @State var accountName = ""
+    @State var notes = ""
 
     init (account: Account)
     {
         self.account = account
 
         vm = AccountViewModel(account: account)
+        accountName = account.wrappedName
 //        _vm = StateObject(wrappedValue: AccountViewModel(account: account))
         
 
@@ -51,91 +55,23 @@ struct AccountView: View {
 //            } label: {
 //                Text("Test Sample Split")
 //            }
-//            
+//
 //            Button {
 //                testSampleDividend()
 //            } label: {
 //                Text("Test Sample Dividend")
 //            }
 
-            HStack(alignment: .firstTextBaseline){
-                Text(account.wrappedName)
-                    .font(.title)
-                Spacer()
-                Button(action: {
-                    showingDepositView.toggle()
-                }) {
-                    Text("Deposit $")
-                }
-//                Text(String(format: "$%.2f", account.calculateValue()))
-//                    .font(.headline)
-            }
-            .sheet(isPresented: $showingDepositView, onDismiss: {
-                loadCurrentStockInfo()
-            }){
-                DepositView(account: account)
-                
-            }
-            .alert(isPresented: $showingDeleteAlert) {
-                Alert(title: Text("Delete \(account.name ?? "Account")?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete"), action: deleteAccount), secondaryButton: .cancel())
-            }
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(String(format: "Account Value: $%.2f", account.currentValue))
-                        .font(.headline)
-                    Spacer()
-                    
-                }
-                Text(String(format: "Cash: $%.2f", account.cash))
-                    .font(.headline)
-                    
-            }
-            .padding([.top, .bottom])
+            nameAndNotesView
+            accountBalanceAndCashView
+            
+
             Divider()
-            HStack(alignment: .firstTextBaseline) {
-                Text("Holdings")
-                    .font(.headline)
-                Spacer()
-                Button(action: {
-                    loadCurrentStockInfo()
-                    HapticManager.notification(type: .success)
-                }, label: {
-                    Image(systemName: "arrow.clockwise")
-                })
-                Button(action: {
-                    isSearchPresented.toggle()
-                }) {
-                    Image(systemName: "plus")
-                }
-                .sheet(isPresented: $isSearchPresented, onDismiss: {
-                    loadCurrentStockInfo()
-                }){
-                    StockSearchView(theAccount: account)
-                }
-            }
+            holdingBarView
             .alert(isPresented: $showingErrorAlert) {
                 Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
             }
-            List {
-                HStack(alignment: .center) {
-                    Text("Symbol/Qty")
-                    Spacer()
-                    Text("Total/Price")
-                    Spacer()
-                    Text("Total G/L")
-                }
-                ForEach (vm.assets) {
-                    asset in
-                    if asset.totalShares > 0 {
-                        AssetRow(asset: asset)
-                            .onTapGesture {
-                                selectedAsset = asset
-                                showDetailView.toggle()
-                            }
-                    }
-                }
-            }
-            .listStyle(PlainListStyle())
+            holdingListView
         }
         .background {
             if let sa = selectedAsset {
@@ -162,6 +98,8 @@ struct AccountView: View {
         }
         .onAppear(perform: loadCurrentStockInfo)
 //            .navigationBarHidden(true)
+        
+        
     }
     
     
@@ -179,6 +117,8 @@ struct AccountView: View {
     {
         vm.updateAssetValues()
         vm.updateSplitsAndDividends(context: moc)
+        accountName = vm.account.wrappedName
+        notes = vm.account.wrappedNotes
     }
     
     func deleteAccount()
@@ -187,11 +127,129 @@ struct AccountView: View {
         moc.delete(account)
         try? moc.save()
     }
+    
+    func updateAccountName() {
+        self.account.name = accountName
+        if moc.hasChanges {
+            try? moc.save()
+        }
+        print("Updating Name \(accountName)")
+    }
 }
 
 struct AccountView_Previews: PreviewProvider {
 
     static var previews: some View {
         AccountView(account: dev.sampleAccount)
+    }
+}
+
+extension AccountView {
+    
+    var nameAndNotesView: some View {
+        VStack {
+            HStack(alignment: .firstTextBaseline){
+                TextField("Account Name", text: $accountName)
+                    .font(.title)
+                    .onSubmit(updateAccountName)
+                Spacer()
+                Button(action: {
+                    showingDepositView.toggle()
+                }) {
+                    Text("Deposit $")
+                }
+//                Text(String(format: "$%.2f", account.calculateValue()))
+//                    .font(.headline)
+            }
+            .sheet(isPresented: $showingDepositView, onDismiss: {
+                loadCurrentStockInfo()
+            }){
+                DepositView(account: account)
+                
+            }
+            .alert(isPresented: $showingDeleteAlert) {
+                Alert(title: Text("Delete \(account.name ?? "Account")?"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Delete"), action: deleteAccount), secondaryButton: .cancel())
+            }
+            HStack(alignment: .firstTextBaseline, spacing: 5) {
+                Text("Notes: ")
+                    .font(.title3)
+                TextEditor(text: $notes)
+                    .autocapitalization(.words)
+                    .foregroundColor(.secondary)
+                    .frame(height: 100, alignment: .topLeading)
+                    .clipped()
+                    .onChange(of: notes) { newValue in
+                        account.notes = newValue
+                        if moc.hasChanges {
+                            try? moc.save()
+                        }
+                        print("updated notes of account")
+                    }
+            }
+            
+        }
+    }
+    
+    
+    var accountBalanceAndCashView: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text(String(format: "Account Value: $%.2f", account.currentValue))
+                    .font(.headline)
+                Spacer()
+                
+            }
+            Text(String(format: "Cash: $%.2f", account.cash))
+                .font(.headline)
+                
+        }
+        .padding([.top, .bottom])
+    }
+    
+    var holdingListView: some View {
+        List {
+            HStack(alignment: .center) {
+                Text("Symbol/Qty")
+                Spacer()
+                Text("Total/Price")
+                Spacer()
+                Text("Total G/L")
+            }
+            ForEach (vm.assets) {
+                asset in
+                if asset.totalShares > 0 {
+                    AssetRow(asset: asset)
+                        .onTapGesture {
+                            selectedAsset = asset
+                            showDetailView.toggle()
+                        }
+                }
+            }
+        }
+        .listStyle(PlainListStyle())
+    }
+    
+    var holdingBarView: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text("Holdings")
+                .font(.headline)
+            Spacer()
+            Button(action: {
+                loadCurrentStockInfo()
+                HapticManager.notification(type: .success)
+            }, label: {
+                Image(systemName: "arrow.clockwise")
+            })
+            Button(action: {
+                isSearchPresented.toggle()
+            }) {
+                Image(systemName: "plus")
+            }
+            .sheet(isPresented: $isSearchPresented, onDismiss: {
+                loadCurrentStockInfo()
+            }){
+                StockSearchView(theAccount: account)
+            }
+        }
     }
 }

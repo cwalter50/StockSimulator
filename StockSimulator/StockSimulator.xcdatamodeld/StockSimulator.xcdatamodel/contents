@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22A400" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName=".Account" syncable="YES">
         <attribute name="cash" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
         <attribute name="startingValue" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Transaction" inverseName="account" inverseEntity="Transaction"/>
     </entity>
@@ -124,12 +125,4 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="stocks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stock" inverseName="watchlists" inverseEntity="Stock"/>
     </entity>
-    <elements>
-        <element name="Account" positionX="-83.875" positionY="-196.49609375" width="128" height="133"/>
-        <element name="Dividend" positionX="-492.4375" positionY="-195.40234375" width="128" height="148"/>
-        <element name="Split" positionX="-490.5625" positionY="10.38671875" width="128" height="163"/>
-        <element name="Stock" positionX="10.81640625" positionY="55.765625" width="128" height="1124"/>
-        <element name="Transaction" positionX="-273.6015625" positionY="-178.7109375" width="128" height="253"/>
-        <element name="Watchlist" positionX="278.01171875" positionY="-68.328125" width="128" height="103"/>
-    </elements>
 </model>
