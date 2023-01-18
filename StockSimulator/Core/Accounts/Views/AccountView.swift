@@ -174,7 +174,7 @@ extension AccountView {
                 Text("Notes: ")
                     .font(.title3)
                 TextEditor(text: $notes)
-                    .autocapitalization(.words)
+                    .autocapitalization(.sentences)
                     .foregroundColor(.secondary)
                     .frame(height: 100, alignment: .topLeading)
                     .clipped()

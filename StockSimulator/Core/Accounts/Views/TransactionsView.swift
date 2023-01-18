@@ -28,7 +28,20 @@ struct TransactionsView: View {
                 ForEach(transactions) { t in
                     TransactionRow(transaction: t)
                 }
+                .onDelete(perform: delete)
             }
+        }
+    }
+    
+    func delete(at offsets: IndexSet) {
+    
+        for i in offsets {
+            let transaction = transactions[i]
+            account.removeFromTransactions(transaction)
+            moc.delete(transaction)
+        }
+        if moc.hasChanges {
+            try? moc.save()
         }
     }
 }

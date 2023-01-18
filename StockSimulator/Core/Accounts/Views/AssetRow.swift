@@ -53,6 +53,7 @@ struct AssetRow: View{
 
 struct AssetRow_Previews: PreviewProvider {
     static var previews: some View {
-        AssetRow(asset: Asset(transactions: [Transaction()], stock: Stock()))
+        let stock = dev.sampleStock
+        AssetRow(asset: Asset(transactions: [], stock: stock))
     }
 }

@@ -155,7 +155,7 @@ extension Transaction {
     func addAndApplyDividendIfValid(dividend: ChartData.Dividend, dateOfRecord: String, stockPriceAtDividend: Double?, context: NSManagedObjectContext)
     {
         if isDividendValid(dividend: dividend, dateOfRecord: dateOfRecord) {
-            print("Found a valid dividend: ")
+            print("Found a valid dividend for \(self.stock?.symbol ?? "No Name"): ")
             print(dividend)
             print("Date of Record: \(dateOfRecord)")
             // make a new Dividend Object
@@ -200,7 +200,6 @@ extension Transaction {
             // save the changed data
             if context.hasChanges {
                 try? context.save()
-                
             }
         }
         else {
@@ -213,11 +212,11 @@ extension Transaction {
     // MARK:  check if dividend is valid to be applied to Transaction. It is valid if the dividend has not already been added to the transaction, and the dividend record date is within the time frame of the buy date and sell date
     private func isDividendValid(dividend: ChartData.Dividend, dateOfRecord: String) -> Bool
     {
-            return isDividendInValidTimeFrame(dividend: dividend, dateOfRecord: dateOfRecord) && !isDividendAlreadyAddedToTransaction(dividend: dividend)
+            return isDividendInValidTimeFrame(dividend: dividend) && !isDividendAlreadyAddedToTransaction(dividend: dividend)
         
     }
     // MARK: Checks if the dividend date is within the transactions window of holding the asset.
-    private func isDividendInValidTimeFrame(dividend: ChartData.Dividend, dateOfRecord: String) -> Bool {
+    private func isDividendInValidTimeFrame(dividend: ChartData.Dividend) -> Bool {
 //        let dividendDate = Date(timeIntervalSince1970: Double(dateOfRecord) ?? Double(dividend.date))
         let dividendDate = Date(timeIntervalSince1970: Double(dividend.date))
         if let theSellDate = sellDate {
@@ -231,6 +230,11 @@ extension Transaction {
     private func isDividendAlreadyAddedToTransaction(dividend: ChartData.Dividend) -> Bool
     {
         let theDividends = dividends?.allObjects as! [Dividend]
+        print("Found \(theDividends.count) dividends for \(self.stock?.wrappedSymbol ?? "noName")")
+        for d in theDividends
+        {
+            print("Dividend Date of record: \(d.date), dividend date: \(dividend.date)")
+        }
         return theDividends.contains {$0.date == dividend.date} // dates are stored as Int32's
     }
     
