@@ -597,8 +597,6 @@ struct ChartData: Codable {
 
     }
     
-
-    
     // MARK: - Events
     struct Events: Codable {
         let dividends: [String: Dividend]?

@@ -127,9 +127,9 @@ final class AccountViewModel: ObservableObject {
     //                            }
     //                        }
     //                    }
-
-                        self.updateDividendsToTransactions(chartData: chartData, asset: asset, context: context)
-                        self.updateSplitsToTransactions(chartData: chartData, asset: asset, context: context)
+                        self.updateDividendsToAccount(chartData: chartData, asset: asset, context: context)
+//                        self.updateDividendsToTransactions(chartData: chartData, asset: asset, context: context)
+//                        self.updateSplitsToTransactions(chartData: chartData, asset: asset, context: context)
                     case .failure(let string):
                         print("Error loading dividends and splits for \(string)")
                     default:
@@ -137,12 +137,28 @@ final class AccountViewModel: ObservableObject {
                     }
                 }
             }
-            
         }
     }
     
+
+    // if dividend is not applied, figure out total shares owned of asset and apply dividend to the total shares, make a new transaction, then add the dividend as applied to account, so we do not do this again and have duplicates
+    func updateDividendsToAccount(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
+    {
+        // check if the dividend is already applied to the account
+        if let events = chartData.events, let thedividends = events.dividends {
+            for d in thedividends {
+                let price = chartData.priceAtOpenOnDate(date: d.value.date) ?? asset.stock.regularMarketPrice
+                account.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: price, stock: asset.stock, context: context)
+            }
+            
+        }
+        
+        
+        // if dividend is not applied, figure out total shares owned of asset and apply dividend to the total shares, then mark the dividend as applied to asset, so we do not do this again.
+    }
     func updateDividendsToTransactions(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
     {
+        
         for t in asset.transactions {
             if let events = chartData.events, let thedividends = events.dividends {
 //                print("found \(thedividends.count) dividends")
@@ -184,15 +200,15 @@ final class AccountViewModel: ObservableObject {
     
     func testSampleDividend(context: NSManagedObjectContext) {
         for asset in assets {
-            for t in asset.transactions {
-                let data = ChartMockData.sampleDividendNow
-                if let events = data.events, let thedividends = events.dividends {
-                    for d in thedividends {
-                        t.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: asset.stock.regularMarketPrice, context: context)
-//                        print("Added Dividend \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
-                    }
+            let data = ChartMockData.sampleDividendNow
+            if let events = data.events, let thedividends = events.dividends {
+                for d in thedividends
+                {
+                    account.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: asset.stock.regularMarketPrice, stock: asset.stock, context: context)
+                    print("Added Dividend \(d.value.amount) to account \(account.wrappedName) of \(asset.stock.wrappedSymbol)")
                 }
             }
+            
         }
     }
     

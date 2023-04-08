@@ -30,6 +30,7 @@ struct TransactionsView: View {
                 }
                 .onDelete(perform: delete)
             }
+            .listStyle(.plain)
         }
     }
     

@@ -46,6 +46,10 @@ extension Transaction {
         return eventType ?? "UnKnown"
     }
     
+    var netProfit: Double {
+        return totalProceeds - costBasis
+    }
+    
 //    var toString: String {
 //        var result = "\(wrappedEventType): \(numShares) of \(stock?.wrappedSymbol ?? "UnKnown") at price $\(purchasePrice) on date \(buyDate?.asShortDateString() ?? Date().asShortDateString())"
 //        
@@ -57,6 +61,10 @@ extension Transaction {
     
     var wrappedBuyDate: Date {
         return self.buyDate ?? Date()
+    }
+    
+    var wrappedSellDate: Date {
+        return self.sellDate ?? Date()
     }
     
         
@@ -161,7 +169,7 @@ extension Transaction {
             // make a new Dividend Object
             let d = Dividend(context: context)
             let price = stockPriceAtDividend ?? (stock?.regularMarketPrice ?? purchasePrice)
-            d.updateDividendValuesFromChartDataDividend(dividend: dividend, dateOfRecord: dateOfRecord, stockPriceAtDate: price)
+            d.updateDividendValuesFromChartDataDividend(dividend: dividend, dateOfRecord: dateOfRecord, stockPriceAtDate: price, stockSymbol: self.stock?.wrappedSymbol ?? "No Symbol", account: self.account ?? Account())
             self.addToDividends(d)
             
             // this will create a newTransaction

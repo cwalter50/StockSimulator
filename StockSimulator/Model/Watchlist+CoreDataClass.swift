@@ -13,3 +13,10 @@ import CoreData
 public class Watchlist: NSManagedObject {
 
 }
+
+    
+
+
+
+
+

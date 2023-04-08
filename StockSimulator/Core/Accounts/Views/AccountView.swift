@@ -45,33 +45,35 @@ struct AccountView: View {
     }
     
     var body: some View {
-        VStack(alignment: .center){
-            
-            NavigationLink(destination: TransactionsView(account: account)) {
-                Text("See Transactions")
-            }
-//            Button {
-//                testSampleSplit()
-//            } label: {
-//                Text("Test Sample Split")
-//            }
-//
-//            Button {
-//                testSampleDividend()
-//            } label: {
-//                Text("Test Sample Dividend")
-//            }
+            VStack(alignment: .center){
+                nameAndNotesView
+                NavigationLink(destination: TransactionsView(account: account)) {
+                    Text("See Transactions")
+                }
+                //            Button {
+                //                testSampleSplit()
+                //            } label: {
+                //                Text("Test Sample Split")
+                //            }
+                //
+                Button {
+                    testSampleDividend()
+                } label: {
+                    Text("Test Sample Dividend")
+                }
+                
+                
+                accountBalanceAndCashView
+                
+                
+                Divider()
+                holdingBarView
+                    .alert(isPresented: $showingErrorAlert) {
+                        Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
+                    }
+                holdingListView
 
-            nameAndNotesView
-            accountBalanceAndCashView
-            
-
-            Divider()
-            holdingBarView
-            .alert(isPresented: $showingErrorAlert) {
-                Alert(title: Text("Error"), message: Text("\(errorMessage)"), dismissButton: .default(Text("OK")))
-            }
-            holdingListView
+//            }
         }
         .background {
             if let sa = selectedAsset {
@@ -176,7 +178,7 @@ extension AccountView {
                 TextEditor(text: $notes)
                     .autocapitalization(.sentences)
                     .foregroundColor(.secondary)
-                    .frame(height: 100, alignment: .topLeading)
+                    .frame(height: 50, alignment: .topLeading)
                     .clipped()
                     .onChange(of: notes) { newValue in
                         account.notes = newValue

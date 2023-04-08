@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 
 class Asset: Identifiable, ObservableObject
@@ -13,6 +14,8 @@ class Asset: Identifiable, ObservableObject
     @Published var transactions: [Transaction]
     @Published var id: UUID
     @Published var stock: Stock
+    @Published var dividends: [Dividend]
+    
     
     var totalShares: Double {
         
@@ -75,11 +78,14 @@ class Asset: Identifiable, ObservableObject
         return totalValue - costBasis
     }
     
-    init(transactions: [Transaction], stock: Stock)
+    
+    
+    init(transactions: [Transaction], stock: Stock, dividends: [Dividend] = [])
     {
         self.id = UUID()
         self.transactions = transactions
         self.stock = stock
+        self.dividends = dividends
     }
     
     
@@ -99,6 +105,10 @@ class Asset: Identifiable, ObservableObject
             }
         })
     }
+    
+    
+    
+    
     
     
     
