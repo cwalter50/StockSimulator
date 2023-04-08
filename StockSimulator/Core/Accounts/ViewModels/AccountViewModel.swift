@@ -156,19 +156,19 @@ final class AccountViewModel: ObservableObject {
         
         // if dividend is not applied, figure out total shares owned of asset and apply dividend to the total shares, then mark the dividend as applied to asset, so we do not do this again.
     }
-    func updateDividendsToTransactions(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
-    {
-        
-        for t in asset.transactions {
-            if let events = chartData.events, let thedividends = events.dividends {
-//                print("found \(thedividends.count) dividends")
-                for d in thedividends {
-                    let price = chartData.priceAtOpenOnDate(date: d.value.date) ?? asset.stock.regularMarketPrice
-                    t.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: price, context: context)
-                }
-            }
-        }
-    }
+//    func updateDividendsToTransactions(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
+//    {
+//        
+//        for t in asset.transactions {
+//            if let events = chartData.events, let thedividends = events.dividends {
+////                print("found \(thedividends.count) dividends")
+//                for d in thedividends {
+//                    let price = chartData.priceAtOpenOnDate(date: d.value.date) ?? asset.stock.regularMarketPrice
+//                    t.addAndApplyDividendIfValid(dividend: d.value, dateOfRecord: d.key, stockPriceAtDividend: price, context: context)
+//                }
+//            }
+//        }
+//    }
     
     func updateSplitsToTransactions(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
     {
