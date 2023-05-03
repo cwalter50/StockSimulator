@@ -63,6 +63,8 @@ class DeveloperPreview {
         let account = Account(context: dataController.container.viewContext)
         account.cash = 10000
         
+//        account.addToDividends(sampleDividend)
+        
         return account
     }
     
@@ -86,6 +88,20 @@ class DeveloperPreview {
 //
 //        return account
 //    }
+    
+    var sampleDividend: Dividend {
+        let context = dataController.container.viewContext
+        let div = Dividend(context: context)
+        div.account = sampleAccount
+        div.appliedToHolding = false
+        div.date = Int32(Date().timeIntervalSince1970)
+        div.dateOfRecord = Int32(Date().timeIntervalSince1970)
+        div.stockPriceAtDate = 100.00
+        div.stockSymbol = "SAMPLE"
+        div.id = UUID()
+        
+        return div
+    }
     
     var sampleWatchlist: Watchlist {
         let context = dataController.container.viewContext

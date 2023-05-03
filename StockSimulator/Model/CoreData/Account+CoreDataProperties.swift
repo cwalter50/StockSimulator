@@ -138,7 +138,7 @@ extension Account {
     private func isDividendValid(dividend: ChartData.Dividend, stockSymbol: String) -> Bool
     {
         if let theDividendsSet = self.dividends, let theDividends = Array(theDividendsSet) as? [Dividend] {
-            return !theDividends.contains(where: {$0.dateOfRecord == dividend.date && $0.stockSymbol == stockSymbol})
+            return !theDividends.contains(where: {$0.date == dividend.date && $0.stockSymbol == stockSymbol})
         }
         return true
     }

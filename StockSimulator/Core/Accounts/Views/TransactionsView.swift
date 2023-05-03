@@ -29,9 +29,12 @@ struct TransactionsView: View {
                     TransactionRow(transaction: t)
                 }
                 .onDelete(perform: delete)
+
             }
             .listStyle(.plain)
+
         }
+
     }
     
     func delete(at offsets: IndexSet) {
@@ -39,6 +42,7 @@ struct TransactionsView: View {
         for i in offsets {
             let transaction = transactions[i]
             account.removeFromTransactions(transaction)
+            
             moc.delete(transaction)
         }
         if moc.hasChanges {

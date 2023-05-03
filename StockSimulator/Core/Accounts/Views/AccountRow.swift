@@ -12,12 +12,13 @@ struct AccountRow: View {
     @Environment(\.managedObjectContext) var moc // CoreData
     
     var vm: AccountViewModel
-    var account: Account
+    @ObservedObject var account: Account
     
     init(account: Account)
     {
         self.account = account
-        vm = AccountViewModel(account: self.account)
+
+        self.vm = AccountViewModel(account: account)
     }
     
     var body: some View {

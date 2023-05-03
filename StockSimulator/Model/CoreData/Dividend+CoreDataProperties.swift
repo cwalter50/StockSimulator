@@ -30,6 +30,10 @@ extension Dividend {
         return Date(timeIntervalSince1970: Double(date))
     }
     
+    var wrappedStockSymbol: String {
+        return stockSymbol ?? "No Symbol Found"
+    }
+    
     func updateDividendValuesFromChartDataDividend(dividend: ChartData.Dividend, dateOfRecord: String, stockPriceAtDate: Double, stockSymbol: String, account: Account) {
 
         self.amount = dividend.amount

@@ -62,6 +62,10 @@ struct AccountView: View {
                     Text("Test Sample Dividend")
                 }
                 
+                NavigationLink(destination: DividendView(account: account)) {
+                    Text("See Dividends")
+                }
+                
                 
                 accountBalanceAndCashView
                 

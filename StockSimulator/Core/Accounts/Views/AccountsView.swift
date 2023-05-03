@@ -31,9 +31,6 @@ struct AccountsView: View {
                             selectedAccount = account
                             showDetailView.toggle()
                         }
-//                    NavigationLink(destination: AccountView(account: account)) {
-//                        AccountRow(account: account)
-//                    }
                 }
             }
             .navigationViewStyle(StackNavigationViewStyle())

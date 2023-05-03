@@ -44,6 +44,7 @@ struct StockSearchView: View {
             HStack {
                 TextField("Enter Stock Symbol", text: $searchSymbol)
                     .autocapitalization(.allCharacters)
+                    .autocorrectionDisabled(true)
                 Button(action: getStockData) {
                     Text("Search")
                     
