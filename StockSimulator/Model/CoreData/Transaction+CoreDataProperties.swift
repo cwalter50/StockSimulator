@@ -113,9 +113,11 @@ extension Transaction {
         self.numShares = numShares
         self.isClosed = false
         self.costBasis = purchasePrice * numShares
-        self.eventType = "BUY"
+        self.eventType = EventType.buy.rawValue
 //        self.totalProceeds = 0 // this should happen by default
     }
+    
+
 
 }
 
@@ -158,53 +160,62 @@ extension Transaction : Identifiable {
 }
 
 // MARK: Dividends and Splits methods
+// all of this moved to Account. We figured it was better to store record of all splits and dividends in the account. We create the transaction in the Account Class
 extension Transaction {
-    // MARK:  check if split is valid to be applied to Transaction. It is valid if the split has not already been added to the transaction, and the split record date is within the time frame of the buy date and sell date
-    private func isSplitValid(split: ChartData.Split, dateOfRecord: String) -> Bool
-    {
-        return isSplitInValidTimeFrame(split: split) && !isSplitAlreadyAddedToTransaction(split: split)
-    }
+//    // MARK:  check if split is valid to be applied to Transaction. It is valid if the split has not already been added to the transaction, and the split record date is within the time frame of the buy date and sell date
+//    private func isSplitValid(split: ChartData.Split, dateOfRecord: String) -> Bool
+//    {
+//        return isSplitInValidTimeFrame(split: split) && !isSplitAlreadyAddedToTransaction(split: split)
+//    }
+//    
+//    // MARK: Checks if the splits already the transactions contains the ChartData.split
+//    func isSplitAlreadyAddedToTransaction(split: ChartData.Split) -> Bool
+//    {
+//        let theSplits = splits?.allObjects as! [Split]
+//        return theSplits.contains {$0.date == split.date}
+//    }
+//    // MARK: Checks if the split date is within the transactions window of holding the asset.
+//    func isSplitInValidTimeFrame(split: ChartData.Split) -> Bool
+//    {
+//        let splitDate = Date(timeIntervalSince1970: Double(split.date))
+//        if let theSellDate = sellDate {
+//            return splitDate > wrappedBuyDate && splitDate < theSellDate
+//        }
+//        else { // this means that the transaction hasn't closed yet
+//              return splitDate > wrappedBuyDate
+//        }
+//    }
+//    // MARK: This will check if Split from ChartData is valid before adding it to the transaction's list of splits and applying it.
+//    func addAndApplySplitIfValid(split: ChartData.Split, dateOfRecord: String, context: NSManagedObjectContext)
+//    {
+//        if isSplitValid(split: split, dateOfRecord: dateOfRecord) {
+//            // make a new Split Object and add it to transaction
+//            let s = Split(context: context)
+//            s.updateSplitValuesFromChartDataSplit(split: split, dateOfRecord: dateOfRecord)
+//            s.transaction = self
+//            self.addToSplits(s) // this and previous line may be redundant
+//            
+//            // change values on transaction
+//            if s.appliedToHolding == false {
+//                let splitRatio = Double(split.numerator) / Double(split.denominator)
+//                self.numShares *= splitRatio
+//                self.purchasePrice /= splitRatio
+//                s.appliedToHolding = true
+//            }
+//            if context.hasChanges {
+//                try? context.save()
+//            }
+//        }
+//        else {
+////            print("Split is not valid to be added to transaction")
+//        }
+//    }
+}
+
+enum EventType: String {
     
-    // MARK: Checks if the splits already the transactions contains the ChartData.split
-    func isSplitAlreadyAddedToTransaction(split: ChartData.Split) -> Bool
-    {
-        let theSplits = splits?.allObjects as! [Split]
-        return theSplits.contains {$0.date == split.date}
-    }
-    // MARK: Checks if the split date is within the transactions window of holding the asset.
-    func isSplitInValidTimeFrame(split: ChartData.Split) -> Bool
-    {
-        let splitDate = Date(timeIntervalSince1970: Double(split.date))
-        if let theSellDate = sellDate {
-            return splitDate > wrappedBuyDate && splitDate < theSellDate
-        }
-        else { // this means that the transaction hasn't closed yet
-              return splitDate > wrappedBuyDate
-        }
-    }
-    // MARK: This will check if Split from ChartData is valid before adding it to the transaction's list of splits and applying it.
-    func addAndApplySplitIfValid(split: ChartData.Split, dateOfRecord: String, context: NSManagedObjectContext)
-    {
-        if isSplitValid(split: split, dateOfRecord: dateOfRecord) {
-            // make a new Split Object and add it to transaction
-            let s = Split(context: context)
-            s.updateSplitValuesFromChartDataSplit(split: split, dateOfRecord: dateOfRecord)
-            s.transaction = self
-            self.addToSplits(s) // this and previous line may be redundant
-            
-            // change values on transaction
-            if s.appliedToHolding == false {
-                let splitRatio = Double(split.numerator) / Double(split.denominator)
-                self.numShares *= splitRatio
-                self.purchasePrice /= splitRatio
-                s.appliedToHolding = true
-            }
-            if context.hasChanges {
-                try? context.save()
-            }
-        }
-        else {
-//            print("Split is not valid to be added to transaction")
-        }
-    }
+    case buy = "BUY"
+    case sell = "SELL"
+    case dividend = "DIVIDEND"
+    case split = "SPLIT"
 }

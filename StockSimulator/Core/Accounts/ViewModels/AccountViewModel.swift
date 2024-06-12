@@ -128,6 +128,7 @@ final class AccountViewModel: ObservableObject {
     //                        }
     //                    }
                         self.updateDividendsToAccount(chartData: chartData, asset: asset, context: context)
+                        self.updateSplitsToAccount(chartData: chartData, asset: asset, context: context)
 //                        self.updateDividendsToTransactions(chartData: chartData, asset: asset, context: context)
 //                        self.updateSplitsToTransactions(chartData: chartData, asset: asset, context: context)
                     case .failure(let string):
@@ -170,30 +171,49 @@ final class AccountViewModel: ObservableObject {
 //        }
 //    }
     
-    func updateSplitsToTransactions(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
-    {
-  
-        for t in asset.transactions {
-            if let events = chartData.events, let thesplits = events.splits {
-//                    print("found \(thesplits.count) splits")
-                for s in thesplits {
-                    t.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, context: context)
-                }
+    func updateSplitsToAccount(chartData: ChartData, asset: Asset, context: NSManagedObjectContext) {
+        // check if the split is already applied to the account
+        if let events = chartData.events, let thesplits = events.splits {
+            for s in thesplits {
+                let price = chartData.priceAtOpenOnDate(date: s.value.date) ?? asset.stock.regularMarketPrice
+                account.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, stockProceAtSplit: price, stock: asset.stock, context: context)
             }
+            
         }
     }
+    
+    // Not needed.... because Splits are all found in account now. We make a transaction of the Split in the account method.
+//    func updateSplitsToTransactions(chartData: ChartData, asset: Asset, context: NSManagedObjectContext)
+//    {
+//  
+//        for t in asset.transactions {
+//            if let events = chartData.events, let thesplits = events.splits {
+////                    print("found \(thesplits.count) splits")
+//                for s in thesplits {
+//                    t.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, context: context)
+//                }
+//            }
+//        }
+//    }
     
     
     func testSampleSplit(context: NSManagedObjectContext) {
         for asset in assets {
-            for t in asset.transactions {
-                let data = ChartMockData.sampleSplitNow
-                if let events = data.events, let thesplits = events.splits {
-                    for s in thesplits {
-                        t.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, context:context)
-//                        print("Added Split \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
-                    }
+            let data = ChartMockData.sampleSplitNow
+            if let events = data.events, let theSplits = events.splits {
+                for s in theSplits {
+                    account.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, stockProceAtSplit: asset.stock.regularMarketPrice, stock: asset.stock, context: context)
+
+                    print("Added Dividend \(s.value.splitRatio) to account \(account.wrappedName) of \(asset.stock.wrappedSymbol)")
                 }
+//            for t in asset.transactions {
+//                let data = ChartMockData.sampleSplitNow
+//                if let events = data.events, let thesplits = events.splits {
+//                    for s in thesplits {
+//                        t.addAndApplySplitIfValid(split: s.value, dateOfRecord: s.key, context:context)
+////                        print("Added Split \(testDividend.amount) to transaction \(t.numShares) shares of \(t.stock!.wrappedSymbol)")
+//                    }
+//                }
             }
         }
     }

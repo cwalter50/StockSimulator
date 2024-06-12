@@ -47,24 +47,40 @@ struct AccountView: View {
     var body: some View {
             VStack(alignment: .center){
                 nameAndNotesView
-                NavigationLink(destination: TransactionsView(account: account)) {
-                    Text("See Transactions")
+                
+                HStack {
+                    NavigationLink(destination: TransactionsView(account: account)) {
+                        Text("See Transactions")
+                    }
+                    Spacer()
+                    NavigationLink(destination: DividendView(account: account)) {
+                        Text("See Dividends")
+                    }
                 }
+                
                 //            Button {
                 //                testSampleSplit()
                 //            } label: {
                 //                Text("Test Sample Split")
                 //            }
                 //
-                Button {
-                    testSampleDividend()
-                } label: {
-                    Text("Test Sample Dividend")
-                }
+//                HStack {
+//                    Button {
+//                        
+//                        vm.testSampleDividend(context: moc)
+//                    } label: {
+//                        Text("Test Sample Dividend")
+//                    }
+//                    Spacer()
+//                    Button {
+//                        vm.testSampleSplit(context: moc)
+//                    } label: {
+//                        Text("Test Sample Split")
+//                    }
+//                }
+
                 
-                NavigationLink(destination: DividendView(account: account)) {
-                    Text("See Dividends")
-                }
+
                 
                 
                 accountBalanceAndCashView
@@ -108,17 +124,6 @@ struct AccountView: View {
         
     }
     
-    
-    func testSampleSplit()
-    {
-        vm.testSampleSplit(context: moc)
-    }
-    
-    func testSampleDividend()
-    {
-        vm.testSampleDividend(context: moc)
-
-    }
     func loadCurrentStockInfo()
     {
         vm.updateAssetValues()

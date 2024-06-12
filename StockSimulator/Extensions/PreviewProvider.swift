@@ -55,7 +55,7 @@ class DeveloperPreview {
         t.numShares = 10
         t.isClosed = false
         t.costBasis = t.purchasePrice * t.numShares
-        t.eventType = "BUY"
+        t.eventType = EventType.buy.rawValue
         
         return t
     }
